@@ -37,7 +37,7 @@
                                             <select class="form-control" name="${(element.key)!}">
                                                 <#if element.meta?exists>
                                                     <#list element.meta as meta>
-                                                        <#if (meta.value == element.value)!>
+                                                        <#if element.value?exists && (meta.value == element.value)!>
                                                             <option selected="selected" value="${(meta.value)!}">${(meta.text)!}</option>
                                                         <#else>
                                                             <option value="${(meta.value)!}">${(meta.text)!}</option>
