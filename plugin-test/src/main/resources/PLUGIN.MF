@@ -1,0 +1,7 @@
+Plugin-Id: me.beldon.test.plugin
+Plugin-Name: 测试插件
+Plugin-Version: 1.0
+Plugin-Config-Path: spring/spring-test.xml
+Author-Email: admin@beldon.me
+Plugin-URL: beldon.me
+Plugin-Author: Beldon

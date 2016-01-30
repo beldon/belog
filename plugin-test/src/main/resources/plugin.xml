@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin xmlns="http://belog.beldon.me/schema/plugin"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://belog.beldon.me/schema/plugin
+        http://belog.beldon.me/schema/plugin/belog.xsd">
+    <id>2</id>
+    <name>name</name>
+    <version>0.01</version>
+    <author>Beldon</author>
+    <config>
+        <element type="text" key="d"/>
+        <element type="text" key="d"/>
+    </config>
+</plugin>

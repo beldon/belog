@@ -1,0 +1,7 @@
+Plugin-Id: me.beldon.comment.plugin
+Plugin-Name: 评论插件
+Plugin-Version: 1.0
+Plugin-Config-Path: spring/spring-comment.xml
+Author-Email: admin@beldon.me
+Plugin-URL: beldon.me
+Plugin-Author: Beldon

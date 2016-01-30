@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <description>
+        Shiro安全框架配置文件
+    </description>
+
+    <!-- 缓存管理器 -->
+    <bean id="cacheManager" class="belog.security.SpringCacheManagerWrapper">
+        <property name="cacheManager" ref="ehcacheCacheManager"/>
+    </bean>
+
+    <!-- 凭证匹配器 -->
+    <bean id="credentialsMatcher" class="belog.security.credentials.RetryLimitHashedCredentialsMatcher">
+        <constructor-arg ref="cacheManager"/>
+        <property name="hashAlgorithmName" value="SHA-256"/>
+        <property name="storedCredentialsHexEncoded" value="true"/>
+    </bean>
+
+    <!-- Realm实现 -->
+    <bean id="authRealm" class="belog.security.realm.UserAuthRealm">
+        <property name="credentialsMatcher" ref="credentialsMatcher"/>
+        <!--&lt;!&ndash; 启用缓存，默认 false&ndash;&gt;-->
+        <!--<property name="cachingEnabled" value="true"/>-->
+        <!--&lt;!&ndash; 启用身份验证缓存，即缓存 AuthenticationInfo 信息，默认 false&ndash;&gt;-->
+        <!--<property name="authenticationCachingEnabled" value="true"/>-->
+        <!--&lt;!&ndash; 启用授权缓存，即缓存 AuthorizationInfo 信息，默认 false；&ndash;&gt;-->
+        <!--<property name="authorizationCachingEnabled" value="true"/>-->
+        <!--&lt;!&ndash; 缓存 AuthorizationInfo 信息的缓存名称；&ndash;&gt;-->
+        <!--<property name="authorizationCacheName" value="authorizationCache"/>-->
+        <!--<property name="authenticationCacheName" value="authenticationCache"/>-->
+
+    </bean>
+
+
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <property name="realm" ref="authRealm"/>
+        <!--<property name="cacheManager" ref="cacheManager"/>-->
+    </bean>
+
+    <bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+        <property name="securityManager" ref="securityManager"/>
+    </bean>
+
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <property name="securityManager" ref="securityManager"/>
+        <property name="loginUrl" value="/admin/login.html"/>
+        <property name="filterChainDefinitions">
+            <value>
+                /admin/login.html=anon
+                /admin/login.json=anon
+                /admin/**=authc
+            </value>
+        </property>
+    </bean>
+</beans>

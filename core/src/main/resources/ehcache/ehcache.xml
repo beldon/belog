@@ -1,0 +1,51 @@
+<ehcache>
+    <diskStore path="java.io.tmpdir"/>
+    <defaultCache
+            maxElementsInMemory="1000"
+            eternal="false"
+            timeToIdleSeconds="120"
+            timeToLiveSeconds="120"
+            overflowToDisk="false"/>
+    <cache name="user"
+           maxElementsOnDisk="20000"
+           maxElementsInMemory="2000"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="true"/>
+    <cache name="option"
+           maxElementsOnDisk="20000"
+           maxElementsInMemory="2000"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="true"/>
+
+    <cache name="config"
+           maxElementsOnDisk="20000"
+           maxElementsInMemory="2000"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="true"/>
+
+    <cache name="passwordRetryCache"
+           maxElementsOnDisk="20000"
+           maxElementsInMemory="2000"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="true"/>
+    <cache name="authorizationCache"
+           maxElementsInMemory="10000"
+           eternal="false"
+           timeToIdleSeconds="120"
+           timeToLiveSeconds="120"
+           overflowToDisk="false"
+           diskPersistent="false"
+           diskExpiryThreadIntervalSeconds="120"/>
+    <cache name="authenticationCache"
+           maxElementsInMemory="10000"
+           eternal="false"
+           timeToIdleSeconds="120"
+           timeToLiveSeconds="120"
+           overflowToDisk="false"
+           diskPersistent="false"
+           diskExpiryThreadIntervalSeconds="120"/>
+</ehcache>

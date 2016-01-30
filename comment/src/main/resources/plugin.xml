@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin xmlns="http://belog.beldon.me/schema/plugin"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://belog.beldon.me/schema/plugin
+        http://belog.beldon.me/schema/plugin/belog.xsd">
+    <id>me.beldon.comment</id>
+    <name>评论插件</name>
+    <version>0.0.1</version>
+    <config-path>spring/spring-comment.xml</config-path>
+    <author>Beldon</author>
+    <config>
+        <!--<element type="text" key="commentConfig" label="评论标签1"/>-->
+        <element type="select" key="commentSwitch" label="评论开关">
+            <metaContent value="on" text="打开"/>
+            <metaContent value="off" text="关闭"/>
+        </element>
+        <element type="textarea" key="commentCode" label="评论代码"/>
+    </config>
+</plugin>

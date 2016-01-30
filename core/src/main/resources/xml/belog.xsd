@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema
+        xmlns="http://belog.beldon.me/schema/plugin"
+        xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+        xmlns:beans="http://www.springframework.org/schema/beans"
+        targetNamespace="http://belog.beldon.me/schema/plugin"
+        elementFormDefault="qualified"
+        attributeFormDefault="unqualified">
+    <xsd:import namespace="http://www.springframework.org/schema/beans"/>
+
+
+    <xsd:element name="plugin">
+        <xsd:annotation>
+            <xsd:documentation>插件描述信息，包括作者、id、名称、网站等等</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element ref="id"/>
+                <xsd:element ref="name"/>
+                <xsd:element ref="version"/>
+                <xsd:element ref="config-path"/>
+                <xsd:choice minOccurs="0" maxOccurs="unbounded">
+                    <xsd:element ref="author"  maxOccurs="1"/>
+                    <xsd:element ref="email" maxOccurs="1"/>
+                    <xsd:element ref="url" maxOccurs="1"/>
+                    <xsd:element ref="config" maxOccurs="1"/>
+                </xsd:choice>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:element name="config">
+        <xsd:annotation>
+            <xsd:documentation>插件配置信息,用于后台生成配置信息</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:choice minOccurs="0" maxOccurs="unbounded">
+                    <xsd:element ref="element"/>
+                </xsd:choice>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:element name="name" default="未知">
+        <xsd:annotation>
+            <xsd:documentation>名称</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:string"/>
+        </xsd:simpleType>
+    </xsd:element>
+
+    <xsd:element name="config-path">
+        <xsd:annotation>
+            <xsd:documentation>插件路径</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:string"/>
+        </xsd:simpleType>
+    </xsd:element>
+
+    <xsd:element name="id">
+        <xsd:annotation>
+            <xsd:documentation>插件ID</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:string">
+                <!--<xsd:pattern value="/^([a-z]+\.)*[a-z]+$/"/>-->
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:element>
+
+    <xsd:element name="author">
+        <xsd:annotation>
+            <xsd:documentation>作者</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:string"/>
+        </xsd:simpleType>
+    </xsd:element>
+
+    <xsd:element name="version">
+        <xsd:annotation>
+            <xsd:documentation>版本</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:string"/>
+        </xsd:simpleType>
+    </xsd:element>
+
+    <xsd:element name="url">
+        <xsd:annotation>
+            <xsd:documentation>网址</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:string"/>
+        </xsd:simpleType>
+    </xsd:element>
+
+    <xsd:element name="email">
+        <xsd:annotation>
+            <xsd:documentation>邮箱</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:string"/>
+        </xsd:simpleType>
+    </xsd:element>
+
+
+    <xsd:element name="metaContent">
+        <xsd:annotation>
+            <xsd:documentation>描述</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:complexContent>
+                <xsd:extension base="beans:identifiedType">
+                    <xsd:attribute name="value" type="xsd:string" use="required"/>
+                    <xsd:attribute name="text" type="xsd:string" use="required"/>
+                </xsd:extension>
+            </xsd:complexContent>
+        </xsd:complexType>
+
+    </xsd:element>
+
+    <xsd:element name="element">
+        <xsd:annotation>
+            <xsd:documentation>配置选项</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:complexContent>
+                <xsd:extension base="beans:identifiedType">
+                    <xsd:group ref="elementElements">
+                        <xsd:annotation>
+                            <xsd:documentation>配置选项元素</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:group>
+                    <xsd:attributeGroup ref="elementAttr">
+                        <xsd:annotation>
+                            <xsd:documentation>配置选项属性</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:attributeGroup>
+                </xsd:extension>
+            </xsd:complexContent>
+
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:attributeGroup name="elementAttr">
+        <xsd:annotation>
+            <xsd:documentation>配置属性</xsd:documentation>
+        </xsd:annotation>
+        <xsd:attribute name="type" use="required">
+            <xsd:simpleType>
+                <xsd:restriction base="xsd:string">
+                    <xsd:pattern value="text|radio|textarea|checkbox|hidden|select"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+        </xsd:attribute>
+        <xsd:attribute name="key" type="xsd:string" use="required">
+            <xsd:annotation>
+                <xsd:documentation>标签的key</xsd:documentation>
+            </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="label" type="xsd:string" use="required">
+            <xsd:annotation>
+                <xsd:documentation>配置显示的标签名称</xsd:documentation>
+            </xsd:annotation>
+        </xsd:attribute>
+    </xsd:attributeGroup>
+
+    <xsd:group name="elementElements">
+        <xsd:sequence>
+            <xsd:choice minOccurs="0" maxOccurs="unbounded">
+                <xsd:element ref="metaContent"/>
+            </xsd:choice>
+        </xsd:sequence>
+    </xsd:group>
+</xsd:schema>

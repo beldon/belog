@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+    <bean class="belog.utils.SpringContextUtil"/>
+    <bean class="belog.context.AppContext"/>
+    <context:component-scan base-package="
+    belog.plugin,belog.dao.impl,belog.service.impl,belog.tag,belog.hook"/>
+
+
+    <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <!--<value>classpath:boot2.properties</value>-->
+                <!--<value>classpath:jdbc.properties</value>-->
+                <value>classpath:db.properties</value>
+            </list>
+        </property>
+        <property name="localOverride" value="true"/>
+    </bean>
+
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="${jdbc.driverClassName}"/>
+        <property name="url" value="${jdbc.url}"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+    </bean>
+
+    <!--<bean id="hikaricpDataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">-->
+    <!--<constructor-arg>-->
+    <!--<bean class="com.zaxxer.hikari.HikariConfig">-->
+    <!--<property name="driverClassName" value="${jdbc.driverClassName}"/>-->
+    <!--<property name="jdbcUrl" value="${jdbc.url}"/>-->
+    <!--<property name="username" value="${jdbc.username}"/>-->
+    <!--<property name="password" value="${jdbc.password}"/>-->
+    <!--<property name="connectionTestQuery" value="${hikaricp.connectionTestQuery}"/>-->
+    <!--<property name="connectionTimeout" value="${hikaricp.connectionTimeout}"/>-->
+    <!--<property name="idleTimeout" value="${hikaricp.idleTimeout}"/>-->
+    <!--<property name="maxLifetime" value="${hikaricp.maxLifetime}"/>-->
+    <!--<property name="maximumPoolSize" value="${hikaricp.maximumPoolSize}"/>-->
+    <!--<property name="minimumIdle" value="${hikaricp.minimumIdle}"/>-->
+    <!--</bean>-->
+    <!--</constructor-arg>-->
+    <!--</bean>-->
+
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+                <prop key="hibernate.hbm2ddl.auto">update</prop>
+                <prop key="hibernate.show_sql">true</prop>
+                <prop key="hibernate.format_sql">true</prop>
+                <prop key="hibernate.current_session_context_class">
+                    org.springframework.orm.hibernate4.SpringSessionContext
+                </prop>
+            </props>
+        </property>
+        <!-- 自动扫描实体对象-->
+        <property name="packagesToScan">
+            <list>
+                <!-- 可以加多个包-->
+                <value>belog.pojo.po</value>
+            </list>
+        </property>
+    </bean>
+    <bean id="hibernateTemplate" class="org.springframework.orm.hibernate4.HibernateTemplate">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
+
+    <!-- 配置事务管理器,统一管理sessionFactory事务 -->
+    <bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <!-- 开启事务注解 -->
+    <bean id="transactionInterceptor" class="org.springframework.transaction.interceptor.TransactionInterceptor">
+        <property name="transactionManager" ref="transactionManager"/>
+        <property name="transactionAttributes">
+            <props>
+                <!--<prop key="*">PROPAGATION_REQUIRED</prop>-->
+                <prop key="save*">PROPAGATION_REQUIRED</prop>
+                <prop key="add*">PROPAGATION_REQUIRED</prop>
+                <prop key="execute*">PROPAGATION_REQUIRED</prop>
+                <prop key="*Login">PROPAGATION_REQUIRED</prop>
+                <prop key="update*">PROPAGATION_REQUIRED</prop>
+                <prop key="edit*">PROPAGATION_REQUIRED</prop>
+                <prop key="delete*">PROPAGATION_REQUIRED</prop>
+                <prop key="set*">PROPAGATION_REQUIRED</prop>
+                <prop key="*">PROPAGATION_REQUIRED, readOnly</prop>
+                <!--<prop key="*">PROPAGATION_REQUIRED</prop>-->
+            </props>
+        </property>
+    </bean>
+
+    <bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+        <!-- 如果proxyTargetClass 为 false(默认为false)则用标准的JDK 基于接口的代理，若为true那么基于类的代理将起作用（这时需要cglib库） -->
+        <property name="proxyTargetClass" value="true"/>
+        <property name="beanNames">
+            <list>
+                <value>*Dao</value>
+                <value>*ServiceImpl</value>
+                <value>*Service</value>
+                <value>*Test</value>
+            </list>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>transactionInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- ehcache配置-->
+    <bean id="ehcacheCacheManagerFactory" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+        <property name="configLocation" value="classpath:ehcache/ehcache.xml"/>
+    </bean>
+    <bean id="ehcacheCacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">
+        <property name="cacheManager" ref="ehcacheCacheManagerFactory"/>
+    </bean>
+
+
+    <!--<bean class="belog.hook.event.EventHookManager"/>-->
+
+    <import resource="spring-shiro.xml"/>
+    <!--<import resource="application-boot.xml"/>-->
+</beans>
