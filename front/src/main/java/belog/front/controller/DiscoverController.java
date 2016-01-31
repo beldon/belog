@@ -15,6 +15,6 @@ public class DiscoverController extends FrontBaseController{
     @RequestMapping({"/", "/index.html", "/index_{page}.html"})
     public String index(Model model, @PathVariable @RequestParam(value = "page", required = false, defaultValue = "1") int page) {
         model.addAttribute("currentPage", page);
-        return themeService.getTemplatePath("/discover/index");
+        return themeService.getTemplatePath("discover/index");
     }
 }

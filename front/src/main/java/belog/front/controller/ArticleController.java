@@ -19,13 +19,13 @@ public class ArticleController extends FrontBaseController {
     public String index(Model model, @PathVariable @RequestParam(value = "page", required = false, defaultValue = "1") int page) {
 //        model.addAttribute("articleId", "1");
         model.addAttribute("currentPage", page);
-        return themeService.getTemplatePath("/article/index");
+        return themeService.getTemplatePath("article/index");
     }
 
     @RequestMapping("/{articleId}")
     public String details(@PathVariable("articleId") long articleId, Model model) {
         model.addAttribute("articleId", articleId);
-        return themeService.getTemplatePath("/article/details");
+        return themeService.getTemplatePath("article/details");
     }
 
 
