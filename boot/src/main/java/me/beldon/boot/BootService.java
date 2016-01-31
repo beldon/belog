@@ -1,6 +1,8 @@
 package me.beldon.boot;
 
 import me.beldon.boot.context.BootContext;
+import me.beldon.boot.util.ClassLoaderUtils;
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.support.XmlWebApplicationContext;
@@ -8,6 +10,8 @@ import org.springframework.web.context.support.XmlWebApplicationContext;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import java.io.File;
+import java.net.URLClassLoader;
+import java.util.List;
 import java.util.Properties;
 
 /**
@@ -30,19 +34,7 @@ public class BootService extends BootContext implements BootServlet.RootServlet,
      */
     @PostConstruct
     private void init() {
-
         if ("true".equals(bootConfig.getProperty("boot"))) {
-//            CoreClassLoader coreClassLoader;
-//            if (initContext.getClassLoader() instanceof CoreClassLoader) {
-//                coreClassLoader = (CoreClassLoader) initContext.getClassLoader();
-//            } else {
-            //切换classLoader
-//                coreClassLoader = new CoreClassLoader(initContext.getClassLoader());
-//                coreClassLoader = CoreClassLoader.getInstance();
-//                ((XmlWebApplicationContext) initContext).setClassLoader(coreClassLoader);
-//                Thread.currentThread().setContextClassLoader(coreClassLoader);
-//            }
-
             String path = this.getClass().getClassLoader().getResource("/").getPath();
             File classPath = new File(path);
             String lockPath = classPath.getParent() + File.separator + "install.lock";
@@ -51,9 +43,11 @@ public class BootService extends BootContext implements BootServlet.RootServlet,
             if (lockFile.exists()) {
                 System.out.println("系统开始加载Web组件...");
                 String rootPath = classPath.getParent() + File.separator + bootConfig.getProperty("rootDir", "root");
+                List<File> list = (List<File>) FileUtils.listFiles(new File(rootPath), new String[]{"jar"}, true);
+                URLClassLoader urlClassLoader = ClassLoaderUtils.loadJar(list);
                 String config = bootConfig.getProperty("rootConfig", "spring/applicationContext.xml");
                 XmlWebApplicationContext context = new XmlWebApplicationContext();
-                context.setClassLoader(Thread.currentThread().getContextClassLoader());
+                context.setClassLoader(urlClassLoader);
                 context.setConfigLocation("classpath:" + config.trim());
                 context.setDisplayName("webApp");
                 context.setId(WEB_APP_ID);
@@ -74,10 +68,7 @@ public class BootService extends BootContext implements BootServlet.RootServlet,
                 System.out.println("系统安装程序启动中...");
                 XmlWebApplicationContext installContent = new XmlWebApplicationContext();
 
-//                    BeClassLoader beClassLoader = ClassLoaderUtils.loadJar(list, coreClassLoader);
-//                    installContent.setClassLoader(beClassLoader);
                 installContent.setClassLoader(Thread.currentThread().getContextClassLoader());
-//                    coreClassLoader.removeClassLoader(beClassLoader);
 
                 String config = bootConfig.getProperty("installConfig", "spring/spring-install.xml");
                 installContent.setConfigLocation("classpath:" + config.trim());

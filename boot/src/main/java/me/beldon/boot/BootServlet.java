@@ -1,6 +1,5 @@
 package me.beldon.boot;
 
-import me.beldon.boot.loader.CoreClassLoader;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.XmlWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
@@ -69,10 +68,6 @@ public class BootServlet extends DispatcherServlet {
     protected void initStrategies(ApplicationContext context) {
         if (rootContext == null) {
             rootContext = (XmlWebApplicationContext) context;
-//            rootContext.setClassLoader(CoreClassLoader.getInstance());
-        }
-        if (context.getClassLoader() instanceof CoreClassLoader) {
-            Thread.currentThread().setContextClassLoader(context.getClassLoader());
         }
         Map<String, RootServlet> map = new HashMap<String, RootServlet>();
         ApplicationContext tempContext = rootContext;
