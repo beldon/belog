@@ -1,13 +1,16 @@
 package me.beldon.boot.loader;
 
+import me.beldon.boot.util.ClassLoaderUtils;
+import org.apache.commons.io.FileUtils;
 import sun.misc.CompoundEnumeration;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
@@ -19,251 +22,135 @@ public class CoreClassLoader extends ClassLoader {
 
     private static CoreClassLoader instance;
     private static final Object lock = new Object();
-    private ClassLoader webClassLoader = null;
-
-    public static CoreClassLoader getInstance() {
-        if (instance == null) {
-            synchronized (lock) {
-                instance = new CoreClassLoader(Thread.currentThread().getContextClassLoader().getParent());
-                System.out.println(Thread.currentThread().getContextClassLoader());
-                ClassLoader webClassLoader = Thread.currentThread().getContextClassLoader();
-//                instance.webClassLoader = webClassLoader;
-                WebHelpClassLoader webHelpClassLoader = new WebHelpClassLoader(webClassLoader, instance);
-                try {
-                    Field field = ClassLoader.class.getDeclaredField("parent");
-                    field.setAccessible(true);
-//                    field.set(webClassLoader, null);
-                    field.set(webClassLoader, webHelpClassLoader);
-                } catch (NoSuchFieldException e) {
-                    e.printStackTrace();
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                }
-
-                System.out.println(Thread.currentThread().getContextClassLoader().getParent());
-
-            }
-        }
-        return instance;
-    }
-
+    private static ClassLoader webClassLoader = null;
 
     /**
      * 子classLoader列表
      */
     private List<BeClassLoader> classLoaders;
 
-    public CoreClassLoader(ClassLoader parent) {
+    private CoreClassLoader(URL[] urls,ClassLoader parent) {
+
         super(parent);
+//        super(urls,parent);
+
         classLoaders = new ArrayList<BeClassLoader>();
     }
 
-    @Override
-    protected Class<?> findClass(String name) throws ClassNotFoundException {
-
-        if ("belog.install.po.CommentMeta".equals(name)) {
-            System.out.println("belog.install.po.CommentMeta");
+    public static CoreClassLoader getInstance() {
+        if (instance == null) {
+            synchronized (lock) {
+                newInstance();
+            }
         }
+        return instance;
+    }
 
-        if (webClassLoader != null) {
+    private static void newInstance() {
+        webClassLoader = Thread.currentThread().getContextClassLoader();
+        System.out.println(webClassLoader);
+
+
+        String path = webClassLoader.getResource("/").getPath();
+        File classPath = new File(path);
+        String installPath = classPath.getParent() + File.separator + "install";
+        List<File> list = (List<File>) FileUtils.listFiles(new File(installPath), new String[]{"jar"}, true);
+        URLClassLoader classLoader = (URLClassLoader) Thread.currentThread().getContextClassLoader();
+        for (File jarFile : list) {
             try {
-                Method method = ClassLoader.class.getDeclaredMethod("findClass", String.class);
-                method.setAccessible(true);
-                Class<?> clazz = (Class<?>) method.invoke(webClassLoader, name);
-                if (clazz != null) {
-                    return clazz;
-                }
-            } catch (NoSuchMethodException e) {
-//                e.printStackTrace();
-            } catch (InvocationTargetException e) {
-//                e.printStackTrace();
-            } catch (IllegalAccessException e) {
-//                e.printStackTrace();
+                ClassLoaderUtils.addUrl(classLoader, jarFile.toURI().toURL());
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
             }
         }
 
-//        for (BeClassLoader classLoader : classLoaders) {
-//            Class clazz = classLoader.findClassBySelf(name);
-//            if (clazz != null) {
-//                return clazz;
-//            }
-//        }
+        File jarFile = list.get(0);
+        try {
+            instance = new CoreClassLoader(new URL[]{jarFile.toURI().toURL()},webClassLoader.getParent());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
 
+        try {
+            Field field = ClassLoader.class.getDeclaredField("parent");
+            field.setAccessible(true);
+            field.set(webClassLoader, instance);
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        System.out.println("---");
+    }
+
+
+    @Override
+    protected Class<?> findClass(String name) throws ClassNotFoundException {
+        //先查找子Classloader
+        for (BeClassLoader classLoader : classLoaders) {
+            Class clazz = classLoader.findClassBySelf(name);
+            if (clazz != null) {
+                return clazz;
+            }
+        }
         return super.findClass(name);
     }
 
     @Override
     public Class<?> loadClass(String name) throws ClassNotFoundException {
-        if ("belog.install.po.CommentMeta".equals(name)) {
-            System.out.println("belog.install.po.CommentMeta");
-        }
         Class<?> clazz = null;
-        try {
-            clazz = super.loadClass(name);
-            if (clazz != null) {
-                return clazz;
-            }
-        } catch (ClassNotFoundException e) {
-
-        }
-
-        if (webClassLoader != null) {
-            try {
-                clazz = webClassLoader.loadClass(name);
-                if (clazz != null) {
-                    return clazz;
-                }
-            } catch (ClassNotFoundException e) {
-
-            }
-        }
-
+        //先查找子Classloader
         for (BeClassLoader classLoader : classLoaders) {
             clazz = classLoader.loadClassBySelf(name);
             if (clazz != null) {
                 return clazz;
             }
         }
-
-        return clazz;
-    }
-
-    public Class<?> loadClass(String name, BeClassLoader source) throws ClassNotFoundException {
-        Class<?> clazz = null;
-        try {
-            clazz = super.loadClass(name);
-            if (clazz != null) {
-                return clazz;
-            }
-        } catch (ClassNotFoundException e) {
-        }
-        for (BeClassLoader classLoader : classLoaders) {
-            if (classLoader != source) {
-                clazz = classLoader.loadClassBySelf(name);
-                if (clazz != null) {
-                    return clazz;
-                }
-            }
-        }
-        return clazz;
+        return super.loadClass(name);
     }
 
     @Override
     protected Class<?> loadClass(String name, boolean resolve) throws ClassNotFoundException {
-        if ("belog.install.po.CommentMeta".equals(name)) {
-            System.out.println("belog.install.po.CommentMeta");
-        }
         Class<?> clazz = null;
-        try {
-            clazz = super.loadClass(name, resolve);
-            if (clazz != null) {
-                return clazz;
-            }
-        } catch (ClassNotFoundException e) {
-
-        }
-
-        if (webClassLoader != null) {
-            try {
-                Method method = ClassLoader.class.getDeclaredMethod("loadClass", String.class, boolean.class);
-                method.setAccessible(true);
-                clazz = (Class<?>) method.invoke(webClassLoader, name, resolve);
-                if (clazz != null) {
-                    return clazz;
-                }
-            } catch (NoSuchMethodException e) {
-//                e.printStackTrace();
-            } catch (InvocationTargetException e) {
-//                e.printStackTrace();
-            } catch (IllegalAccessException e) {
-//                e.printStackTrace();
-            }
-        }
-
+        //先查找子Classloader
         for (BeClassLoader classLoader : classLoaders) {
             clazz = classLoader.loadClassBySelf(name, resolve);
             if (clazz != null) {
                 return clazz;
             }
         }
-        return clazz;
-    }
-
-    protected Class<?> loadClass(String name, boolean resolve, BeClassLoader source) throws ClassNotFoundException {
-        Class<?> clazz = null;
-        try {
-            clazz = super.loadClass(name, resolve);
-            if (clazz != null) {
-                return clazz;
-            }
-
-        } catch (ClassNotFoundException e) {
-        }
-
-        for (BeClassLoader classLoader : classLoaders) {
-            if (classLoader != source) {
-                clazz = classLoader.loadClassBySelf(name, resolve);
-                if (clazz != null) {
-                    return clazz;
-                }
-            }
-        }
-        return clazz;
+        return super.loadClass(name, resolve);
     }
 
     @Override
     public URL getResource(String name) {
-        URL url = super.getResource(name);
-        if (url != null) {
-            return url;
-        }
-
-        if (webClassLoader != null) {
-            url = webClassLoader.getResource(name);
+        URL url = null;
+        //先查找子Classloader
+        for (BeClassLoader classLoader : classLoaders) {
+            url = classLoader.getResourceBySelf(name);
             if (url != null) {
                 return url;
             }
         }
-
-        return url;
+        return super.getResource(name);
     }
 
-    /**
-     * 获取资源url
-     *
-     * @param name
-     * @param source
-     * @return
-     */
-    public URL getResource(String name, BeClassLoader source) {
-        URL url = super.getResource(name);
-        if (url != null) {
-            return url;
-        }
-
+    @Override
+    public InputStream getResourceAsStream(String name) {
+        InputStream is = null;
+        //先查找子Classloader
         for (BeClassLoader classLoader : classLoaders) {
-            if (classLoader != source) {
-                url = classLoader.getResourceBySelf(name);
-                if (url != null) {
-                    return url;
-                }
+            is = classLoader.getResourceAsStreamBySelf(name);
+            if (is != null) {
+                return is;
             }
         }
-        return url;
+        return super.getResourceAsStream(name);
     }
 
-
-    /**
-     * @param name
-     * @param source
-     * @return
-     * @throws IOException
-     */
-    public Enumeration<URL> getResources(String name, BeClassLoader source) throws IOException {
+    @Override
+    public Enumeration<URL> getResources(String name) throws IOException {
         int size = classLoaders.size() + 1;
-        if (webClassLoader != null) {
-            size++;
-        }
 
         @SuppressWarnings("unchecked")
         Enumeration<URL>[] tmp = (Enumeration<URL>[]) new Enumeration<?>[size];
@@ -271,46 +158,10 @@ public class CoreClassLoader extends ClassLoader {
         tmp[0] = urls;
         for (int i = 0; i < classLoaders.size(); i++) {
             BeClassLoader classLoader = classLoaders.get(i);
-            if (classLoader != source) {
-                Enumeration<URL> tempUrls = classLoader.getResourcesBySelf(name);
-                tmp[i + 1] = tempUrls;
-            }
-        }
-
-        if (webClassLoader != null) {
-            tmp[size-1] = webClassLoader.getResources(name);
+            Enumeration<URL> tempUrls = classLoader.getResourcesBySelf(name);
+            tmp[i + 1] = tempUrls;
         }
         return new CompoundEnumeration<URL>(tmp);
-    }
-
-    /**
-     * @param name
-     * @param source
-     * @return
-     */
-    public InputStream getResourceAsStream(String name, BeClassLoader source) {
-        InputStream is = super.getResourceAsStream(name);
-        if (is != null) {
-            return is;
-        }
-
-        if (webClassLoader != null) {
-            is = webClassLoader.getResourceAsStream(name);
-            if (is != null) {
-                return is;
-            }
-        }
-
-
-        for (BeClassLoader classLoader : classLoaders) {
-            if (classLoader != source) {
-                is = classLoader.getResourceAsStreamBySelf(name);
-                if (is != null) {
-                    return is;
-                }
-            }
-        }
-        return is;
     }
 
     /**
@@ -340,5 +191,14 @@ public class CoreClassLoader extends ClassLoader {
      */
     public boolean contains(BeClassLoader classLoader) {
         return classLoaders.contains(classLoader);
+    }
+
+    public static ClassLoader getWebClassLoader() {
+        if (webClassLoader == null) {
+            synchronized (lock) {
+                newInstance();
+            }
+        }
+        return webClassLoader;
     }
 }

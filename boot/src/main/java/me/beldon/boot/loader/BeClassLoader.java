@@ -5,6 +5,8 @@ import sun.misc.CompoundEnumeration;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Enumeration;
@@ -16,10 +18,12 @@ public class BeClassLoader extends URLClassLoader {
 
     private CoreClassLoader parent;
 
+    private URLClassLoader webClassLoader;
+
     public BeClassLoader(URL[] urls, CoreClassLoader parent) {
         super(urls);
         this.parent = parent;
-        parent.addRegistClassLoader(this);
+        webClassLoader = (URLClassLoader) Thread.currentThread().getContextClassLoader();
     }
 
     public BeClassLoader(URL[] urls) {
@@ -37,9 +41,31 @@ public class BeClassLoader extends URLClassLoader {
         super.addURL(url);
     }
 
+    public void test() {
+//        super.defineClass()
+    }
+
+
     @Override
     protected Class<?> findClass(String name) throws ClassNotFoundException {
-        return super.findClass(name);
+        Class<?> clazz = null;
+        try {
+            Method method = ClassLoader.class.getDeclaredMethod("findClass", String.class);
+            method.setAccessible(true);
+            clazz = (Class<?>) method.invoke(webClassLoader, name);
+            if (clazz != null) {
+                return clazz;
+            }
+        } catch (NoSuchMethodException e) {
+        } catch (InvocationTargetException e) {
+        } catch (IllegalAccessException e) {
+        }
+
+        if (clazz == null) {
+            clazz = super.findClass(name);
+        }
+        return clazz;
+//        return CoreClassLoader.getWebClassLoader().loadClass(name);
     }
 
     public Class<?> findClassBySelf(String name) throws ClassNotFoundException {
@@ -61,15 +87,19 @@ public class BeClassLoader extends URLClassLoader {
      */
     @Override
     public Class<?> loadClass(String name) throws ClassNotFoundException {
+
+        Class<?> clazz = null;
         try {
-            Class<?> clazz = parent.loadClass(name, this);
-            if (clazz != null) {
-                return clazz;
-            }
+            clazz = webClassLoader.loadClass(name);
         } catch (ClassNotFoundException e) {
 
         }
-        return super.loadClass(name);
+        if (clazz == null) {
+            clazz = super.loadClass(name);
+        }
+        return clazz;
+
+//        return CoreClassLoader.getWebClassLoader().loadClass(name);
     }
 
     /**
@@ -82,15 +112,25 @@ public class BeClassLoader extends URLClassLoader {
      */
     @Override
     public Class<?> loadClass(String name, boolean resolve) throws ClassNotFoundException {
+        Class<?> clazz = null;
         try {
-            Class<?> clazz = parent.loadClass(name, resolve, this);
+            Method method = ClassLoader.class.getDeclaredMethod("loadClass", String.class, boolean.class);
+            method.setAccessible(true);
+//            clazz = (Class<?>) method.invoke(CoreClassLoader.getWebClassLoader(), name, resolve);
+            clazz = (Class<?>) method.invoke(webClassLoader, name, resolve);
             if (clazz != null) {
                 return clazz;
             }
-        } catch (ClassNotFoundException e) {
-
+        } catch (NoSuchMethodException e) {
+        } catch (InvocationTargetException e) {
+        } catch (IllegalAccessException e) {
+        }finally {
+            if (clazz == null) {
+//                throw new ClassNotFoundException();
+                clazz = super.loadClass(name, resolve);
+            }
+            return clazz;
         }
-        return super.loadClass(name, resolve);
     }
 
     /**
@@ -128,11 +168,14 @@ public class BeClassLoader extends URLClassLoader {
 
     @Override
     public URL getResource(String name) {
-        URL url = parent.getResource(name, this);
-        if (url != null) {
-            return url;
+        URL url = webClassLoader.getResource(name);
+
+        if (url == null) {
+            url = super.getResource(name);
         }
-        return super.getResource(name);
+        return url;
+
+//        return CoreClassLoader.getWebClassLoader().getResource(name);
     }
 
     public URL getResourceBySelf(String name) {
@@ -142,12 +185,14 @@ public class BeClassLoader extends URLClassLoader {
 
     @Override
     public Enumeration<URL> getResources(String name) throws IOException {
-        @SuppressWarnings("unchecked")
         Enumeration<URL>[] tmp = (Enumeration<URL>[]) new Enumeration<?>[2];
-        Enumeration<URL> url = parent.getResources(name, this);
-        tmp[0] = url;
-        tmp[1] = super.getResources(name);
+        Enumeration<URL> urls = super.getResources(name);
+        tmp[0] = urls;
+        tmp[1] = webClassLoader.getResources(name);
+
         return new CompoundEnumeration<URL>(tmp);
+
+//        return CoreClassLoader.getWebClassLoader().getResources(name);
     }
 
     public Enumeration<URL> getResourcesBySelf(String name) throws IOException {
@@ -156,11 +201,13 @@ public class BeClassLoader extends URLClassLoader {
 
     @Override
     public InputStream getResourceAsStream(String name) {
-        InputStream is = parent.getResourceAsStream(name, this);
-        if (is != null) {
-            return is;
+        InputStream is = webClassLoader.getResourceAsStream(name);
+        if (is == null) {
+            is = super.getResourceAsStream(name);
         }
-        return super.getResourceAsStream(name);
+
+        return is;
+//        return CoreClassLoader.getWebClassLoader().getResourceAsStream(name);
     }
 
     public InputStream getResourceAsStreamBySelf(String name) {

@@ -20,9 +20,6 @@ public class WebHelpClassLoader extends BeClassLoader implements IClassLoader {
 
     @Override
     protected Class<?> findClass(String name) throws ClassNotFoundException {
-        if ("belog.install.po.CommentMeta".equals(name)) {
-            System.out.println("belog.install.po.CommentMeta");
-        }
         return super.findClass(name);
     }
 
