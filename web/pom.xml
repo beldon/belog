@@ -19,6 +19,7 @@
             <version>1.0-SNAPSHOT</version>
         </dependency>
 
+        <!--如不需要boot引导启动，则添加此依赖，并才web.xml中21行去掉注释，把22行注释-->
         <!--<dependency>-->
             <!--<groupId>belog</groupId>-->
             <!--<artifactId>front</artifactId>-->
