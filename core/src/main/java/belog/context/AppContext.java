@@ -153,7 +153,8 @@ public class AppContext implements IBoot {
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
                 }
-                URLClassLoader urlClassLoader = ClassLoaderUtils.loadUrlJar(url);
+//                URLClassLoader urlClassLoader = ClassLoaderUtils.loadUrlJar(url);
+                URLClassLoader urlClassLoader = new URLClassLoader(new URL[]{url}, initContext.getClassLoader());
                 ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext();
                 context.setClassLoader(urlClassLoader);
                 context.setConfigLocation(pluginContent.getConfigPath());
