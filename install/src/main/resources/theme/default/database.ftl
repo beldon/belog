@@ -88,9 +88,29 @@
                 dataType: "json",
                 success: function(data){
                     if(data.status===true){
-                        window.location.href = '${BASE_PATH}/user.html';
+                        if (data.errCode ==1) {
+                            if(confirm("数据表已存在，是否清空用户数据？")){
+                                $.ajax({
+                                    type: "POST",
+                                    url: "clearUserData.json",
+                                    dataType: "json",
+                                    success: function(data){
+                                        if (data.status===true) {
+                                            window.location.href = '${BASE_PATH}/user.html';
+                                        }else{
+                                            alert(data.errMsg);
+                                        }
+                                    }
+                                })
+                            }else{
+                                window.location.href = '${BASE_PATH}/user.html';
+                            }
+                        }else{
+                            window.location.href = '${BASE_PATH}/user.html';
+                        }
                     }else{
                         $("#alert-danger").removeClass("hide");
+                        $("#alert-danger").show();
                         setInterval(function(){
                             $("#alert-danger").hide();
                         },3000)

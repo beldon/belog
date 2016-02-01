@@ -90,7 +90,26 @@
                 dataType: "json",
                 success: function(data){
                     if(data.status===true){
-                        window.location.href = '${BASE_PATH}/install.html';
+                        if (data.errCode ==2) {
+                            if(confirm("该用户已经存在，是否覆盖该数据")){
+                                $.ajax({
+                                    type: "POST",
+                                    url: "cover.json",
+                                    dataType: "json",
+                                    success: function(data){
+                                        if (data.status===true) {
+                                            window.location.href = '${BASE_PATH}/install.html';
+                                        }else{
+                                            alert(data.errMsg);
+                                        }
+                                    }
+                                })
+                            }else{
+                                window.location.href = '${BASE_PATH}/install.html';
+                            }
+                        }else{
+                            window.location.href = '${BASE_PATH}/install.html';
+                        }
                     }else{
                         alert("error");
                     }

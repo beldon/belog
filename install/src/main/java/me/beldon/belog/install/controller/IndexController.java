@@ -23,6 +23,8 @@ import java.io.PrintWriter;
 import java.util.Random;
 
 /**
+ * msg#errCode: -1:错误；0:正常;1:数据库已经存在；2:用户记录已经存在
+ * <p>
  * Created by Beldon
  */
 @Controller
@@ -74,9 +76,12 @@ public class IndexController extends BaseController implements IBoot {
     @ResponseBody
     public Msg dataBaseMsg(@ModelAttribute("database") Database database, HttpSession session) {
         Msg msg = new Msg();
-        if (isAllNotEmtity(database.getDatabase(), database.getHost(), database.getDataUser(), database.getDataPass())) {
+        if (isAllNotEmtity(database.getDatabase(), database.getDataUser(), database.getDataPass())) {
+            if (!StringUtils.isEmpty(database.getHost())) {
+                database.setHost("127.0.0.1");
+            }
             msg = InstallUtils.checkDB(database);
-            if (msg.getErrCode() == 0) {
+            if (msg.getErrCode() == 0 || msg.getErrCode() == 1) {
                 session.setAttribute("database", database);
             }
         } else {
@@ -107,6 +112,14 @@ public class IndexController extends BaseController implements IBoot {
             msg.setErrCode(0);
             msg.setErrMsg("success");
             session.setAttribute("webMsg", webMsg);
+
+            Database database = (Database) session.getAttribute("database");
+            if (database != null) {
+                Msg resMsg = InstallUtils.checkUser(database, webMsg.getUser());
+                if (resMsg.getErrCode() == 2) {
+                    msg = resMsg;
+                }
+            }
         } else {
             msg.setErrCode(-1);
             msg.setErrMsg("error");
@@ -136,10 +149,18 @@ public class IndexController extends BaseController implements IBoot {
     public Msg doInstall(HttpSession session) {
         Msg msg = new Msg();
 
-        Database database = (Database) session.getAttribute("database");
-        WebMsg webMsg = (WebMsg) session.getAttribute("webMsg");
+        Database database = (Database) session.getAttribute("database");//数据库信息
+        WebMsg webMsg = (WebMsg) session.getAttribute("webMsg");//网站信息
+        Boolean cover = (Boolean) session.getAttribute("cover");//是否覆盖用户信息，true，false
+
         if (database != null && webMsg != null) {
-            InstallUtils.install(database, webMsg);
+            if (cover != null) {
+                InstallUtils.install(database, webMsg, cover);
+            } else {
+                InstallUtils.install(database, webMsg, false);
+            }
+
+
             InstallUtils.updateDB(database);
             msg.setStatus(true);
             msg.setErrMsg("success");
@@ -153,6 +174,29 @@ public class IndexController extends BaseController implements IBoot {
         return msg;
     }
 
+    /**
+     * 清除用户数据
+     *
+     * @param session
+     * @return
+     */
+    @RequestMapping("/clearUserData.json")
+    @ResponseBody
+    public Msg clearUserData(HttpSession session) {
+        Msg msg = new Msg();
+        Database database = (Database) session.getAttribute("database");
+        if (database != null) {
+            msg = InstallUtils.clearUserData(database);
+        }
+        return msg;
+    }
+
+    /**
+     * 判断是否为空
+     *
+     * @param val
+     * @return
+     */
     private boolean isAllNotEmtity(String... val) {
         for (String v : val) {
             if (StringUtils.isEmpty(v)) {
@@ -162,6 +206,17 @@ public class IndexController extends BaseController implements IBoot {
         return true;
     }
 
+
+    @RequestMapping("/cover.json")
+    @ResponseBody
+    public Msg cover(HttpSession session) {
+        Msg msg = new Msg();
+        msg.setStatus(true);
+        msg.setErrCode(0);
+        msg.setErrMsg("success");
+        session.setAttribute("cover", true);
+        return msg;
+    }
 
     @RequestMapping("/ajax")
     public void ajax(long timed, HttpServletResponse response) throws Exception {
