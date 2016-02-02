@@ -92,6 +92,7 @@
                 <prop key="edit*">PROPAGATION_REQUIRED</prop>
                 <prop key="delete*">PROPAGATION_REQUIRED</prop>
                 <prop key="set*">PROPAGATION_REQUIRED</prop>
+                <prop key="*Add*">PROPAGATION_REQUIRED</prop>
                 <prop key="*">PROPAGATION_REQUIRED, readOnly</prop>
                 <!--<prop key="*">PROPAGATION_REQUIRED</prop>-->
             </props>
