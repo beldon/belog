@@ -12,6 +12,7 @@ import belog.pojo.vo.CategoryVo;
 import belog.pojo.vo.UserVo;
 import belog.service.ArticleService;
 import belog.service.CategoryService;
+import belog.service.TermTaxonomyService;
 import belog.utils.MsgUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
@@ -43,6 +44,9 @@ public class ArticleServiceImpl extends BaseService implements ArticleService {
 
     @Autowired
     private CategoryService categoryService;
+
+    @Autowired
+    private TermTaxonomyService termTaxonomyService;
 
     /**
      * @param articleVo
@@ -83,7 +87,7 @@ public class ArticleServiceImpl extends BaseService implements ArticleService {
                     termRelationships.setPosts(posts);
                     termRelationships.setTermTaxonomy(taxonomy);
                     termRelationshipsDao.saveOrUpdate(termRelationships);
-                    categoryService.countPlus(categoryVo.getId(), 1);
+                    termTaxonomyService.countPlus(categoryVo.getId(), 1);
                 }
             }
         } else { //更新文章
@@ -128,7 +132,7 @@ public class ArticleServiceImpl extends BaseService implements ArticleService {
             Set<TermRelationships> termRelationshipsSet = posts.getTermRelationships();
             for (TermRelationships termRelationships : termRelationshipsSet) {
                 termRelationshipsDao.deleteEntity(termRelationships);
-                categoryService.countMinus(termRelationships.getTermTaxonomy().getId(), 1);
+                termTaxonomyService.countMinus(termRelationships.getTermTaxonomy().getId(), 1);
             }
 
             List<CategoryVo> cats = articleVo.getCats();
@@ -140,7 +144,7 @@ public class ArticleServiceImpl extends BaseService implements ArticleService {
                     taxonomy.setId(categoryVo.getId());
                     termRelationships.setTermTaxonomy(taxonomy);
                     termRelationshipsDao.saveOrUpdate(termRelationships);
-                    categoryService.countPlus(categoryVo.getId(), 1);
+                    termTaxonomyService.countPlus(categoryVo.getId(), 1);
                 }
             }
         }
@@ -170,7 +174,7 @@ public class ArticleServiceImpl extends BaseService implements ArticleService {
         if (termRelationshipses != null && termRelationshipses.size() > 0) {
             for (TermRelationships termRelationships : termRelationshipses) {
                 termRelationshipsDao.deleteEntity(termRelationships);
-                categoryService.countMinus(termRelationships.getTermTaxonomy().getId(), 1);
+                termTaxonomyService.countMinus(termRelationships.getTermTaxonomy().getId(), 1);
             }
         }
 

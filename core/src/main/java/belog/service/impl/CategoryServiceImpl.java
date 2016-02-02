@@ -32,7 +32,7 @@ public class CategoryServiceImpl extends BaseService implements CategoryService 
         TermTaxonomy termTaxonomy = new TermTaxonomy();
         BeanUtils.copyProperties(category, terms);
         BeanUtils.copyProperties(category, termTaxonomy);
-        termTaxonomy.setTaxonomy("category");
+        termTaxonomy.setTaxonomy(CATEGORY);
 
         if (terms.getId() == 0) {//新增
             termsDao.saveEntity(terms);
@@ -61,7 +61,11 @@ public class CategoryServiceImpl extends BaseService implements CategoryService 
 
     public List<CategoryVo> findAll() {
         List<CategoryVo> list = new ArrayList<CategoryVo>();
-        List<TermTaxonomy> taxonomies = termTaxonomyDao.findAll();
+
+        TermTaxonomy taxonomy = new TermTaxonomy();
+        taxonomy.setTaxonomy(CATEGORY);
+        List<TermTaxonomy> taxonomies = termTaxonomyDao.findByExample(taxonomy);
+//        List<TermTaxonomy> taxonomies = termTaxonomyDao.findAll();
         for (TermTaxonomy termTaxonomy : taxonomies) {
             CategoryVo categoryVo = new CategoryVo();
             BeanUtils.copyProperties(termTaxonomy.getTerms(), categoryVo);
@@ -76,6 +80,8 @@ public class CategoryServiceImpl extends BaseService implements CategoryService 
 
         TermTaxonomy termTaxonomy = new TermTaxonomy();
         termTaxonomy.setParent(0l);
+        termTaxonomy.setTaxonomy(CATEGORY);
+
         List<TermTaxonomy> list = termTaxonomyDao.findByExample(termTaxonomy);
         for (TermTaxonomy taxonomy : list) {
             Categorys categorys = new Categorys();
@@ -109,21 +115,6 @@ public class CategoryServiceImpl extends BaseService implements CategoryService 
         BeanUtils.copyProperties(terms, categoryVo);
         BeanUtils.copyProperties(taxonomy, categoryVo);
         return categoryVo;
-    }
-
-    public void countPlus(long catId, long sum) {
-        TermTaxonomy taxonomy = termTaxonomyDao.findById(catId);
-        taxonomy.setCount(taxonomy.getCount() + sum);
-        termTaxonomyDao.updateEntity(taxonomy);
-    }
-
-    public void countMinus(long catId, long sum) {
-        TermTaxonomy taxonomy = termTaxonomyDao.findById(catId);
-        long count = taxonomy.getCount();
-        if (count >= sum) {
-            taxonomy.setCount(taxonomy.getCount() - sum);
-        }
-        termTaxonomyDao.updateEntity(taxonomy);
     }
 
     /**

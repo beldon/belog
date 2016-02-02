@@ -11,6 +11,11 @@ import java.util.List;
  */
 public interface CategoryService {
     /**
+     * 分类标记符
+     */
+    String CATEGORY = "category";
+
+    /**
      * 保存或修改
      *
      * @param category
@@ -54,19 +59,4 @@ public interface CategoryService {
      */
     CategoryVo findById(long id);
 
-    /**
-     * 增加分类 文章数统计
-     *
-     * @param catId 分类id
-     * @param sum   增加数
-     */
-    void countPlus(long catId, long sum);
-
-    /**
-     * 减少分类 文章数统计 -1
-     *
-     * @param catId 分类id
-     * @param sum   减少数量
-     */
-    void countMinus(long catId, long sum);
 }
