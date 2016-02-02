@@ -6,6 +6,7 @@ import belog.pojo.PageModel;
 import belog.pojo.vo.ArticleVo;
 import belog.pojo.vo.CategoryVo;
 import belog.pojo.vo.Categorys;
+import belog.pojo.vo.TagVo;
 import belog.service.ArticleService;
 import belog.service.CategoryService;
 import belog.utils.MsgUtils;
@@ -53,9 +54,11 @@ public class ArticleController extends AdminBaseController {
 
     @RequestMapping("/ajaxEdit.json")
     @ResponseBody
-    public Msg ajaxEdit(@ModelAttribute("article") ArticleVo articleVo, @RequestParam(required = false) long[] catId) {
-
+    public Msg ajaxEdit(@ModelAttribute("article") ArticleVo articleVo, @RequestParam(required = false) String tags, @RequestParam(required = false) long[] catId) {
         List<CategoryVo> cats = new ArrayList<CategoryVo>();
+        List<TagVo> tagVos = new ArrayList<TagVo>();
+
+        //分类
         if (catId != null) {
             for (long id : catId) {
                 CategoryVo categoryVo = new CategoryVo();
@@ -63,7 +66,17 @@ public class ArticleController extends AdminBaseController {
                 cats.add(categoryVo);
             }
         }
+        //标签
+        if (tags != null) {
+            String[] ts = tags.split(",");
+            for (String tag : ts) {
+                TagVo tagVo = new TagVo();
+                tagVo.setName(tag.trim());
+                tagVos.add(tagVo);
+            }
+        }
         articleVo.setCats(cats);
+        articleVo.setTagVos(tagVos);
         articleService.addOrUpdate(articleVo);
         return MsgUtils.success();
     }
@@ -81,6 +94,7 @@ public class ArticleController extends AdminBaseController {
 
     /**
      * 删除封面
+     *
      * @param id 目标文章id
      * @return
      */

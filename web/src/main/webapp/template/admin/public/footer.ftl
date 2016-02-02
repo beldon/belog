@@ -12,6 +12,7 @@
 <!-- JavaScripts initializations and stuff -->
 <script src="${BASE_PATH}/static/admin/js/xenon-custom.js"></script>
 
+<script src="${BASE_PATH}/static/admin/js/tagsinput/bootstrap-tagsinput.min.js"></script>
 <script src="${BASE_PATH}/static/admin/js/artDialog/dialog-plus-min.js"></script>
 
 <script>

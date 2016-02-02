@@ -8,6 +8,7 @@ import belog.pojo.po.Terms;
 import belog.pojo.vo.CategoryVo;
 import belog.pojo.vo.Categorys;
 import belog.service.CategoryService;
+import belog.service.TermTaxonomyService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,7 +20,7 @@ import java.util.List;
  * Created by beldon.
  */
 @Service
-public class CategoryServiceImpl extends BaseService implements CategoryService {
+public class CategoryServiceImpl extends TermTaxonomyServiceImpl implements CategoryService {
 
     @Autowired
     private TermsDao termsDao;
@@ -50,13 +51,6 @@ public class CategoryServiceImpl extends BaseService implements CategoryService 
             termTaxonomyDao.updateEntity(taxonomy);
 
         }
-    }
-
-    public void delete(long id) {
-        TermTaxonomy termTaxonomy = termTaxonomyDao.findById(id);
-        Terms terms = termTaxonomy.getTerms();
-        termTaxonomyDao.deleteEntity(termTaxonomy);
-        termsDao.deleteEntity(terms);
     }
 
     public List<CategoryVo> findAll() {

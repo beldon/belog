@@ -52,7 +52,7 @@ public class CategoryController extends AdminBaseController {
     @RequestMapping("/delete.json")
     @ResponseBody
     public Msg delete(@RequestParam("id") long id) {
-        categoryService.delete(id);
+        categoryService.deleteById(id);
         return MsgUtils.success();
     }
 }

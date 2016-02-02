@@ -30,7 +30,7 @@ public class TermTaxonomy {
     /**
      * 所属父分类方法ID
      */
-    private Long parent;
+    private Long parent = new Long(0l);
     /**
      * 文章数统计
      */

@@ -36,8 +36,20 @@
                                 <label for="content" class="col-sm-1 control-label">内容</label>
                                 <div class="col-sm-11">
                                 <textarea name="content" class="form-control ckeditor" rows="10">${(article.content)!}</textarea>
-                                    <#--<textarea id="container" name="content" class="" rows="6">${(article.content)!}</textarea>-->
-                                <#--<script id="container" name="content" class="form-control ckeditor" type="text/plain">这里写你的初始化内容</script>-->
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="content" class="col-sm-1 control-label">标签</label>
+
+                                <div class="col-sm-11">
+                                    <input type="text" name="tags" class="form-control" id="tags-input"
+                                           value="<#if article?exists && article.tagVos?exists>
+                                            <#list article.tagVos as tag>
+                                                ${(tag.name)!},
+                                            </#list>
+                                            </#if>"
+                                           style="display: none;">
                                 </div>
                             </div>
 
@@ -80,7 +92,7 @@
 
             <div class="col-md-3">
 
-                <!-- Bordered panel -->
+                <!-- 分类 -->
                 <div class="panel panel-default panel-border">
                     <div class="panel-heading">
                         分类目录
@@ -132,8 +144,38 @@
 <!-- Imported scripts on this page -->
 <script src="${BASE_PATH}/static/admin/js/ckeditor/ckeditor.js"></script>
 <script src="${BASE_PATH}/static/admin/js/ckeditor/adapters/jquery.js"></script>
-
 <script src="${BASE_PATH}/static/admin/js/dropzone/dropzone.min.js"></script>
+
+
+<script type="text/javascript">
+    jQuery(document).ready(function($)
+    {
+        var i = -1,
+                colors = ['primary', 'secondary', 'red', 'blue', 'warning', 'success', 'purple'];
+
+        colors = shuffleArray(colors);
+
+        $("#tags-input").tagsinput({
+            tagClass: function()
+            {
+                i++;
+                return "label label-" + colors[i%colors.length];
+            }
+        });
+    });
+    // Just for demo purpose
+    function shuffleArray(array)
+    {
+        for (var i = array.length - 1; i > 0; i--)
+        {
+            var j = Math.floor(Math.random() * (i + 1));
+            var temp = array[i];
+            array[i] = array[j];
+            array[j] = temp;
+        }
+        return array;
+    }
+</script>
 
 <script type="text/javascript">
 

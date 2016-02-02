@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Created by beldon.
  */
-public interface CategoryService {
+public interface CategoryService extends TermTaxonomyService{
     /**
      * 分类标记符
      */
@@ -22,12 +22,6 @@ public interface CategoryService {
      */
     void saveOrUpdate(CategoryVo category);
 
-    /**
-     * 删除
-     *
-     * @param id
-     */
-    void delete(long id);
 
     /**
      * 获取所有分类信息

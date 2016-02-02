@@ -93,6 +93,11 @@ public class ArticleVo {
     private List<CategoryVo> cats;
 
     /**
+     * 标签
+     */
+    private List<TagVo> tagVos;
+
+    /**
      * 文章对应的用户
      */
     private UserVo userVo;
@@ -279,5 +284,13 @@ public class ArticleVo {
 
     public void setCover(String cover) {
         this.cover = cover;
+    }
+
+    public List<TagVo> getTagVos() {
+        return tagVos;
+    }
+
+    public void setTagVos(List<TagVo> tagVos) {
+        this.tagVos = tagVos;
     }
 }

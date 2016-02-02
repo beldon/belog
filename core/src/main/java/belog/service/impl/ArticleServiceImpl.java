@@ -9,9 +9,11 @@ import belog.pojo.event.Event;
 import belog.pojo.po.*;
 import belog.pojo.vo.ArticleVo;
 import belog.pojo.vo.CategoryVo;
+import belog.pojo.vo.TagVo;
 import belog.pojo.vo.UserVo;
 import belog.service.ArticleService;
 import belog.service.CategoryService;
+import belog.service.TagService;
 import belog.service.TermTaxonomyService;
 import belog.utils.MsgUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -46,7 +48,8 @@ public class ArticleServiceImpl extends BaseService implements ArticleService {
     private CategoryService categoryService;
 
     @Autowired
-    private TermTaxonomyService termTaxonomyService;
+    private TagService tagService;
+
 
     /**
      * @param articleVo
@@ -78,25 +81,20 @@ public class ArticleServiceImpl extends BaseService implements ArticleService {
                 postMetaDao.saveEntity(postMeta);
             }
 
+            //处理分类
             List<CategoryVo> cats = articleVo.getCats();
-            if (cats != null && cats.size() > 0) {
-                for (CategoryVo categoryVo : cats) {
-                    TermRelationships termRelationships = new TermRelationships();
-                    TermTaxonomy taxonomy = new TermTaxonomy();
-                    taxonomy.setId(categoryVo.getId());
-                    termRelationships.setPosts(posts);
-                    termRelationships.setTermTaxonomy(taxonomy);
-                    termRelationshipsDao.saveOrUpdate(termRelationships);
-                    termTaxonomyService.countPlus(categoryVo.getId(), 1);
-                }
-            }
+            addCat(posts, cats);
+
+            //处理标签
+            List<TagVo> tagVos = articleVo.getTagVos();
+            addTags(posts, tagVos);
+
         } else { //更新文章
             appContext.getContexts().publishEvent(new ArticleEvent(articleVo, Event.Action.UPDATE));
             Posts posts = postsDao.findById(articleVo.getId());
             posts.setModified(new Date());
             posts.setTitle(articleVo.getTitle());
             posts.setContent(articleVo.getContent());
-            postsDao.updateEntity(posts);
 
             Set<PostMeta> postMetas = posts.getPostMetas();
             PostMeta postMeta = null;
@@ -106,56 +104,51 @@ public class ArticleServiceImpl extends BaseService implements ArticleService {
                     PostMeta meta = it.next();
                     if ("cover".equals(meta.getMeteKey())) {
                         postMeta = meta;
+                        break;
                     }
                 }
             }
 
-            if (!StringUtils.isEmpty(articleVo.getCover())) {//更改
-                if (postMeta != null) {
+            if (!StringUtils.isEmpty(articleVo.getCover())) {//更改或添加
+                if (postMeta != null) {//更改
                     postMeta.setMetaValue(articleVo.getCover());
-                    postMetaDao.updateEntity(postMeta);
-                } else {
+                } else {//添加
                     postMeta = new PostMeta();
                     postMeta.setPosts(posts);
                     postMeta.setMeteKey("cover");
                     postMeta.setMetaValue(articleVo.getCover());
-                    postMetaDao.saveEntity(postMeta);
                 }
 
             } else {//删除
                 if (postMeta != null) {
                     postMeta.setMetaValue("");
-                    postMetaDao.updateEntity(postMeta);
                 }
             }
 
+            postMetaDao.updateEntity(postMeta);
+
+            //更新标签
             Set<TermRelationships> termRelationshipsSet = posts.getTermRelationships();
-            for (TermRelationships termRelationships : termRelationshipsSet) {
+            for (TermRelationships termRelationships : termRelationshipsSet) {//删除已有标签和分类
                 termRelationshipsDao.deleteEntity(termRelationships);
-                termTaxonomyService.countMinus(termRelationships.getTermTaxonomy().getId(), 1);
+                categoryService.countMinus(termRelationships.getTermTaxonomy().getId(), 1);
             }
 
             List<CategoryVo> cats = articleVo.getCats();
-            if (cats != null && cats.size() > 0) {
-                for (CategoryVo categoryVo : cats) {
-                    TermRelationships termRelationships = new TermRelationships();
-                    termRelationships.setPosts(posts);
-                    TermTaxonomy taxonomy = new TermTaxonomy();
-                    taxonomy.setId(categoryVo.getId());
-                    termRelationships.setTermTaxonomy(taxonomy);
-                    termRelationshipsDao.saveOrUpdate(termRelationships);
-                    termTaxonomyService.countPlus(categoryVo.getId(), 1);
-                }
-            }
+
+            //添加分类
+            addCat(posts, cats);
+
+            //添加标签
+            addTags(posts, articleVo.getTagVos());
         }
-
-
     }
 
     /**
      * 删除文章
-     * @TODO 减去标签统计
+     *
      * @param id
+     * @TODO 减去标签统计
      */
     public void delete(long id) {
 
@@ -174,7 +167,7 @@ public class ArticleServiceImpl extends BaseService implements ArticleService {
         if (termRelationshipses != null && termRelationshipses.size() > 0) {
             for (TermRelationships termRelationships : termRelationshipses) {
                 termRelationshipsDao.deleteEntity(termRelationships);
-                termTaxonomyService.countMinus(termRelationships.getTermTaxonomy().getId(), 1);
+                categoryService.countMinus(termRelationships.getTermTaxonomy().getId(), 1);
             }
         }
 
@@ -263,27 +256,80 @@ public class ArticleServiceImpl extends BaseService implements ArticleService {
         Set<TermRelationships> termRelationshipsSet = posts.getTermRelationships();
         if (termRelationshipsSet != null && termRelationshipsSet.size() > 0) {
             List<CategoryVo> categoryVoList = new ArrayList<CategoryVo>();
+            List<TagVo> tagVos = new ArrayList<TagVo>();
             for (TermRelationships termRelationships : termRelationshipsSet) {
                 TermTaxonomy taxonomy = termRelationships.getTermTaxonomy();
-                CategoryVo categoryVo = new CategoryVo();
-                BeanUtils.copyProperties(taxonomy.getTerms(), categoryVo);
-                BeanUtils.copyProperties(taxonomy, categoryVo);
-                categoryVoList.add(categoryVo);
+                if (CategoryService.CATEGORY.equals(taxonomy.getTaxonomy())) {
+                    CategoryVo categoryVo = new CategoryVo();
+                    BeanUtils.copyProperties(taxonomy.getTerms(), categoryVo);
+                    BeanUtils.copyProperties(taxonomy, categoryVo);
+                    categoryVoList.add(categoryVo);
+                } else if (TagService.TAG.equals(taxonomy.getTaxonomy())) {
+                    TagVo tagVo = new TagVo();
+                    Terms terms = taxonomy.getTerms();
+                    tagVo.setId(taxonomy.getId());
+                    tagVo.setName(terms.getName());
+                    tagVo.setCount(taxonomy.getCount()==null?0:taxonomy.getCount());
+                    tagVo.setTermGroup(terms.getTermGroup());
+                    tagVos.add(tagVo);
+                }
             }
             articleVo.setCats(categoryVoList);
+            articleVo.setTagVos(tagVos);
         }
     }
 
     /**
      * 删除文章封面
+     *
      * @param id 文章id
      * @return
      */
-    public Msg deleteCover(long id){
-        List<PostMeta> list = postMetaDao.findByHql("from belog.pojo.po.PostMeta where meteKey = 'cover' and post_id = "+id);
+    public Msg deleteCover(long id) {
+        List<PostMeta> list = postMetaDao.findByHql("from belog.pojo.po.PostMeta where meteKey = 'cover' and post_id = " + id);
         for (PostMeta meta : list) {
             postMetaDao.deleteEntity(meta);
         }
         return MsgUtils.success();
+    }
+
+    /**
+     * 为文章添加分类
+     * @param posts 文章
+     * @param cats 分类
+     */
+    private void addCat(Posts posts,  List<CategoryVo> cats) {
+        if (cats != null && cats.size() > 0) {
+            for (CategoryVo categoryVo : cats) {
+                TermRelationships termRelationships = new TermRelationships();
+                termRelationships.setPosts(posts);
+                TermTaxonomy taxonomy = new TermTaxonomy();
+                taxonomy.setId(categoryVo.getId());
+                termRelationships.setTermTaxonomy(taxonomy);
+                termRelationshipsDao.saveOrUpdate(termRelationships);
+                categoryService.countPlus(categoryVo.getId(), 1);
+            }
+        }
+    }
+
+
+    /**
+     *  为文章添加标签
+     * @param posts 文章
+     * @param tagVos 标签
+     */
+    private void addTags(Posts posts, List<TagVo> tagVos) {
+        if (tagVos != null && tagVos.size() > 0) {
+            for (TagVo tagVo : tagVos) {
+                TagVo tag = tagService.getOrAddTagByName(tagVo.getName());
+                TermRelationships termRelationships = new TermRelationships();
+                termRelationships.setPosts(posts);
+                TermTaxonomy taxonomy = new TermTaxonomy();
+                taxonomy.setId(tag.getId());
+                termRelationships.setTermTaxonomy(taxonomy);
+                termRelationshipsDao.saveOrUpdate(termRelationships);
+                tagService.countPlus(tag.getId(), 1);
+            }
+        }
     }
 }

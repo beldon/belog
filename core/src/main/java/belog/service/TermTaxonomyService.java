@@ -19,4 +19,11 @@ public interface TermTaxonomyService {
      * @param sum   减少数量
      */
     void countMinus(long catId, long sum);
+
+
+    /**
+     * 根据id删除分类或标签
+     * @param id
+     */
+    void deleteById(long id);
 }
