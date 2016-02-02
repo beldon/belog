@@ -62,22 +62,32 @@
     $(document).ready(function(){
         $(".delete").click(function(){
             var id = $(this).attr("uid");
-            $.ajax({
-                type: "POST",
-                url: "delete.json",
-                data: {id:id},
-                dataType: "json",
-                success: function(data){
-                    if(data.status===true){
-                        $("#alert-success").removeClass("hide");
-                        setInterval(function(){
-                            window.location.reload();
-                        },1000)
-                    }else{
-                        alert("error");
-                    }
-                }
-            });
+            dialog({
+                title: '警告',
+                content: '你确定要删除该记录么？',
+                okValue: '确 定',
+                cancelValue: '取消',
+                ok: function () {
+                    $.ajax({
+                        type: "POST",
+                        url: "delete.json",
+                        data: {id:id},
+                        dataType: "json",
+                        success: function(data){
+                            if(data.status===true){
+                                $("#alert-success").removeClass("hide");
+                                setInterval(function(){
+                                    window.location.reload();
+                                },1000)
+                            }else{
+                                alert("error");
+                            }
+                        }
+                    });
+                },
+                cancel: function () {}
+            }).showModal();
+
         });
     });
 </script>
