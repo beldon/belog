@@ -10,7 +10,7 @@
     <bean class="belog.utils.SpringContextUtil"/>
     <bean class="belog.context.AppContext"/>
     <context:component-scan base-package="
-    belog.plugin,belog.dao.impl,belog.service.impl,belog.tag,belog.hook"/>
+    belog.plugin,belog.dao.impl,belog.service.impl,belog.hook"/>
 
 
     <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
@@ -127,6 +127,6 @@
 
     <!--<bean class="belog.hook.event.EventHookManager"/>-->
 
-    <import resource="spring-shiro.xml"/>
+    <!--<import resource="spring-shiro.xml"/>-->
     <!--<import resource="application-boot.xml"/>-->
 </beans>
