@@ -1,10 +1,7 @@
 package belog.service.impl;
 
 
-import belog.dao.PostMetaDao;
-import belog.dao.PostsDao;
-import belog.dao.TermRelationshipsDao;
-import belog.dao.UsersDao;
+import belog.dao.*;
 import belog.pojo.Msg;
 import belog.pojo.PageModel;
 import belog.pojo.event.ArticleEvent;
@@ -151,7 +148,32 @@ public class ArticleServiceImpl extends BaseService implements ArticleService {
 
     }
 
+    /**
+     * 删除文章
+     * @TODO 减去标签统计
+     * @param id
+     */
     public void delete(long id) {
+
+        Posts posts = postsDao.findById(id);
+        Set<PostMeta> postMetas = posts.getPostMetas();
+        Set<TermRelationships> termRelationshipses = posts.getTermRelationships();
+
+        //删除 postMeta
+        if (postMetas != null && postMetas.size() > 0) {
+            for (PostMeta postMeta : postMetas) {
+                postMetaDao.deleteEntity(postMeta);
+            }
+        }
+
+        //删除分类及标签
+        if (termRelationshipses != null && termRelationshipses.size() > 0) {
+            for (TermRelationships termRelationships : termRelationshipses) {
+                termRelationshipsDao.deleteEntity(termRelationships);
+                categoryService.countMinus(termRelationships.getTermTaxonomy().getId(), 1);
+            }
+        }
+
         this.postsDao.delete(id);
     }
 
