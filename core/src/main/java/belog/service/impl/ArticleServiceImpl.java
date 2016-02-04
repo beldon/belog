@@ -125,7 +125,7 @@ public class ArticleServiceImpl extends BaseService implements ArticleService {
                 }
             }
 
-            postMetaDao.updateEntity(postMeta);
+            postMetaDao.saveOrUpdate(postMeta);
 
             //更新标签
             Set<TermRelationships> termRelationshipsSet = posts.getTermRelationships();
