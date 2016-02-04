@@ -58,7 +58,7 @@
                                 <div class="col-sm-10">
                                     <#if article?exists && article.cover?exists && article.cover != ''>
                                         <div id="back-img">
-                                                <img id="backImg" style="min-height: 160px;" src="${BASE_PATH}/${(article.cover)!}" alt="背景图片" width="160px" height="160px" class="img-rounded">
+                                                <img id="backImg" style="min-height: 160px;" src="${BASE_PATH}/${(article.cover)!}" alt="背景图片" width="250px" height="160px" class="img-rounded">
                                                 <input type="hidden" name="cover" value="${(article.cover)!}" id="cover">
                                         </div>
                                         <input type="button" value="删除图片" id="deleteImg" class="btn btn-default">
@@ -67,7 +67,7 @@
                                         </div>
                                     <#else>
                                         <div id="back-img" style="display: none; ">
-                                                <img id="backImg" style="min-height: 160px;" src="" alt="背景图片" width="160px" height="160px" class="img-rounded">
+                                                <img id="backImg" style="min-height: 160px;" src="" alt="背景图片" width="250px" height="160px" class="img-rounded">
                                                 <input type="hidden" name="cover" value="" id="cover">
                                         </div>
                                         <div id="advancedDropzone" class="droppable-area dz-clickable img-rounded" style="min-height: 200px;">

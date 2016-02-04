@@ -34,7 +34,6 @@
                             <th>标题</th>
                             <th>作者</th>
                             <th>分类目录</th>
-                            <th>标签</th>
                             <th width="60px">评论</th>
                             <th width="170px">日期</th>
                             <th width="150px">操作</th>
@@ -56,7 +55,6 @@
 
                                 </#list>
                             </td>
-                            <td>${(article.title)!}</td>
                             <td>${(article.commentCount?default(0))!}</td>
                             <td>${(article.date)!}</td>
                             <td>
