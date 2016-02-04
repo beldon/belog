@@ -39,11 +39,11 @@
                     <span class="title">分类目录</span>
                 </a>
             </li>
-            <#--<li>-->
-                <#--<a href="${BASE_PATH}/admin/tag/list.html">-->
-                    <#--<span class="title">标签</span>-->
-                <#--</a>-->
-            <#--</li>-->
+            <li>
+                <a href="${BASE_PATH}/admin/tag/list.html">
+                    <span class="title">标签</span>
+                </a>
+            </li>
         </ul>
     </li>
     <li>

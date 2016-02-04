@@ -2,6 +2,7 @@ package belog.service.impl;
 
 import belog.dao.TermTaxonomyDao;
 import belog.dao.TermsDao;
+import belog.pojo.PageModel;
 import belog.pojo.po.TermTaxonomy;
 import belog.pojo.po.Terms;
 import belog.pojo.vo.TagVo;
@@ -69,6 +70,21 @@ public class TagServiceImpl extends TermTaxonomyServiceImpl implements TagServic
             tagVo.setTermGroup(terms.getTermGroup());
         }
         return tagVo;
+    }
+
+    public PageModel findPage(PageModel pageModel) {
+        TermTaxonomy taxonomy = new TermTaxonomy();
+        taxonomy.setTaxonomy(TAG);
+        pageModel = termTaxonomyDao.findPageByExample(taxonomy,pageModel);
+        List<TagVo> tagVos = new ArrayList<TagVo>();
+        List<TermTaxonomy> list = pageModel.getList();
+        for (TermTaxonomy termTaxonomy : list) {
+            TagVo tagVo = new TagVo();
+            copy(termTaxonomy, tagVo);
+            tagVos.add(tagVo);
+        }
+        pageModel.setList(tagVos);
+        return pageModel;
     }
 
     /**

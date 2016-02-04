@@ -1,4 +1,14 @@
 <#include "../public/header.ftl"/>
+<#if pm.currentPage==1 >
+    <#assign frontPage=1>
+<#else >
+    <#assign frontPage=pm.currentPage-1>
+</#if>
+<#if pm.currentPage==pm.totalPage >
+    <#assign nextPage=pm.totalPage>
+<#else >
+    <#assign nextPage=pm.currentPage+1>
+</#if>
 <body class="page-body">
 <div class="page-container">
 
@@ -7,88 +17,48 @@
     <div class="main-content">
     <#include "../public/content-nav.ftl"/>
         <div class="row">
-            <div class="col-md-4">
-                <!-- Default panel -->
-                <div class="panel panel-default panel-border">
-                    <div class="panel-heading">
-                        添加新标签
-                    </div>
-                    <div class="panel-body">
-                        <form class="form-horizontal">
-                            <div class="form-group">
-                                <label for="inputEmail3" class="col-sm-2 control-label">名称</label>
-
-                                <div class="col-sm-12">
-                                    <input type="text" class="form-control" id="inputEmail3" placeholder="标签名称">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="inputEmail3" class="col-sm-2 control-label">别名</label>
-
-                                <div class="col-sm-12">
-                                    <input type="text" class="form-control" id="inputEmail3" placeholder="标签别名">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="inputPassword3" class="col-sm-2 control-label">父节</label>
-
-                                <div class="col-sm-12">
-                                    <select class="form-control">
-                                        <option value="">无</option>
-                                        <option value="">Default select</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="col-sm-offset-6 col-sm-10">
-                                    <button type="submit" class="btn btn-default">添加新分配目录</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-
-            </div>
-
-            <div class="col-md-8">
+            <div class="col-md-12">
                 <!-- Bordered panel -->
                 <div class="panel panel-default panel-border">
                     <div class="panel-heading">
-                        分类目录
+                        标签列表
                     </div>
                     <div class="panel-body">
                         <div class="table-responsive">
-                            <table class="table table-bordered">
+                            <div class="alert alert-success alert-dismissible hide" role="alert" id="alert-success">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <strong>success!</strong> 删除成功！
+                            </div>
+                            <table class="table table-model-2 table-hover">
                                 <thead>
                                 <tr>
                                     <th width="40px"><input type="checkbox"></th>
                                     <th>名称</th>
-                                    <th>别名</th>
                                     <th>总数</th>
                                     <th width="50px">操作</th>
                                 </tr>
                                 </thead>
                                 <tbody>
+                                <#list pm.list as tag>
                                 <tr>
                                     <th><input type="checkbox"></th>
-                                    <th>标题</th>
-                                    <td>作者</td>
-                                    <td>分类目录</td>
+                                    <th>${(tag.name)!}</th>
+                                    <td>${(tag.count)!}</td>
                                     <td>
-                                        <a href="#" class="btn btn-danger btn-sm btn-icon icon-left">删除</a>
+                                        <a href="#" tid="${(tag.id)!}" class="delete btn btn-danger btn-sm btn-icon icon-left">删除</a>
                                     </td>
                                 </tr>
-                                <tr>
-                                    <th><input type="checkbox"></th>
-                                    <th>标题</th>
-                                    <td>作者</td>
-                                    <td>分类目录</td>
-                                    <td>
-                                        <a href="#" class="btn btn-danger btn-sm btn-icon icon-left">删除</a>
-                                    </td>
-                                </tr>
+                                </#list>
+
                                 </tbody>
                             </table>
+                            <nav>
+                                <ul class="pagination pull-right">
+                                    <li><a href="${(BASE_PATH)}/admin/tag/list.html?currentPage=${(frontPage)!}">上一页</a></li>
+                                    <li><a href="#">${(pm.currentPage)!}/${(pm.totalPage)!}</a></li>
+                                    <li><a href="${(BASE_PATH)}/admin/tag/list.html?currentPage=${(nextPage)!}">下一页</a></li>
+                                </ul>
+                            </nav>
                         </div>
                     </div>
                 </div>
@@ -101,3 +71,37 @@
 </div>
 
 <#include "../public/footer.ftl"/>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        $(".delete").click(function(){
+            var id = $(this).attr("tid");
+            dialog({
+                title: '警告',
+                content: '你确定要删除该记录么？',
+                okValue: '确 定',
+                cancelValue: '取消',
+                ok: function () {
+                    $.ajax({
+                        type: "POST",
+                        url: "delete.json",
+                        data: {id:id},
+                        dataType: "json",
+                        success: function(data){
+                            if(data.status===true){
+                                $("#alert-success").removeClass("hide");
+                                setInterval(function(){
+                                    window.location.reload();
+                                },1000)
+                            }else{
+                                alert("error");
+                            }
+                        }
+                    });
+                },
+                cancel: function () {}
+            }).showModal();
+
+        });
+    });
+</script>
