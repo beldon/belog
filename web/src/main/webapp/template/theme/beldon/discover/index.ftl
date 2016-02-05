@@ -68,7 +68,7 @@
                                     <#else >
                                         <span>${(content)!}</span>
                                     </#if>
-                                    <p><a class="btn btn-info btn-sm" href="${BASE_PATH}/article/${(article.id)!}.html">浏览更多</a></p>
+                                    <p><a class="btn btn-info btn-sm" href="${BASE_PATH}/article/details/${(article.id)!}.html">浏览更多</a></p>
                                 </figcaption>
                             </figure>
                         </div>

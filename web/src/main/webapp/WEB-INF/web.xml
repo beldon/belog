@@ -17,9 +17,9 @@
     <!-- 设置Spring容器加载配置文件路径-->
     <context-param>
         <param-name>contextConfigLocation</param-name>
-        <!--<param-value>classpath:spring/applicationContext.xml</param-value>-->
+        <param-value>classpath:spring/applicationContext.xml</param-value>
         <!--<param-value>classpath:spring/spring-install.xml</param-value>-->
-        <param-value>classpath:spring/application-boot.xml</param-value>
+        <!--<param-value>classpath:spring/application-boot.xml</param-value>-->
     </context-param>
 
     <servlet>

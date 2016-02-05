@@ -12,10 +12,10 @@
         <module>boot</module>
         <module>core</module>
         <module>install</module>
-        <module>front</module>
         <module>comment</module>
         <module>web</module>
         <module>plugin-test</module>
+        <module>third-login</module>
     </modules>
 
     <description>

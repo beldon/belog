@@ -52,7 +52,7 @@
                                 <div class="blog-date"> <span class="month">${(article.date?string("MMMM"))!}</span> <span class="day">${(article.date?string("dd"))!}</span> <span class="year">${(article.date?string("yyyy"))!}</span> </div>
                                 <!--/Big Date-->
                                 <div class="page-header">
-                                    <a href="${BASE_PATH}/article/${(article.id)!}.html"><h1 style="margin-left: 10px;">${(article.title)!}</h1></a>
+                                    <a href="${BASE_PATH}/article/details/${(article.id)!}.html"><h1 style="margin-left: 10px;">${(article.title)!}</h1></a>
                                 </div>
                                 <div class="blog-info clearfix">
                                     <div class="pull-left"><i class="fa fa-folder-open"></i>: <a href="#">默认分类</a> By: <a

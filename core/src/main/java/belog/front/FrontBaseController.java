@@ -1,4 +1,4 @@
-package belog.front.controller;
+package belog.front;
 
 
 import belog.service.ThemeService;
@@ -12,7 +12,6 @@ import javax.annotation.PostConstruct;
  */
 @Controller("frontFrontBaseController")
 public abstract class FrontBaseController {
-
     @Autowired
     protected ThemeService themeService;
 

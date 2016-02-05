@@ -8,9 +8,8 @@
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context-3.0.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
-    <!--<context:property-placeholder location="classpath:db.properties"/>-->
     <context:annotation-config />
-    <context:component-scan base-package="belog.admin,belog.tag"/>
+    <context:component-scan base-package="belog.admin,belog.front,belog.tag"/>
 
     <mvc:annotation-driven></mvc:annotation-driven>
 
@@ -59,17 +58,17 @@
         <property name="exposeSpringMacroHelpers" value="true" />
     </bean>
 
-    <!--&lt;!&ndash;配置上传文件处理器&ndash;&gt;-->
-    <!--<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">-->
-        <!--<property name="maxUploadSize" value="1000000"/>-->
-        <!--<property name="maxInMemorySize">-->
-            <!--<value>4096</value>-->
-        <!--</property>-->
-        <!--<property name="defaultEncoding">-->
-            <!--<value>UTF-8</value>-->
-        <!--</property>-->
-        <!--<property name="uploadTempDir" value="upload/temp"/>-->
-    <!--</bean>-->
+    <!--配置上传文件处理器-->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="maxUploadSize" value="1000000"/>
+        <property name="maxInMemorySize">
+            <value>4096</value>
+        </property>
+        <property name="defaultEncoding">
+            <value>UTF-8</value>
+        </property>
+        <property name="uploadTempDir" value="upload/temp"/>
+    </bean>
     <import resource="spring-core.xml"/>
     <import resource="spring-shiro.xml"/>
 </beans>
