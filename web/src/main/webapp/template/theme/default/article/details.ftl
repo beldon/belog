@@ -2,7 +2,7 @@
 <@category_tag type='list' currentPage=currentPage>
     <#assign cats=cats>
 </@category_tag>
-<@article_tag articleId=articleId>
+<@article_tag articleId=id>
     <#assign pageArticle=article>
 </@article_tag>
 <body class="tooltips">

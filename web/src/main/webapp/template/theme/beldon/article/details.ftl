@@ -1,4 +1,4 @@
-<@article_tag articleId=articleId>
+<@article_tag articleId=id>
     <#assign pageArticle=article>
 </@article_tag>
 <#include "../inc/header.ftl" />
