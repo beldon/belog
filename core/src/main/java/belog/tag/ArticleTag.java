@@ -5,13 +5,14 @@ import belog.plugin.TagPlugin;
 import belog.pojo.PageModel;
 import belog.pojo.vo.ArticleVo;
 import belog.service.ArticleService;
+import belog.utils.SSUtils;
 import freemarker.core.Environment;
 import freemarker.template.TemplateDirectiveBody;
 import freemarker.template.TemplateException;
 import freemarker.template.TemplateModel;
-import freemarker.template.TemplateModelException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.io.IOException;
 import java.util.Map;
@@ -27,17 +28,16 @@ public class ArticleTag extends TagPlugin {
     private ArticleService articleService;
 
     public void execute(Environment env, Map params, TemplateModel[] loopVars, TemplateDirectiveBody body) throws TemplateException, IOException {
-        Object aId = params.get("articleId");
-        Object typeO = params.get("type");
+        String aId = SSUtils.nullToString(params.get("articleId"), "");
+        String typeO = SSUtils.nullToString(params.get("type"), "");
+
 
         //根据ID获取单个文章内容
-        if (aId != null) {
+        if (StringUtils.hasText(aId)) {
             Long articleId = Long.parseLong(aId.toString());
-            singleArticle(articleId, env);
-        }
-
-        //分页列表文章列表
-        if (typeO != null && "list".equals(typeO.toString())) {
+            ArticleVo article = articleService.findById(articleId);
+            env.setVariable("article", beansWrapper.wrap(article));
+        } else {//批量获取文章内容
             int currentPage = 1;
             int pageSize = 8;
             Object currentPageO = params.get("currentPage");
@@ -45,53 +45,23 @@ public class ArticleTag extends TagPlugin {
             if (currentPageO != null) {
                 currentPage = Integer.parseInt(currentPageO.toString());
             }
-
-            if (pageSizeO !=null) {
+            if (pageSizeO != null) {
                 pageSize = Integer.parseInt(pageSizeO.toString());
             }
+            PageModel pageModel = new PageModel();
+            pageModel.setCurrentPage(currentPage);
+            pageModel.setPageSize(pageSize);
 
-            String type = typeO.toString();
-            if ("list".equals(type)) { //普通列表
-                articleList(currentPage, pageSize, env);
-            } else if ("cat".equals(type)) { //分类列表
-                PageModel pageModel = new PageModel();
-                pageModel.setCurrentPage(currentPage);
-                pageModel.setPageSize(pageSize);
-                pageModel = articleService.findPageByCatId(1,pageModel,"new");
+            if ("list".equals(typeO)) { //普通列表
+                pageModel = articleService.findPage(pageModel);
+                env.setVariable("pm", beansWrapper.wrap(pageModel));
+            } else if ("cat".equals(typeO)) { //分类列表
+                long catId = SSUtils.nullToLong(params.get("catId"), 1l);
+                pageModel = articleService.findPageByCatId(catId, pageModel, "new");
                 env.setVariable("pm", beansWrapper.wrap(pageModel));
             }
         }
 
         body.render(env.getOut());
-    }
-
-
-    /**
-     * 显示文章列表
-     *
-     * @param pageModel
-     * @param env
-     */
-    private void articleList(PageModel pageModel, Environment env) throws TemplateModelException {
-        pageModel = articleService.findPage(pageModel);
-        env.setVariable("pm", beansWrapper.wrap(pageModel));
-    }
-
-    private void articleList(int currentPage, int pageSize, Environment environment) throws TemplateModelException {
-        PageModel pageModel = new PageModel();
-        pageModel.setCurrentPage(currentPage);
-        pageModel.setPageSize(pageSize);
-        articleList(pageModel, environment);
-    }
-
-    /**
-     * 显示单个文章内容列表
-     *
-     * @param id
-     * @param environment
-     */
-    private void singleArticle(long id, Environment environment) throws TemplateModelException {
-        ArticleVo article = articleService.findById(id);
-        environment.setVariable("article", beansWrapper.wrap(article));
     }
 }

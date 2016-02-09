@@ -201,7 +201,7 @@ public class ArticleServiceImpl extends BaseService implements ArticleService {
         posts.setType("article");
         TermRelationships termRelationships = new TermRelationships();
         TermTaxonomy taxonomy = new TermTaxonomy();
-        taxonomy.setId(1l);
+        taxonomy.setId(catId);
         termRelationships.setTermTaxonomy(taxonomy);
         Set<TermRelationships> termTaxonomies = new HashSet<TermRelationships>();
         termTaxonomies.add(termRelationships);
