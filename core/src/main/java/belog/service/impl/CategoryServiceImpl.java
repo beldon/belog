@@ -92,6 +92,7 @@ public class CategoryServiceImpl extends TermTaxonomyServiceImpl implements Cate
         List<CategoryVo> categorysList = new ArrayList<CategoryVo>();
         TermTaxonomy termTaxonomy = new TermTaxonomy();
         termTaxonomy.setParent(0l);
+        termTaxonomy.setTaxonomy(CATEGORY);
         List<TermTaxonomy> list = termTaxonomyDao.findByExample(termTaxonomy);
 
         for (TermTaxonomy taxonomy : list) {

@@ -54,4 +54,11 @@ public class IndexController extends FrontBaseController {
         return themeService.getTemplatePath(folder + "/" + file);
     }
 
+    @RequestMapping({"/{folder}/{file}/{page}/{id}.html"})
+    public String folder(@PathVariable("folder") String folder, @PathVariable String file, @PathVariable int page, @PathVariable int id, Model model) {
+        model.addAttribute("id", id);
+        model.addAttribute("page", page);
+        return themeService.getTemplatePath(folder + "/" + file);
+    }
+
 }

@@ -24,7 +24,7 @@ public class ArticleServiceTest {
         PageModel pageModel = new PageModel();
         pageModel.setCurrentPage(1);
         pageModel.setPageSize(2);
-        PageModel pm = articleService.findPageByCatId(33, pageModel, "");
+        PageModel pm = articleService.findPageByCatId(330, pageModel, "");
         System.out.println(pm);
     }
 }

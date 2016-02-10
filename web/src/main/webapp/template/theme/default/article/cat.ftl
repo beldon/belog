@@ -1,8 +1,14 @@
 <#include "../inc/header.ftl"/>
+<#if !page?exists>
+    <#assign page=1>
+</#if>
 <@category_tag type='list' currentPage=currentPage>
     <#assign cats=cats>
 </@category_tag>
-<@article_tag type='list' currentPage=currentPage>
+<@category_tag catId = id>
+    <#assign category=category>
+</@category_tag>
+<@article_tag type='cat'catId=id currentPage = page>
     <#assign pm=pm>
 </@article_tag>
 <#if pm.currentPage==1 >
@@ -33,6 +39,7 @@ BEGIN PAGE
         <ol class="breadcrumb">
             <li><a href="${BASE_PATH}/index.html">首页</a></li>
             <li class="active">博客</li>
+            <li class="active">${category.name!}</li>
         </ol>
     </div><!-- /.container -->
 
@@ -87,9 +94,9 @@ BEGIN PAGE
                     <#--<li><a href="#fakelink">...</a></li>-->
                     <#--<li><a href="#fakelink">10</a></li>-->
                     <#--<li><a href="#fakelink">&rsaquo;</a></li>-->
-                    <li><a href="${BASE_PATH}/article/index_${frontPage}.html">&laquo;</a></li>
+                    <li><a href="${BASE_PATH}/article/cat/${frontPage}/${id}.html">&laquo;</a></li>
                     <li><a href="#">${(pm.currentPage)!}/${(pm.totalPage)!}</a></li>
-                    <li><a href="${BASE_PATH}/article/index_${nextPage}.html">&raquo;</a></li>
+                    <li><a href="${BASE_PATH}/article/cat/${nextPage}/${id}.html">&raquo;</a></li>
                 </ul>
                 <!-- End pagination -->
             </div><!-- /.section -->

@@ -196,23 +196,17 @@ public class ArticleServiceImpl extends BaseService implements ArticleService {
     }
 
     public PageModel findPageByCatId(long catId, PageModel pageModel, String type) {
-        Posts posts = new Posts();
-        posts.setStatus("publish");
-        posts.setType("article");
-        TermRelationships termRelationships = new TermRelationships();
-        TermTaxonomy taxonomy = new TermTaxonomy();
-        taxonomy.setId(catId);
-        termRelationships.setTermTaxonomy(taxonomy);
-        Set<TermRelationships> termTaxonomies = new HashSet<TermRelationships>();
-        termTaxonomies.add(termRelationships);
-        posts.setTermRelationships(termTaxonomies);
-
-        Order order = Order.desc("date");
+        StringBuilder hql = new StringBuilder(300);
+        hql.append("SELECT post FROM belog.pojo.po.Posts post");
+        hql.append(" JOIN post.termRelationships relation");
+        hql.append(" where post.status = 'publish' and post.type = 'article' ");
+        hql.append(" and relation.termTaxonomy.id = '" + catId + "'");
         if (!StringUtils.isEmpty(type) && "hot".equals(type)) {
-            order = Order.desc("commentCount");
+            hql.append(" order by post.commentCount desc");
+        }else{
+            hql.append(" order by post.date desc");
         }
-        PageModel pm = postsDao.findPageByExample(posts, pageModel, order);
-
+        PageModel pm = postsDao.findPageByHql(hql.toString(), pageModel);
         List<ArticleVo> list = new ArrayList<ArticleVo>();
         List<Posts> postsList = pm.getList();
         for (Posts p : postsList) {
