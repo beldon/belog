@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema
+        xmlns="http://belog.beldon.me/schema/theme"
+        xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+        targetNamespace="http://belog.beldon.me/schema/theme"
+        elementFormDefault="qualified"
+        attributeFormDefault="unqualified">
+
+    <xsd:element name="theme">
+        <xsd:annotation>
+            <xsd:documentation>插件信息</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element ref="name"/>
+                <xsd:element ref="author"/>
+                <xsd:element ref="email"/>
+                <xsd:element ref="url"/>
+                <xsd:element ref="logo"/>
+                <xsd:element ref="version"/>
+                <xsd:choice minOccurs="0">
+                    <xsd:element ref="description"/>
+                </xsd:choice>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:element name="name" default="未知">
+        <xsd:annotation>
+            <xsd:documentation>名称</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:string"/>
+        </xsd:simpleType>
+    </xsd:element>
+
+    <xsd:element name="logo" default="">
+        <xsd:annotation>
+            <xsd:documentation>名称</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:string"/>
+        </xsd:simpleType>
+    </xsd:element>
+
+    <xsd:element name="author" default="未知">
+        <xsd:annotation>
+            <xsd:documentation>作者</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:string"/>
+        </xsd:simpleType>
+    </xsd:element>
+
+    <xsd:element name="version">
+        <xsd:annotation>
+            <xsd:documentation>版本</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:string"/>
+        </xsd:simpleType>
+    </xsd:element>
+
+    <xsd:element name="url">
+        <xsd:annotation>
+            <xsd:documentation>网址</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:string"/>
+        </xsd:simpleType>
+    </xsd:element>
+
+    <xsd:element name="email">
+        <xsd:annotation>
+            <xsd:documentation>邮箱</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:string"/>
+        </xsd:simpleType>
+    </xsd:element>
+
+    <xsd:element name="description">
+        <xsd:annotation>
+            <xsd:documentation>描述</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:string"/>
+        </xsd:simpleType>
+    </xsd:element>
+
+</xsd:schema>

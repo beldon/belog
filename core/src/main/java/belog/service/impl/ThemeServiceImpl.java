@@ -1,12 +1,19 @@
 package belog.service.impl;
 
 
+import belog.filter.DirectoryFilter;
 import belog.pojo.vo.ConfigVo;
+import belog.pojo.vo.ThemeVo;
 import belog.service.ConfigService;
 import belog.service.ThemeService;
+import belog.utils.ThemeUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Beldon
@@ -36,5 +43,19 @@ public class ThemeServiceImpl extends BaseService implements ThemeService {
         configVo.setValue(themeName);
         configVo.setAutoLoad("no");
         configService.saveOrUpdate(configVo);
+    }
+
+    public List<ThemeVo> getThemes() {
+        List<ThemeVo> list = new ArrayList<ThemeVo>();
+        File themeDir = new File(appContext.getThemeRoot());
+        if (themeDir.isDirectory()) {
+            File[] themes = themeDir.listFiles(new DirectoryFilter());
+            for (File theme : themes) {
+                ThemeVo themeVo = ThemeUtils.getThemeContent(theme.getPath() + File.separator + ThemeService.CONFIG_FILE);
+                themeVo.setDirectory(theme.getName());
+                list.add(themeVo);
+            }
+        }
+        return list;
     }
 }

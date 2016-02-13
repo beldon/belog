@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<theme xmlns="http://belog.beldon.me/schema/theme"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://belog.beldon.me/schema/theme
+        http://belog.beldon.me/schema/plugin/theme.xsd">
+
+    <name>个人模板</name>
+    <author>Beldon</author>
+    <email>beldon@beldon.me</email>
+    <url>http://beldon.me</url>
+    <logo>beldon.png</logo>
+    <version>1.0</version>
+    <description>这是一个模板</description>
+</theme>

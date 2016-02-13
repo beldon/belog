@@ -2,6 +2,7 @@ package belog.admin;
 
 
 import belog.pojo.Msg;
+import belog.pojo.vo.ThemeVo;
 import belog.service.ThemeService;
 import belog.utils.MsgUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.List;
 
 /**
  * 主题管理
@@ -21,6 +24,13 @@ public class ThemeController extends AdminBaseController {
 
     @Autowired
     private ThemeService themeService;
+
+    @RequestMapping("/list")
+    public String list(Model model){
+        List<ThemeVo> themes = themeService.getThemes();
+        model.addAttribute("themes", themes);
+        return getTemplatePath("theme/list");
+    }
 
     @RequestMapping("/show")
     public String show(Model model){

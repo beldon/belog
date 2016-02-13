@@ -39,13 +39,18 @@ public class AppContext implements IBoot {
     String PLUGIN_ROOT = File.separator + "WEB-INF" + File.separator + "plugin" + File.separator;
 
     /**
+     * 模板目录
+     */
+    String THEME_ROOT = File.separator + "template" + File.separator + "theme";
+
+    /**
      * 插件信息，key:插件id， value:插件信息
      */
     private Map<String, PluginContent> plugins = new HashMap<String, PluginContent>();
 
     private final Object lock = new Object();
 
-//    @Autowired
+    //    @Autowired
     private BootService bootService;
 
     /**
@@ -211,7 +216,7 @@ public class AppContext implements IBoot {
         return context;
     }
 
-    public Object getBean(String name){
+    public Object getBean(String name) {
         Object bean = null;
         if (context == null) {
             context = initContext;
@@ -248,15 +253,26 @@ public class AppContext implements IBoot {
     }
 
     /**
-     * 获取已经安装的插件
+     * 获取模板目录
+     *
      * @return
      */
-    public Map<String, PluginContent> getInstallPlugins(){
+    public String getThemeRoot() {
+        return System.getProperty(WEB_APP_ROOT_KEY) + THEME_ROOT;
+    }
+
+    /**
+     * 获取已经安装的插件
+     *
+     * @return
+     */
+    public Map<String, PluginContent> getInstallPlugins() {
         return this.plugins;
     }
 
     /**
      * 根据插件id获取插件信息
+     *
      * @param pluginId 插件id
      * @return
      */
