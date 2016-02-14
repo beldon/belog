@@ -22,12 +22,8 @@
                                         <h3 class="panel-title">${(theme.name)!}</h3>
 
                                         <div class="panel-options">
-                                            <a href="#">
+                                            <a href="${(BASE_PATH)!}/admin/theme/details.html?theme=${(theme.directory)!}">
                                                 <i class="linecons-cog"></i>
-                                            </a>
-
-                                            <a href="#" data-toggle="reload">
-                                                <i class="fa-rotate-right"></i>
                                             </a>
 
                                             <a href="#" data-toggle="remove" class="js-remove">
@@ -37,49 +33,28 @@
                                     </div>
 
                                     <div class="panel-body">
-                                        <div>${(theme.description)!}</div>
+                                         <div>${(theme.description)!}</div>
+                                        <a href="${(BASE_PATH)!}/admin/theme/details.html?theme=${(theme.directory)!}">
                                          <img src="${(BASE_PATH)!}/static/theme/${(theme.directory)!}/${(theme.logo)!}" alt="" class="img-responsive">
+                                        </a>
+                                        <div class="row">
+                                            <#if theme.directory != currentTheme  >
+                                            <button class="btn btn-success btn-xs btn-icon col-md-offset-5 js-save" theme="${(theme.directory)!}" style="margin-top:5px;">
+                                                <i class="fa-check"></i>
+                                                <span>启用</span>
+                                            </button>
+                                            <#else >
+                                                <button class="btn btn-success btn-xs disabled btn-icon col-md-offset-5" style="margin-top:5px;">
+                                                    <i class="fa-check"></i>
+                                                    <span>已启用</span>
+                                                </button>
+                                            </#if>
+                                        </div>
                                     </div>
                                 </div>
 
                             </div>
                         </#list>
-                            <div class="col-md-4">
-
-                                <!-- Bordered + shadow panel -->
-                                <div class="panel panel-default panel-border panel-shadow"><!-- Add class "collapsed" to minimize the panel -->
-                                    <div class="panel-heading">
-                                        <h3 class="panel-title">Beldon模板</h3>
-
-                                        <div class="panel-options">
-                                            <a href="#">
-                                                <i class="linecons-cog"></i>
-                                            </a>
-
-                                            <a href="#" data-toggle="panel">
-                                                <span class="collapse-icon">–</span>
-                                                <span class="expand-icon">+</span>
-                                            </a>
-
-                                            <a href="#" data-toggle="reload">
-                                                <i class="fa-rotate-right"></i>
-                                            </a>
-
-                                            <a href="#" data-toggle="remove">
-                                                ×
-                                            </a>
-                                        </div>
-                                    </div>
-
-                                    <div class="panel-body">
-
-                                        <p>She travelling acceptance men unpleasant her especially entreaties law. Law forth but end any arise chief arose. Old her say learn these large. Joy fond many ham high seen this. Few preferred continual sir led incommode neglected. Discovered too old insensible collecting unpleasant but invitation. </p>
-                                        <p>Now indulgence dissimilar for his thoroughly has terminated. Agreement offending commanded my an. Change wholly say why eldest period. Are projection put celebrated particular unreserved joy unsatiable its. In then dare good am rose bred or. On am in nearer square wanted. </p>
-
-                                    </div>
-                                </div>
-
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -96,6 +71,23 @@
         $(".js-remove").click(function(){
             alert("dd");
             return false;
+        });
+
+        $(".js-save").click(function(){
+            var theme = $(this).attr("theme");
+            $.ajax({
+                type: "POST",
+                url: "addOrUpdate.json",
+                data: {theme:theme},
+                dataType: "json",
+                success: function(data){
+                    if(data.status===true){
+                        window.location.reload();
+                    }else{
+                        alert("error");
+                    }
+                }
+            });
         });
     });
 </script>

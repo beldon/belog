@@ -26,14 +26,25 @@ public class ThemeController extends AdminBaseController {
     private ThemeService themeService;
 
     @RequestMapping("/list")
-    public String list(Model model){
+    public String list(Model model) {
         List<ThemeVo> themes = themeService.getThemes();
+        String currentTheme = themeService.getThemeName();
+        model.addAttribute("currentTheme", currentTheme);
         model.addAttribute("themes", themes);
         return getTemplatePath("theme/list");
     }
 
+    @RequestMapping("/details")
+    public String detail(@RequestParam("theme") String theme, Model model) {
+        ThemeVo themeVo = themeService.getThemeByDir(theme);
+        String currentTheme = themeService.getThemeName();
+        model.addAttribute("currentTheme", currentTheme);
+        model.addAttribute("theme", themeVo);
+        return getTemplatePath("theme/details");
+    }
+
     @RequestMapping("/show")
-    public String show(Model model){
+    public String show(Model model) {
         String theme = themeService.getThemeName();
         model.addAttribute("theme", theme);
         return getTemplatePath("theme/show");
@@ -41,7 +52,7 @@ public class ThemeController extends AdminBaseController {
 
     @RequestMapping("/addOrUpdate.json")
     @ResponseBody
-    public Msg addOrUpdate(@RequestParam("theme") String theme){
+    public Msg addOrUpdate(@RequestParam("theme") String theme) {
         themeService.setTheme(theme);
         return MsgUtils.success();
     }

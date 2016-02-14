@@ -76,7 +76,7 @@
         </a>
         <ul>
             <li>
-                <a href="${BASE_PATH}/admin/theme/show.html">
+                <a href="${BASE_PATH}/admin/theme/list.html">
                     <span class="title">主题</span>
                 </a>
             </li>

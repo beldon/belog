@@ -49,4 +49,11 @@ public interface ThemeService {
      * @return 模板列表
      */
     List<ThemeVo> getThemes();
+
+    /**
+     * 通过模板目录获取模板信息
+     * @param directory
+     * @return
+     */
+    ThemeVo getThemeByDir(String directory);
 }

@@ -58,4 +58,15 @@ public class ThemeServiceImpl extends BaseService implements ThemeService {
         }
         return list;
     }
+
+    public ThemeVo getThemeByDir(String directory) {
+        String themeDir = appContext.getThemeRoot() + File.separator + directory;
+        File theme = new File(themeDir);
+        if (theme.exists()) {
+            ThemeVo themeVo = ThemeUtils.getThemeContent(theme.getPath() + File.separator + ThemeService.CONFIG_FILE);
+            themeVo.setDirectory(directory);
+            return themeVo;
+        }
+        return new ThemeVo();
+    }
 }
