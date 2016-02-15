@@ -2,7 +2,7 @@
 <@article_tag type='list' pageSize='4'>
     <#assign pagePm=pm>
 </@article_tag>
-<@html title="我的标题-">
+<@html title="">
 
 <!-- BEGIN HEADER FULL IMAGE SLIDE -->
 <div class="full-slide-image" id="full-img-slide">
