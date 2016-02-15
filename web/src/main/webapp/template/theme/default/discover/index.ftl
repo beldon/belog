@@ -1,4 +1,4 @@
-<#include "../inc/header.ftl" />
+<#include "../common/_layout.ftl"/>
 <@article_tag type='list' currentPage=currentPage pageSize='12'>
     <#assign pm=pm>
 </@article_tag>
@@ -12,17 +12,7 @@
 <#else >
     <#assign nextPage=pm.currentPage+1>
 </#if>
-
-
-<body class="tooltips">
-
-<!--
-===========================================================
-BEGIN PAGE
-===========================================================
--->
-<#include "../inc/nav.ftl"/>
-
+<@html title="发现-">
 
 <!-- BEGIN BERADCRUMB AND PAGE TITLE -->
 <div class="page-title-wrap">
@@ -60,7 +50,7 @@ BEGIN PAGE
                                 <p class="project-category">
                                     <#if article.cats?exists>
                                         <#list article.cats as cat>
-                                            ${(cat.name)}, &nbsp;
+                                        ${(cat.name)}, &nbsp;
                                         </#list>
                                     </#if>
                                 </p>
@@ -83,4 +73,4 @@ BEGIN PAGE
     </div><!-- /.container -->
 </div><!-- /.section -->
 
-<#include "../inc/footer.ftl" />
+</@html>

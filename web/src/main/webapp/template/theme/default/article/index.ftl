@@ -1,4 +1,4 @@
-<#include "../inc/header.ftl"/>
+<#include "../common/_layout.ftl"/>
 <@category_tag type='list' currentPage=currentPage>
     <#assign cats=cats>
 </@category_tag>
@@ -17,15 +17,7 @@
 </#if>
 
 
-<body class="tooltips">
-
-<!--
-===========================================================
-BEGIN PAGE
-===========================================================
--->
-<#include "../inc/nav.ftl"/>
-
+<@html title="文章列表-">
 
 <!-- BEGIN BERADCRUMB AND PAGE TITLE -->
 <div class="page-title-wrap">
@@ -59,7 +51,7 @@ BEGIN PAGE
                             <div class="media-body">
                                 <h4 class="media-heading">
                                     <a href="${BASE_PATH}/article/details/${(article.id)!}.html">
-                                     ${(article.title)!}
+                                    ${(article.title)!}
                                     </a>
                                 </h4>
                                 <p class="small">
@@ -81,12 +73,12 @@ BEGIN PAGE
 
                 <!-- Begin pagination -->
                 <ul class="pagination info block-color separated pull-right">
-                    <#--<li class="disabled"><a href="#fakelink">&lsaquo;</a></li>-->
-                    <#--<li class="active"><a href="#fakelink">1</a></li>-->
-                    <#--<li><a href="#fakelink">2</a></li>-->
-                    <#--<li><a href="#fakelink">...</a></li>-->
-                    <#--<li><a href="#fakelink">10</a></li>-->
-                    <#--<li><a href="#fakelink">&rsaquo;</a></li>-->
+                <#--<li class="disabled"><a href="#fakelink">&lsaquo;</a></li>-->
+                <#--<li class="active"><a href="#fakelink">1</a></li>-->
+                <#--<li><a href="#fakelink">2</a></li>-->
+                <#--<li><a href="#fakelink">...</a></li>-->
+                <#--<li><a href="#fakelink">10</a></li>-->
+                <#--<li><a href="#fakelink">&rsaquo;</a></li>-->
                     <li><a href="${BASE_PATH}/article/index_${frontPage}.html">&laquo;</a></li>
                     <li><a href="#">${(pm.currentPage)!}/${(pm.totalPage)!}</a></li>
                     <li><a href="${BASE_PATH}/article/index_${nextPage}.html">&raquo;</a></li>
@@ -126,5 +118,4 @@ BEGIN PAGE
     </div><!-- /.row -->
 </div><!-- /.container -->
 
-
-<#include "../inc/footer.ftl"/>
+</@html>

@@ -1,17 +1,9 @@
-<#include "./inc/header.ftl" />
+<#include "common/_layout.ftl"/>
 <@article_tag type='list' pageSize='4'>
     <#assign pagePm=pm>
 </@article_tag>
+<@html title="我的标题-">
 
-
-<body class="tooltips">
-
-<!--
-===========================================================
-BEGIN PAGE
-===========================================================
--->
-<#include "./inc/nav.ftl" />
 <!-- BEGIN HEADER FULL IMAGE SLIDE -->
 <div class="full-slide-image" id="full-img-slide">
     <div class="slide-inner">
@@ -157,7 +149,7 @@ BEGIN PAGE
 
                             <div class="the-box no-border transparent no-margin">
                                 <p class="project-name">${(article.title)!}</p>
-                                <#--<p class="project-category">${(article.title)!}</p>-->
+                            <#--<p class="project-category">${(article.title)!}</p>-->
                             </div><!-- /.the-box no-border transparent -->
                         </div><!-- /.work-item -->
                     </div><!-- /.col-sm-4 col-md-3 col-xs-6 mix -->
@@ -171,4 +163,4 @@ BEGIN PAGE
     </div><!-- /.container -->
 </div><!-- /.section -->
 <!-- END LATEST WORK SECTION -->
-<#include "./inc/footer.ftl"/>
+</@html>

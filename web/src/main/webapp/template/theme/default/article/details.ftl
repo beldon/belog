@@ -1,18 +1,12 @@
-<#include "../inc/header.ftl"/>
+<#include "../common/_layout.ftl"/>
 <@category_tag type='list' currentPage=currentPage>
     <#assign cats=cats>
 </@category_tag>
 <@article_tag articleId=id>
     <#assign pageArticle=article>
 </@article_tag>
-<body class="tooltips">
 
-<!--
-===========================================================
-BEGIN PAGE
-===========================================================
--->
-<#include "../inc/nav.ftl" />
+<@html title= pageArticle.title+"-">
 
 <!-- BEGIN BERADCRUMB AND PAGE TITLE -->
 <div class="page-title-wrap">
@@ -33,17 +27,17 @@ BEGIN PAGE
 
             <!-- BLOG DETAIL SECTION -->
             <div class="section blog-detail">
-                 ${(pageArticle.content)!}
+            ${(pageArticle.content)!}
             </div><!-- /.section -->
             <!-- END BLOG DETAIL SECTION -->
 
 
             <!--评论开始-->
-        <#if comment_tag?exists>
-            <@comment_tag>
-            ${(code)!}
-            </@comment_tag>
-        </#if>
+            <#if comment_tag?exists>
+                <@comment_tag>
+                ${(code)!}
+                </@comment_tag>
+            </#if>
             <!--评论结束-->
         </div><!-- /.col-sm-8 col-md-9 -->
 
@@ -90,7 +84,7 @@ BEGIN PAGE
                     <!-- List group -->
                     <div class="list-group">
                         <#list cats as cat>
-                            <a href="#fakelink" class="list-group-item">${(cat.name)!}  (${(cat.count)!})</a>
+                            <a href="${BASE_PATH}/article/cat/${(cat.id)!}.html" class="list-group-item">${(cat.name)!}  (${(cat.count)!})</a>
                         </#list>
                     </div>
                 </div><!-- /.panel panel-no-border panel-sidebar -->
@@ -103,5 +97,4 @@ BEGIN PAGE
     </div><!-- /.row -->
 </div><!-- /.container -->
 
-
-<#include "../inc/footer.ftl" />
+</@html>
