@@ -80,6 +80,12 @@
                     <span class="title">主题</span>
                 </a>
             </li>
+
+            <li>
+                <a href="${BASE_PATH}/admin/theme/edit.html">
+                    <span class="title">主题编辑</span>
+                </a>
+            </li>
             <#--<li>-->
                 <#--<a href="${BASE_PATH}/admin/menu/list.html">-->
                     <#--<span class="title">菜单</span>-->

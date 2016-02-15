@@ -31,7 +31,7 @@ public class AppContext implements IBoot {
     /**
      * 网站应用绝对路径获取的key
      */
-    private static final String WEB_APP_ROOT_KEY = "belog.root";
+    public static final String WEB_APP_ROOT_KEY = "belog.root";
 
     /**
      * 插件目录
