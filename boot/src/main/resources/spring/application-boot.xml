@@ -17,7 +17,6 @@
         <property name="localOverride" value="true"/>
     </bean>
     <context:component-scan base-package="me.beldon.boot"/>
-    <!--<bean id="shiroFilter" class="me.beldon.boot.Test"/>-->
 
     <!--配置上传文件处理器-->
     <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">

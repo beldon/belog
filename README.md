@@ -16,16 +16,17 @@
 >boot引导是为了做在线更新用的，未成熟，目前在测试开发中。开启boot引导要有以下注意点：
 
 >* 把web.xml中20、21行注释掉，22行取消注释
->* 把core模块下的spring-web.xml中的63到72行注释掉，multipartResolver要放到boot中的配置文件中才行，否则上传出错，具体原因本人暂未知
+>* 把web模块下的pom.xml中20~26行注释，并把core模块生成的jar放到web模块下的wepapp/WEB-INF/root目录下面，以在启动时加载
+>* 把core模块下的spring-web.xml中的62到71行注释掉，multipartResolver要放到boot中的配置文件中才行，否则上传出错，具体原因本人暂未知
 >* boot引导模式下，WEB-INF目录下面若没有install.lock文件，则会先引导安装向导程序，这时也方便测试安装向导
->* boot引导模式默认是加载db.properties文件，core模块下的spring-core.xml中21行找到，取消注释
+>* boot引导模式会加载db.properties文件
 
 >####正常引导
 >正常引导是方便项目主内容开发以及插件开发，正常引导有以下注意点：
 
->* 把web.xml中22、23行注释掉，21行取消注释
->* 把core模块下的spring-web.xml中的63到72行取消注释
->* core模块下的spring-core.xml中21行找到并注释，把20行取消注释，并修改jdbc.properties中的数据库信息。
+>* 把web.xml中21、22行注释掉，20行取消注释
+>* 把core模块下的spring-web.xml中的62到71行取消注释
+>* 把web模块下的pom.xml中20~26行取消注释
 
 >####安装向导
 >安装向导是为了更方便去配置数据库信息，免得去修改配置文件，程序会根据信息去配置好信息并生成数据表和数据库信息,开启安装向导模式要注意一下点：
