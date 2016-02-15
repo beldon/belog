@@ -53,7 +53,7 @@ BEGIN PAGE
                             <#if article?exists && article.cover?exists && article.cover != ''>
                                 <img src="${BASE_PATH}/${(article.cover)!}" onerror="javascript:this.src='${THEME_PATH}/img/work/2.jpg'" alt="文章封面图">
                             <#else>
-                                <img src="${THEME_PATH}/images/photos/15.jpg" alt="文章封面图">
+                                <img src="${THEME_PATH}/img/work/2.jpg" alt="文章封面图">
                             </#if>
                             <div class="the-box no-border transparent no-margin">
                                 <p class="project-name">${(article.title)!}</p>
