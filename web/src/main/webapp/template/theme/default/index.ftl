@@ -145,7 +145,7 @@ BEGIN PAGE
                     <div class="col-sm-4 col-md-3 col-xs-6 mix printing">
                         <div class="work-item">
                             <div class="hover-wrap">
-                                <a href="${BASE_PATH}/article/${(article.id)!}.html">
+                                <a href="${BASE_PATH}/article/details/${(article.id)!}.html">
                                     <i class="glyphicon glyphicon-plus icon-plus"></i>
                                 </a>
                             </div><!-- /.hover-wrap -->

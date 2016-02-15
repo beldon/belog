@@ -123,7 +123,7 @@
                     <!--Blog Post-->
                     <div class="col-md-3 col-sm-6">
                         <div class="blog-post-short">
-                            <a href="${BASE_PATH}/article/${(article.id)!}.html">
+                            <a href="${BASE_PATH}/article/details/${(article.id)!}.html">
                                 <#if article?exists && article.cover?exists && article.cover != ''>
                                     <img class="img-responsive" style="height: 175px;" src="${BASE_PATH}/${(article.cover)!}" alt="blog" />
                                 <#else>
