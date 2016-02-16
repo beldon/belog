@@ -1,3 +1,4 @@
+<#macro aside>
 <div class="sidebar-menu toggle-others collapsed">
 
     <div class="sidebar-menu-inner">
@@ -6,3 +7,4 @@
     </div>
 
 </div>
+</#macro>

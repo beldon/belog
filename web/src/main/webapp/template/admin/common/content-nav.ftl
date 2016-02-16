@@ -1,4 +1,4 @@
-
+<#macro content_nav>
 <!-- User Info, Notifications and Menu Bar -->
 <nav class="navbar user-info-navbar" role="navigation">
 
@@ -73,3 +73,4 @@
     </ul>
 
 </nav>
+</#macro>

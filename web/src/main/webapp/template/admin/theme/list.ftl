@@ -1,70 +1,62 @@
-<#include "../public/header.ftl"/>
-<body class="page-body">
-<div class="page-container">
+<#include "../common/_layout.ftl"/>
 
-<#include "../public/aside.ftl"/>
-    <div class="main-content">
-    <#include "../public/content-nav.ftl"/>
-        <div class="row">
-            <div class="col-md-12">
-                <!-- Default panel -->
-                <div class="panel panel-default panel-border">
-                    <div class="panel-heading">
-                        模板设置
-                    </div>
-                    <div class="panel-body">
-                        <div class="row">
-                        <#list themes as theme>
-                            <div class="col-md-4">
-                                <!-- Bordered + shadow panel -->
-                                <div class="panel panel-default panel-border panel-shadow"><!-- Add class "collapsed" to minimize the panel -->
-                                    <div class="panel-heading">
-                                        <h3 class="panel-title">${(theme.name)!}</h3>
+<@html title="模板列表">
+<div class="row">
+    <div class="col-md-12">
+        <!-- Default panel -->
+        <div class="panel panel-default panel-border">
+            <div class="panel-heading">
+                模板列表
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <#list themes as theme>
+                        <div class="col-md-4">
+                            <!-- Bordered + shadow panel -->
+                            <div class="panel panel-default panel-border panel-shadow"><!-- Add class "collapsed" to minimize the panel -->
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">${(theme.name)!}</h3>
 
-                                        <div class="panel-options">
-                                            <a href="${(BASE_PATH)!}/admin/theme/details.html?theme=${(theme.directory)!}">
-                                                <i class="linecons-cog"></i>
-                                            </a>
-
-                                            <a href="#" data-toggle="remove" class="js-remove">
-                                                ×
-                                            </a>
-                                        </div>
-                                    </div>
-
-                                    <div class="panel-body">
-                                         <div>${(theme.description)!}</div>
+                                    <div class="panel-options">
                                         <a href="${(BASE_PATH)!}/admin/theme/details.html?theme=${(theme.directory)!}">
-                                         <img src="${(BASE_PATH)!}/static/theme/${(theme.directory)!}/${(theme.logo)!}" alt="" class="img-responsive">
+                                            <i class="linecons-cog"></i>
                                         </a>
-                                        <div class="row">
-                                            <#if theme.directory != currentTheme  >
+
+                                        <a href="#" data-toggle="remove" class="js-remove">
+                                            ×
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <div class="panel-body">
+                                    <div>${(theme.description)!}</div>
+                                    <a href="${(BASE_PATH)!}/admin/theme/details.html?theme=${(theme.directory)!}">
+                                        <img src="${(BASE_PATH)!}/static/theme/${(theme.directory)!}/${(theme.logo)!}" alt="" class="img-responsive">
+                                    </a>
+                                    <div class="row">
+                                        <#if theme.directory != currentTheme  >
                                             <button class="btn btn-success btn-xs btn-icon col-md-offset-5 js-save" theme="${(theme.directory)!}" style="margin-top:5px;">
                                                 <i class="fa-check"></i>
                                                 <span>启用</span>
                                             </button>
-                                            <#else >
-                                                <button class="btn btn-success btn-xs disabled btn-icon col-md-offset-5" style="margin-top:5px;">
-                                                    <i class="fa-check"></i>
-                                                    <span>已启用</span>
-                                                </button>
-                                            </#if>
-                                        </div>
+                                        <#else >
+                                            <button class="btn btn-success btn-xs disabled btn-icon col-md-offset-5" style="margin-top:5px;">
+                                                <i class="fa-check"></i>
+                                                <span>已启用</span>
+                                            </button>
+                                        </#if>
                                     </div>
                                 </div>
-
                             </div>
-                        </#list>
-                        </div>
-                    </div>
-                </div>
 
+                        </div>
+                    </#list>
+                </div>
             </div>
         </div>
-    <#include "../public/content-footer.ftl"/>
+
     </div>
 </div>
-
 
 <script type="text/javascript">
     $(document).ready(function(){
@@ -91,5 +83,4 @@
         });
     });
 </script>
-
-<#include "../public/footer.ftl"/>
+</@html>

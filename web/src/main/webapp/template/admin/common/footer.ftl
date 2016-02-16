@@ -1,4 +1,4 @@
-
+<#macro footer>
 <!-- Bottom Scripts -->
 <script src="${BASE_PATH}/static/admin/js/bootstrap.min.js"></script>
 <script src="${BASE_PATH}/static/admin/js/TweenMax.min.js"></script>
@@ -33,3 +33,4 @@
 
 </body>
 </html>
+</#macro>

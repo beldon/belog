@@ -1,3 +1,4 @@
+<#macro content_footer>
 <footer class="main-footer sticky footer-type-1">
     <div class="footer-inner">
         <!-- Add your copyright text here -->
@@ -16,3 +17,4 @@
 
     </div>
 </footer>
+</#macro>

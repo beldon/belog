@@ -1,3 +1,4 @@
+<#macro header title>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,7 +9,7 @@
     <meta name="description" content="Xenon Boostrap Admin Panel" />
     <meta name="author" content="" />
 
-    <title>Belog - 后台管理</title>
+    <title>${title!""} - 后台管理</title>
 
 <#--<link rel="stylesheet" href="http://fonts.useso.com/css?family=Arimo:400,700,400italic">-->
     <link rel="stylesheet" href="${BASE_PATH}/static/admin/css/fonts/linecons/css/linecons.css">
@@ -34,3 +35,7 @@
 
 
 </head>
+<body class="page-body">
+<input type="hidden" id="basePath" value="${BASE_PATH}/">
+<div class="page-container">
+</#macro>

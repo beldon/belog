@@ -1,4 +1,6 @@
-<#include "../public/header.ftl"/>
+<#include "../common/_layout.ftl"/>
+
+<@html title="模板编辑">
 <link rel="stylesheet" href="${BASE_PATH}/static/admin/js/jqueryFileTree/jqueryFileTree.css">
 <style type="text/css" media="screen">
     #editor {
@@ -10,36 +12,27 @@
         height:500px;
     }
 </style>
-<body class="page-body">
-<div class="page-container">
+<div class="row">
+    <div class="col-md-12">
+        <div class="alert alert-success alert-dismissible hide" role="alert" id="alert-success">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <strong>success!</strong> 保存成功！
+        </div>
+        <!-- Default panel -->
+        <div class="panel panel-default panel-border">
+            <div class="panel-heading">
+                模板编辑
+            </div>
 
-<#include "../public/aside.ftl"/>
-    <div class="main-content">
-    <#include "../public/content-nav.ftl"/>
-        <div class="row">
-            <div class="col-md-12">
-                <div class="alert alert-success alert-dismissible hide" role="alert" id="alert-success">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <strong>success!</strong> 保存成功！
+            <div class="panel-body">
+                <div class="col-md-9">
+                    <pre id="editor"></pre>
+                    <button type="submit" id="js-save" class="btn btn-default pull-right">保  存</button>
                 </div>
-                <!-- Default panel -->
-                <div class="panel panel-default panel-border">
-                    <div class="panel-heading">
-                        模板设置
-                    </div>
-
-                    <div class="panel-body">
-                        <div class="col-md-9">
-                            <pre id="editor"></pre>
-                            <button type="submit" id="js-save" class="btn btn-default pull-right">保  存</button>
-                        </div>
-                        <div class="col-md-3" id="fileTree"></div>
-                    </div>
-                </div>
-
+                <div class="col-md-3" id="fileTree"></div>
             </div>
         </div>
-    <#include "../public/content-footer.ftl"/>
+
     </div>
 </div>
 
@@ -94,5 +87,4 @@
         })
     }
 </script>
-
-<#include "../public/footer.ftl"/>
+</@html>
