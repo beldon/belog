@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * Created by Beldon
  */
-@Service
+@Service("RoleService")
 public class RoleServiceImpl extends BaseService implements RoleService {
 
     @Autowired

@@ -14,7 +14,7 @@ import java.util.Map;
 /**
  * Created by Beldon
  */
-@Service
+@Service("SystemService")
 public class SystemServiceImpl implements SystemService {
     public Map<String, String> getSystemMsg() {
         Map<String, String> map = new HashMap<String, String>();

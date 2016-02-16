@@ -25,7 +25,7 @@ import java.util.*;
 /**
  * @author Beldon
  */
-@Service
+@Service("UserService")
 public class UserServiceImpl extends BaseService implements UserService {
 
     @Autowired

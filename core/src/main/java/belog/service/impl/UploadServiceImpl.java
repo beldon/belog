@@ -15,7 +15,7 @@ import java.util.UUID;
 /**
  * Created by Beldon
  */
-@Service
+@Service("UploadService")
 public class UploadServiceImpl implements UploadService {
     private static final String SAVE_PATH = "/upload/";
     private static final String SAVE_IMAGE_PATH = SAVE_PATH + "image/";

@@ -15,7 +15,7 @@ import java.util.Set;
 /**
  * Created by Beldon
  */
-@Service
+@Service("TermTaxonomyService")
 public class TermTaxonomyServiceImpl extends BaseService implements TermTaxonomyService {
 
     @Autowired

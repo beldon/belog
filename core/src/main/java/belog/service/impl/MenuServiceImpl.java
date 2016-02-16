@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * Created by Beldon
  */
-@Service
+@Service("MenuService")
 public class MenuServiceImpl extends BaseService implements MenuService {
 
     @Autowired

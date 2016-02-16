@@ -12,6 +12,7 @@ import belog.service.TermTaxonomyService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +20,7 @@ import java.util.List;
 /**
  * Created by beldon.
  */
-@Service
+@Service("CategoryService")
 public class CategoryServiceImpl extends TermTaxonomyServiceImpl implements CategoryService {
 
     @Autowired
@@ -29,13 +30,16 @@ public class CategoryServiceImpl extends TermTaxonomyServiceImpl implements Cate
     private TermTaxonomyDao termTaxonomyDao;
 
     public void saveOrUpdate(CategoryVo category) {
-        Terms terms = new Terms();
-        TermTaxonomy termTaxonomy = new TermTaxonomy();
-        BeanUtils.copyProperties(category, terms);
-        BeanUtils.copyProperties(category, termTaxonomy);
-        termTaxonomy.setTaxonomy(CATEGORY);
-
-        if (terms.getId() == 0) {//新增
+        if (category.getId() == 0) {//新增
+            Terms terms = new Terms();
+            TermTaxonomy termTaxonomy = new TermTaxonomy();
+            BeanUtils.copyProperties(category, terms);
+            BeanUtils.copyProperties(category, termTaxonomy);
+            if (StringUtils.hasText(category.getTaxonomy())) {
+                termTaxonomy.setTaxonomy(category.getTaxonomy());
+            }else{
+                termTaxonomy.setTaxonomy(CATEGORY);
+            }
             termsDao.saveEntity(terms);
             termTaxonomy.setTerms(terms);
             termTaxonomyDao.saveEntity(termTaxonomy);
@@ -54,12 +58,14 @@ public class CategoryServiceImpl extends TermTaxonomyServiceImpl implements Cate
     }
 
     public List<CategoryVo> findAll() {
-        List<CategoryVo> list = new ArrayList<CategoryVo>();
+        return findAll(CATEGORY);
+    }
 
+    public List<CategoryVo> findAll(String type) {
+        List<CategoryVo> list = new ArrayList<CategoryVo>();
         TermTaxonomy taxonomy = new TermTaxonomy();
-        taxonomy.setTaxonomy(CATEGORY);
+        taxonomy.setTaxonomy(type);
         List<TermTaxonomy> taxonomies = termTaxonomyDao.findByExample(taxonomy);
-//        List<TermTaxonomy> taxonomies = termTaxonomyDao.findAll();
         for (TermTaxonomy termTaxonomy : taxonomies) {
             CategoryVo categoryVo = new CategoryVo();
             BeanUtils.copyProperties(termTaxonomy.getTerms(), categoryVo);
@@ -70,11 +76,15 @@ public class CategoryServiceImpl extends TermTaxonomyServiceImpl implements Cate
     }
 
     public List<Categorys> findCat() {
+        return findCat(CATEGORY);
+    }
+
+    public List<Categorys> findCat(String type) {
         List<Categorys> categorysList = new ArrayList<Categorys>();
 
         TermTaxonomy termTaxonomy = new TermTaxonomy();
         termTaxonomy.setParent(0l);
-        termTaxonomy.setTaxonomy(CATEGORY);
+        termTaxonomy.setTaxonomy(type);
 
         List<TermTaxonomy> list = termTaxonomyDao.findByExample(termTaxonomy);
         for (TermTaxonomy taxonomy : list) {
@@ -89,9 +99,13 @@ public class CategoryServiceImpl extends TermTaxonomyServiceImpl implements Cate
     }
 
     public List<CategoryVo> findCatByPid(long pid) {
+        return findCatByPid(pid,CATEGORY);
+    }
+
+    public List<CategoryVo> findCatByPid(long pid, String type) {
         List<CategoryVo> categorysList = new ArrayList<CategoryVo>();
         TermTaxonomy termTaxonomy = new TermTaxonomy();
-        termTaxonomy.setParent(0l);
+        termTaxonomy.setParent(pid);
         termTaxonomy.setTaxonomy(CATEGORY);
         List<TermTaxonomy> list = termTaxonomyDao.findByExample(termTaxonomy);
 

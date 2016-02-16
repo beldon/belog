@@ -17,7 +17,7 @@ import java.util.*;
 /**
  * Created by Beldon
  */
-@Service
+@Service("ConfigService")
 public class ConfigServiceImpl extends BaseService implements ConfigService {
 
     @Autowired

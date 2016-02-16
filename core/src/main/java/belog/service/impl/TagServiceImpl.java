@@ -5,6 +5,7 @@ import belog.dao.TermsDao;
 import belog.pojo.PageModel;
 import belog.pojo.po.TermTaxonomy;
 import belog.pojo.po.Terms;
+import belog.pojo.vo.CategoryVo;
 import belog.pojo.vo.TagVo;
 import belog.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +17,8 @@ import java.util.List;
 /**
  * Created by Beldon
  */
-@Service
-public class TagServiceImpl extends TermTaxonomyServiceImpl implements TagService {
+@Service("TagService")
+public class TagServiceImpl extends CategoryServiceImpl implements TagService {
 
     @Autowired
     private TermsDao termsDao;
@@ -27,30 +28,28 @@ public class TagServiceImpl extends TermTaxonomyServiceImpl implements TagServic
 
 
     public void addTag(TagVo tagVo) {
-        TermTaxonomy termTaxonomy = new TermTaxonomy();
-        copy(tagVo, termTaxonomy);
-        termsDao.saveEntity(termTaxonomy.getTerms());
-        termTaxonomyDao.saveEntity(termTaxonomy);
-        tagVo.setId(termTaxonomy.getId());
+        CategoryVo categoryVo = new CategoryVo();
+        categoryVo.setName(tagVo.getName());
+        categoryVo.setTermGroup(tagVo.getTermGroup());
+        categoryVo.setTaxonomy(TAG);
+        super.saveOrUpdate(categoryVo);
     }
 
     public List<TagVo> getAllTag() {
         List<TagVo> tagVos = new ArrayList<TagVo>();
-        TermTaxonomy taxonomy = new TermTaxonomy();
-        taxonomy.setTaxonomy(TAG);
-        List<TermTaxonomy> termTaxonomies = termTaxonomyDao.findByExample(taxonomy);
-        for (TermTaxonomy termTaxonomy : termTaxonomies) {
+        List<CategoryVo> list = findAll(TAG);
+        for (CategoryVo categoryVo : list) {
             TagVo tagVo = new TagVo();
-            copy(termTaxonomy, tagVo);
+            copy(categoryVo, tagVo);
             tagVos.add(tagVo);
         }
         return tagVos;
     }
 
     public TagVo getTagById(long id) {
-        TermTaxonomy termTaxonomy = termTaxonomyDao.findById(id);
+        CategoryVo categoryVo = findById(id);
         TagVo tagVo = new TagVo();
-        copy(termTaxonomy, tagVo);
+        copy(categoryVo, tagVo);
         return tagVo;
     }
 
@@ -115,5 +114,12 @@ public class TagServiceImpl extends TermTaxonomyServiceImpl implements TagServic
         target.setTerms(terms);
         target.setId(source.getId());
         target.setCount(source.getCount());
+    }
+
+    private void copy(CategoryVo source, TagVo target) {
+        target.setId(source.getId());
+        target.setName(source.getName());
+        target.setCount(source.getCount());
+        target.setTermGroup(source.getTermGroup());
     }
 }

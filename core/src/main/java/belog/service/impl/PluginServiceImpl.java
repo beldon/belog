@@ -19,7 +19,7 @@ import java.util.*;
 /**
  * Created by Beldon
  */
-@Service
+@Service("PluginService")
 public class PluginServiceImpl extends BaseService implements PluginService {
 
     @Autowired

@@ -18,7 +18,7 @@ import java.util.List;
 /**
  * Created by Beldon
  */
-@Service
+@Service("ThemeService")
 public class ThemeServiceImpl extends BaseService implements ThemeService {
     public static String THEME_KEY = "theme_name";
 
