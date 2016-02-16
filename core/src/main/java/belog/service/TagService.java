@@ -10,12 +10,7 @@ import java.util.List;
  * 标签管理Service
  * Created by Beldon
  */
-public interface TagService extends TermTaxonomyService {
-
-    /**
-     * 标签标识
-     */
-    String TAG = "post_tag";
+public interface TagService extends CategoryService {
 
     /**
      * 添加标签
