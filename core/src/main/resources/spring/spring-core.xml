@@ -84,18 +84,18 @@
         <property name="transactionAttributes">
             <props>
                 <!--<prop key="*">PROPAGATION_REQUIRED</prop>-->
-                <prop key="save*">PROPAGATION_REQUIRED</prop>
-                <prop key="add*">PROPAGATION_REQUIRED</prop>
-                <prop key="execute*">PROPAGATION_REQUIRED</prop>
-                <prop key="*Login">PROPAGATION_REQUIRED</prop>
-                <prop key="update*">PROPAGATION_REQUIRED</prop>
-                <prop key="edit*">PROPAGATION_REQUIRED</prop>
-                <prop key="delete*">PROPAGATION_REQUIRED</prop>
-                <prop key="set*">PROPAGATION_REQUIRED</prop>
-                <prop key="*Add*">PROPAGATION_REQUIRED</prop>
-                <prop key="count*">PROPAGATION_REQUIRED</prop>
-                <prop key="*">PROPAGATION_REQUIRED, readOnly</prop>
-                <!--<prop key="*">PROPAGATION_REQUIRED</prop>-->
+                <!--<prop key="save*">PROPAGATION_REQUIRED</prop>-->
+                <!--<prop key="add*">PROPAGATION_REQUIRED</prop>-->
+                <!--<prop key="execute*">PROPAGATION_REQUIRED</prop>-->
+                <!--<prop key="*Login">PROPAGATION_REQUIRED</prop>-->
+                <!--<prop key="update*">PROPAGATION_REQUIRED</prop>-->
+                <!--<prop key="edit*">PROPAGATION_REQUIRED</prop>-->
+                <!--<prop key="delete*">PROPAGATION_REQUIRED</prop>-->
+                <!--<prop key="set*">PROPAGATION_REQUIRED</prop>-->
+                <!--<prop key="*Add*">PROPAGATION_REQUIRED</prop>-->
+                <!--<prop key="count*">PROPAGATION_REQUIRED</prop>-->
+                <!--<prop key="*">PROPAGATION_REQUIRED, readOnly</prop>-->
+                <prop key="*">PROPAGATION_REQUIRED</prop>
             </props>
         </property>
     </bean>

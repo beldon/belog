@@ -1,91 +1,73 @@
-package belog.pojo.po;
+package belog.pojo.vo;
 
-import javax.persistence.*;
 import java.util.Date;
-import java.util.Set;
+import java.util.List;
 
 /**
- * 存储友情链接（Blogroll）
- *
- * @author Beldon
+ * Created by Beldon
  */
-@Entity(name = "t_links")
-public class Links {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class LinksVo {
+    private long id;
 
     /**
      * 链接URL
      */
-    @Column(name = "link_url", length = 225)
     private String url;
     /**
      * 链接标题
      */
-    @Column(name = "link_name", length = 225)
     private String name;
     /**
      * 链接图片
      */
-    @Column(name = "link_image", length = 225)
     private String image;
     /**
      * 链接打开方式
      */
-    @Column(name = "link_target", length = 25)
     private String target;
     /**
      * 链接描述
      */
-    @Column(name = "link_description", length = 225)
     private String description;
     /**
      * 是否可见（Y/N）
      */
-    @Column(name = "link_visible", length = 20)
     private String visible;
 
     /**
-     * 排序
+     * 评分等级
      */
-    @Column(name = "link_sort")
     private Integer sort;
 
-    @Column(name = "link_updated")
     private Date updated;
     /**
      * XFN关系
      */
-    @Column(name = "link_rel", length = 225)
     private String rel;
     /**
      * XFN注释
      */
-    @Column(name = "link_notes")
     private String notes;
     /**
      * 链接RSS地址
      */
-    @Column(name = "link_rss", length = 225)
     private String rss;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "link_owner", nullable = false)
-    private Users users;
+    /**
+     * 分类
+     */
+    private List<CategoryVo> cats;
 
     /**
-     * 文章对应的分类
+     * 链接对应创建的用户
      */
-    @OneToMany(mappedBy = "links", fetch = FetchType.LAZY)
-    private Set<TermRelationships> termRelationships;
+    private UserVo userVo;
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -177,19 +159,19 @@ public class Links {
         this.rss = rss;
     }
 
-    public Users getUsers() {
-        return users;
+    public List<CategoryVo> getCats() {
+        return cats;
     }
 
-    public void setUsers(Users users) {
-        this.users = users;
+    public void setCats(List<CategoryVo> cats) {
+        this.cats = cats;
     }
 
-    public Set<TermRelationships> getTermRelationships() {
-        return termRelationships;
+    public UserVo getUserVo() {
+        return userVo;
     }
 
-    public void setTermRelationships(Set<TermRelationships> termRelationships) {
-        this.termRelationships = termRelationships;
+    public void setUserVo(UserVo userVo) {
+        this.userVo = userVo;
     }
 }

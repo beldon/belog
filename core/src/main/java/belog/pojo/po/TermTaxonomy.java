@@ -19,7 +19,7 @@ public class TermTaxonomy {
     private Long id;
 
     /**
-     * 分类方法(category/post_tag)
+     * 分类方法(category/post_tag/link_category)
      */
     private String taxonomy;
     /**

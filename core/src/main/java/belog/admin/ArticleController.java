@@ -11,6 +11,7 @@ import belog.service.ArticleService;
 import belog.service.CategoryService;
 import belog.utils.MsgUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -33,6 +34,7 @@ public class ArticleController extends AdminBaseController {
     private ArticleService articleService;
 
     @Autowired
+    @Qualifier("CategoryService")
     private CategoryService categoryService;
 
     @RequestMapping("/list")

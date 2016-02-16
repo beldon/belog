@@ -18,8 +18,13 @@ public class TermRelationships {
      * 对应文章ID/链接ID
      */
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "object_id", nullable = false)
+    @JoinColumn(name = "posts_id")
     private Posts posts;
+
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "links_id")
+    private Links links;
 
 
     /**
@@ -64,5 +69,13 @@ public class TermRelationships {
 
     public void setTermOrder(Integer termOrder) {
         this.termOrder = termOrder;
+    }
+
+    public Links getLinks() {
+        return links;
+    }
+
+    public void setLinks(Links links) {
+        this.links = links;
     }
 }

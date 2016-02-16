@@ -7,6 +7,7 @@ import belog.pojo.vo.Categorys;
 import belog.service.CategoryService;
 import belog.utils.MsgUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -24,6 +25,7 @@ import java.util.List;
 public class CategoryController extends AdminBaseController {
 
     @Autowired
+    @Qualifier("CategoryService")
     private CategoryService categoryService;
 
     @RequestMapping("/list")

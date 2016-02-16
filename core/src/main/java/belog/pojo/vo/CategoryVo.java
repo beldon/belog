@@ -21,7 +21,7 @@ public class CategoryVo {
     private int termGroup;
 
     /**
-     * 分类方法(category/post_tag)
+     * 分类方法(category/post_tag/link_category)
      */
     private String taxonomy;
     /**

@@ -48,6 +48,29 @@
     </li>
     <li>
         <a href="#">
+            <i class="fa-link"></i>
+            <span class="title">链接</span>
+        </a>
+        <ul>
+            <li>
+                <a href="${BASE_PATH}/admin/link/list.html">
+                    <span class="title">所有链接</span>
+                </a>
+            </li>
+            <li>
+                <a href="${BASE_PATH}/admin/link/edit.html">
+                    <span class="title">添加链接</span>
+                </a>
+            </li>
+            <li>
+                <a href="${BASE_PATH}/admin/link/list.html">
+                    <span class="title">链接分类</span>
+                </a>
+            </li>
+        </ul>
+    </li>
+    <li>
+        <a href="#">
             <i class="fa-user"></i>
             <span class="title">用户</span>
         </a>
@@ -117,7 +140,7 @@
     </li>
     <li>
         <a href="#">
-            <i class="linecons-cog"></i>
+            <i class="fa-cog"></i>
             <span class="title">设置</span>
         </a>
         <ul>

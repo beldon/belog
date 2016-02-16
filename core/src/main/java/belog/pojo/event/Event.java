@@ -5,6 +5,6 @@ package belog.pojo.event;
  */
 public interface Event {
     enum Action {
-        ADD, UPDATE
+        ADD, UPDATE,DELETE
     }
 }
