@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 /**
  * @author Beldon
  */
-@Repository
+@Repository("RoleDao")
 public class RoleDaoImpl extends CommonDaoImpl<Role> implements RoleDao {
     public Role findByName(String name) {
         Role role = new Role();

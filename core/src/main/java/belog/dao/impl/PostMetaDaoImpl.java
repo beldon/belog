@@ -9,6 +9,6 @@ import org.springframework.stereotype.Repository;
 /**
  * @author Beldon
  */
-@Repository
+@Repository("PostMetaDao")
 public class PostMetaDaoImpl extends CommonDaoImpl<PostMeta> implements PostMetaDao {
 }

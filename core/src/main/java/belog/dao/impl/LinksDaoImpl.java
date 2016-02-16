@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 /**
  * @author Beldon
  */
-@Repository
+@Repository("LinksDao")
 public class LinksDaoImpl extends CommonDaoImpl<Links> implements LinksDao {
 
 }

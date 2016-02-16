@@ -9,6 +9,6 @@ import org.springframework.stereotype.Repository;
 /**
  * @author Beldon
  */
-@Repository
+@Repository("CommentsDao")
 public class CommentsDaoImpl extends CommonDaoImpl<Comments> implements CommentsDao {
 }

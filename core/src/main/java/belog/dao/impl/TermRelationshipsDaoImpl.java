@@ -9,6 +9,6 @@ import org.springframework.stereotype.Repository;
 /**
  * @author Beldon
  */
-@Repository
+@Repository("TermRelationshipsDao")
 public class TermRelationshipsDaoImpl extends CommonDaoImpl<TermRelationships> implements TermRelationshipsDao {
 }

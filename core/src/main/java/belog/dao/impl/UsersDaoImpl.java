@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 /**
  * @author Beldon
  */
-@Repository
+@Repository("UsersDao")
 public class UsersDaoImpl extends CommonDaoImpl<Users> implements UsersDao {
     public Users findByLoginName(String loginName) {
         Users users = new Users();

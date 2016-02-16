@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 /**
  * @author Beldon
  */
-@Repository
+@Repository("TermsDao")
 public class TermsDaoImpl extends CommonDaoImpl<Terms> implements TermsDao {
 }

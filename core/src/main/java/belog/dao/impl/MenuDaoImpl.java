@@ -9,6 +9,6 @@ import org.springframework.stereotype.Repository;
 /**
  * Created by Beldon
  */
-@Repository
+@Repository("MenuDao")
 public class MenuDaoImpl extends CommonDaoImpl<Menu> implements MenuDao {
 }

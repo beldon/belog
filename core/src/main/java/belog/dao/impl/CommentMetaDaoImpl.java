@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 /**
  * @author Beldon
  */
-@Repository
+@Repository("CommentMetaDao")
 public class CommentMetaDaoImpl extends CommonDaoImpl<CommentMeta> implements CommentMetaDao {
 
 }

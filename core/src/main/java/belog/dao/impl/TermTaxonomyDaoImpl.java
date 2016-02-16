@@ -9,6 +9,6 @@ import org.springframework.stereotype.Repository;
 /**
  * @author Beldon
  */
-@Repository
+@Repository("TermTaxonomyDao")
 public class TermTaxonomyDaoImpl extends CommonDaoImpl<TermTaxonomy> implements TermTaxonomyDao {
 }

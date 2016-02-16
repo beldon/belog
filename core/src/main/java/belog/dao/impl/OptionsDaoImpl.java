@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 /**
  * @author Beldon
  */
-@Repository
+@Repository("OptionsDao")
 public class OptionsDaoImpl extends CommonDaoImpl<Options> implements OptionsDao {
     public Options findByName(String name) {
         Options options = new Options();
