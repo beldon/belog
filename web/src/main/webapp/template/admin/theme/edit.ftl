@@ -48,7 +48,7 @@
 <script src="${BASE_PATH}/static/admin/js/ace/ace.js"></script>
 <script src="${BASE_PATH}/static/admin/js/ace/ext-emmet.js"></script>
 <script type="text/javascript">
-    var currentFile = "/beldon/index.ftl";
+    var currentFile = "/${(theme)!}/index.ftl";
     setValue('fileContent.html?path=' + currentFile);
     $(document).ready(function(){
         $("#js-save").click(function(){
@@ -74,7 +74,7 @@
                 }
             });
         });
-        $('#fileTree').fileTree({ root: '/beldon/' ,script:'fileTree.html'}, function(file) {
+        $('#fileTree').fileTree({ root: '/${(theme)!}/' ,script:'fileTree.html'}, function(file) {
 //            alert(file);
             currentFile = file;
             setValue('fileContent.html?path=' + file);
