@@ -63,7 +63,7 @@
                 </a>
             </li>
             <li>
-                <a href="${BASE_PATH}/admin/link/list.html">
+                <a href="${BASE_PATH}/admin/link/cat_list.html">
                     <span class="title">链接分类</span>
                 </a>
             </li>

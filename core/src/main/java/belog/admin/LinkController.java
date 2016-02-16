@@ -82,11 +82,32 @@ public class LinkController extends AdminBaseController {
 
     @RequestMapping("/cat_list")
     public String catList(Model model) {
-        return getTemplatePath("catList");
+        List<Categorys> categorysList = categoryService.findCat(CategoryService.LINK_CATEGORY);
+        model.addAttribute("cats", categorysList);
+        return getTemplatePath("link/cat_list");
     }
 
     @RequestMapping("/cat_edit")
     public String catEdit(long id, Model model) {
-        return getTemplatePath("catEdit");
+        CategoryVo cat = categoryService.findById(id);
+        List<Categorys> categorysList = categoryService.findCat(CategoryService.LINK_CATEGORY);
+        model.addAttribute("cats", categorysList);
+        model.addAttribute("cat", cat);
+        return getTemplatePath("link/cat_edit");
+    }
+
+    @RequestMapping("/ajaxEditCat.json")
+    @ResponseBody
+    public Msg ajaxEdit(@ModelAttribute CategoryVo categoryVo) {
+        categoryVo.setTaxonomy(CategoryService.LINK_CATEGORY);
+        categoryService.saveOrUpdate(categoryVo);
+        return MsgUtils.success();
+    }
+
+    @RequestMapping("/deleteCat.json")
+    @ResponseBody
+    public Msg deleteCat(@RequestParam("id") long id) {
+        categoryService.deleteById(id);
+        return MsgUtils.success();
     }
 }
