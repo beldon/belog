@@ -1,4 +1,25 @@
 <#macro footer>
+    <@links_tag type='list' pageSize='20'>
+        <#assign pm=pm>
+    </@links_tag>
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 col-md-12">
+                <h4>友情链接</h4>
+                <ul class="list-inline">
+                    <li><a target="_blank" href="http://beldon.me">Beldon</a></li>
+                <#list pm.list as link>
+                    <li><a target="${(link.target)!}" href="${(link.url)!}">${(link.name)!}</a></li>
+                </#list>
+                </ul>
+            </div><!-- /.col-sm-2 -->
+
+        </div><!-- /.row -->
+    </div><!-- /.container -->
+</footer>
+
 <div class="footer">
     <div class="container">
         <div class="row">
