@@ -13,6 +13,7 @@ import belog.utils.MsgUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -67,12 +68,14 @@ public class ArticleController extends AdminBaseController {
             }
         }
         //标签
-        if (tags != null) {
+        if (StringUtils.hasText(tags)) {
             String[] ts = tags.split(",");
             for (String tag : ts) {
-                TagVo tagVo = new TagVo();
-                tagVo.setName(tag.trim());
-                tagVos.add(tagVo);
+                if (StringUtils.hasText(tag)) {
+                    TagVo tagVo = new TagVo();
+                    tagVo.setName(tag.trim());
+                    tagVos.add(tagVo);
+                }
             }
         }
         articleVo.setCats(cats);
