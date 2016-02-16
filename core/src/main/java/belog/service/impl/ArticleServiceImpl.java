@@ -174,7 +174,7 @@ public class ArticleServiceImpl extends BaseService implements ArticleService {
             }
         }
 
-        this.postsDao.delete(id);
+        this.postsDao.deleteEntity(posts);
     }
 
     public ArticleVo findById(long id) {
