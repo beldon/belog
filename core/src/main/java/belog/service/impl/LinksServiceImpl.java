@@ -100,7 +100,7 @@ public class LinksServiceImpl extends BaseService implements LinksService {
 
     public PageModel findPage(PageModel pageModel) {
         List<LinksVo> linksVos = new ArrayList<LinksVo>();
-        PageModel pm = linksDao.findPageByHql("from belog.pojo.po.Links order by sort desc", pageModel);
+        PageModel pm = linksDao.findPageByHql("from belog.pojo.po.Links order by sort", pageModel);
         List<Links> linksList = pm.getList();
         for (Links links : linksList) {
             LinksVo linksVo = new LinksVo();
@@ -116,7 +116,7 @@ public class LinksServiceImpl extends BaseService implements LinksService {
         hql.append("SELECT links FROM belog.pojo.po.Links links");
         hql.append(" JOIN links.termRelationships relation");
         hql.append(" where relation.termTaxonomy.id = '" + catId + "'");
-        hql.append(" order by links.sort desc");
+        hql.append(" order by links.sort");
 
         PageModel pm = linksDao.findPageByHql(hql.toString(), pageModel);
         List<LinksVo> list = new ArrayList<LinksVo>();

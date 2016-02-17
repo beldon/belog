@@ -1,8 +1,8 @@
 <#include "../common/_layout.ftl"/>
 <#if link?exists>
-    <#assign title = "编辑文章"/>
+    <#assign title = "编辑链接"/>
 <#else>
-    <#assign title = "添加文章"/>
+    <#assign title = "编辑链接"/>
 </#if>
 
 <@html title=title>
