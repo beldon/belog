@@ -36,7 +36,7 @@
 
 ###以下是demo下载链接：
 
-链接: http://pan.baidu.com/s/1kTOcRWj 密码: dcmi
+链接: http://pan.baidu.com/s/1i3ZdDwp
 
 测试和开发环境是tomcat，其他的没测试，理论上都能运行。
 
@@ -45,7 +45,10 @@
 PS：demo只做测试，暂未优化
 
 ###在线Demo链接：
-    http://beldon.me
+http://beldon.me
+    
+###在线文档：
+http://belog.mydoc.io/
     
 >欢迎围观，欢迎提议见
 
