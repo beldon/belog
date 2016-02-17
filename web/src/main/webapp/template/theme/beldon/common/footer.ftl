@@ -1,4 +1,4 @@
-
+<#macro footer>
 <div class="footer">
     <div class="container">
         <div class="row">
@@ -74,3 +74,4 @@ Placed at the end of the document so the pages load faster
 <script src="${THEME_PATH}/js/apps.js"></script>
 </body>
 </html>
+</#macro>

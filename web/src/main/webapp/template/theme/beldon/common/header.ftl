@@ -1,12 +1,13 @@
+<#macro header title>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="${(description?default("Beldon"))!}">
-    <meta name="keywords" content="belog">
+    <meta name="keywords" content="${(keywords?default("Beldon"))!}">
     <meta name="author" content="Beldon">
-    <title>${(siteName?default("Beldon"))!}-这不仅仅是个博客</title>
+    <title>${title!""}${(siteName?default("Beldon"))!}-这不仅仅是个博客</title>
     <!-- BOOTSTRAP CSS (REQUIRED ALL PAGE)-->
     <link href="${THEME_PATH}/css/bootstrap.min.css" rel="stylesheet">
     <!-- PLUGINS CSS-->
@@ -25,3 +26,5 @@
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 </head>
+<body class="tooltips">
+</#macro>

@@ -2,6 +2,7 @@ package me.beldon.belog.install.po;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.Set;
 
 /**
  * 存储友情链接（Blogroll）
@@ -13,67 +14,72 @@ public class Links {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "link_id", length = 20, nullable = false)
     private Long id;
 
     /**
      * 链接URL
      */
-    @Column(name = "link_url", length = 225, nullable = false)
+    @Column(name = "link_url", length = 225)
     private String url;
     /**
      * 链接标题
      */
-    @Column(name = "link_name", length = 225, nullable = false)
+    @Column(name = "link_name", length = 225)
     private String name;
     /**
      * 链接图片
      */
-    @Column(name = "link_image", length = 225, nullable = false)
+    @Column(name = "link_image", length = 225)
     private String image;
     /**
      * 链接打开方式
      */
-    @Column(name = "link_target", length = 25, nullable = false)
-    private String targer;
+    @Column(name = "link_target", length = 25)
+    private String target;
     /**
      * 链接描述
      */
-    @Column(name = "link_description", length = 225, nullable = false)
+    @Column(name = "link_description", length = 225)
     private String description;
     /**
      * 是否可见（Y/N）
      */
-    @Column(name = "link_visible", length = 20, nullable = false)
+    @Column(name = "link_visible", length = 20)
     private String visible;
 
     /**
-     * 评分等级
+     * 排序
      */
-    @Column(name = "link_rating", nullable = false)
-    private Integer rating;
+    @Column(name = "link_sort")
+    private Integer sort;
 
-    @Column(name = "link_updated", nullable = false)
+    @Column(name = "link_updated")
     private Date updated;
     /**
      * XFN关系
      */
-    @Column(name = "link_rel", length = 225, nullable = false)
+    @Column(name = "link_rel", length = 225)
     private String rel;
     /**
      * XFN注释
      */
-    @Column(name = "link_notes", nullable = false)
+    @Column(name = "link_notes")
     private String notes;
     /**
      * 链接RSS地址
      */
-    @Column(name = "link_rss", length = 225, nullable = false)
+    @Column(name = "link_rss", length = 225)
     private String rss;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "link_owner", nullable = false)
     private Users users;
+
+    /**
+     * 文章对应的分类
+     */
+    @OneToMany(mappedBy = "links", fetch = FetchType.LAZY)
+    private Set<TermRelationships> termRelationships;
 
     public Long getId() {
         return id;
@@ -107,12 +113,12 @@ public class Links {
         this.image = image;
     }
 
-    public String getTarger() {
-        return targer;
+    public String getTarget() {
+        return target;
     }
 
-    public void setTarger(String targer) {
-        this.targer = targer;
+    public void setTarget(String target) {
+        this.target = target;
     }
 
     public String getDescription() {
@@ -131,12 +137,12 @@ public class Links {
         this.visible = visible;
     }
 
-    public Integer getRating() {
-        return rating;
+    public Integer getSort() {
+        return sort;
     }
 
-    public void setRating(Integer rating) {
-        this.rating = rating;
+    public void setSort(Integer sort) {
+        this.sort = sort;
     }
 
     public Date getUpdated() {
@@ -177,5 +183,13 @@ public class Links {
 
     public void setUsers(Users users) {
         this.users = users;
+    }
+
+    public Set<TermRelationships> getTermRelationships() {
+        return termRelationships;
+    }
+
+    public void setTermRelationships(Set<TermRelationships> termRelationships) {
+        this.termRelationships = termRelationships;
     }
 }

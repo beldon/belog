@@ -1,5 +1,6 @@
 package me.beldon.belog.install.po;
 
+
 import javax.persistence.*;
 
 /**

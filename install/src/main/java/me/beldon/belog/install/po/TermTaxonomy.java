@@ -1,5 +1,6 @@
 package me.beldon.belog.install.po;
 
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -18,7 +19,7 @@ public class TermTaxonomy {
     private Long id;
 
     /**
-     * 分类方法(category/post_tag)
+     * 分类方法(category/post_tag/link_category)
      */
     private String taxonomy;
     /**
@@ -29,7 +30,7 @@ public class TermTaxonomy {
     /**
      * 所属父分类方法ID
      */
-    private Long parent;
+    private Long parent = new Long(0l);
     /**
      * 文章数统计
      */

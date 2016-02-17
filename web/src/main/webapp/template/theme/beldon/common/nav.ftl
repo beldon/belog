@@ -1,3 +1,4 @@
+<#macro nav>
 <!-- BEGIN TOP NAVBAR -->
 <div class="top-navbar dark-color">
     <div class="container">
@@ -45,3 +46,4 @@
     </div><!-- /.container -->
 </div><!-- /.top-navbar -->
 <!-- END TOP NAVBAR -->
+</#macro>
