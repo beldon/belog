@@ -33,6 +33,7 @@ public class TagServiceImpl extends CategoryServiceImpl implements TagService {
         categoryVo.setTermGroup(tagVo.getTermGroup());
         categoryVo.setTaxonomy(TAG);
         super.saveOrUpdate(categoryVo);
+        tagVo.setId(categoryVo.getId());
     }
 
     public List<TagVo> getAllTag() {

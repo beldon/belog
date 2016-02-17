@@ -29,7 +29,7 @@
                             <th width="40px"><input type="checkbox"></th>
                             <th>名称</th>
                             <th>文章总数</th>
-                            <th width="50px">操作</th>
+                            <th width="100px">操作</th>
                         </tr>
                         </thead>
                         <tbody>

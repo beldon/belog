@@ -43,6 +43,7 @@ public class CategoryServiceImpl extends TermTaxonomyServiceImpl implements Cate
             termsDao.saveEntity(terms);
             termTaxonomy.setTerms(terms);
             termTaxonomyDao.saveEntity(termTaxonomy);
+            category.setId(termTaxonomy.getId());
         } else {//更新
             TermTaxonomy taxonomy = termTaxonomyDao.findById(category.getId());
 
