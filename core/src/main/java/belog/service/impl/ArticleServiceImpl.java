@@ -121,14 +121,16 @@ public class ArticleServiceImpl extends BaseService implements ArticleService {
                     postMeta.setMeteKey("cover");
                     postMeta.setMetaValue(articleVo.getCover());
                 }
-
             } else {//删除
                 if (postMeta != null) {
                     postMeta.setMetaValue("");
                 }
             }
 
-            postMetaDao.saveOrUpdate(postMeta);
+            if (postMeta != null) {
+                postMetaDao.saveOrUpdate(postMeta);
+            }
+
 
             //更新标签
             Set<TermRelationships> termRelationshipsSet = posts.getTermRelationships();

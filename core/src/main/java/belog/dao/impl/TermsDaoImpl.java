@@ -10,4 +10,11 @@ import org.springframework.stereotype.Repository;
  */
 @Repository("TermsDao")
 public class TermsDaoImpl extends CommonDaoImpl<Terms> implements TermsDao {
+    public Terms findOneByNameAndTaxonomy(String name, String taxonomy) {
+        StringBuilder hql = new StringBuilder();
+        hql.append("SELECT term FROM belog.pojo.po.Terms term JOIN term.termTaxonomy tax");
+        hql.append(" WHERE term.name = '" + name + "'");
+        hql.append(" AND tax.taxonomy = '" + taxonomy + "'");
+        return findOneByHql(hql.toString());
+    }
 }

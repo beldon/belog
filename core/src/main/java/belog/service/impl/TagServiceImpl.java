@@ -56,9 +56,10 @@ public class TagServiceImpl extends CategoryServiceImpl implements TagService {
 
     public TagVo getOrAddTagByName(String tagName) {
         TagVo tagVo = new TagVo();
-        Terms terms = new Terms();
-        terms.setName(tagName.trim());
-        terms = termsDao.findOneByExample(terms);
+//        Terms terms = new Terms();
+//        terms.setName(tagName.trim());
+//        terms = termsDao.findOneByExample(terms);
+        Terms terms = termsDao.findOneByNameAndTaxonomy(tagName.trim(), TagService.TAG);
         if (terms == null) {
             tagVo.setName(tagName.trim());
             addTag(tagVo);
