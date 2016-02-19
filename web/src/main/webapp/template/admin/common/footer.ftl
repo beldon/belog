@@ -1,6 +1,7 @@
 <#macro footer>
 <!-- Bottom Scripts -->
 <script src="${BASE_PATH}/static/admin/js/bootstrap.min.js"></script>
+<script src="${BASE_PATH}/static/admin/js/bootstrap-validator/js/bootstrapValidator.min.js"></script>
 <script src="${BASE_PATH}/static/admin/js/TweenMax.min.js"></script>
 <script src="${BASE_PATH}/static/admin/js/resizeable.js"></script>
 <script src="${BASE_PATH}/static/admin/js/joinable.js"></script>

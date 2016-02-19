@@ -59,15 +59,36 @@
 
 <script type="text/javascript">
     $(document).ready(function(){
-        $("#saveCat").click(function(){
+        $('#actionForm').bootstrapValidator({
+            message: 'This value is not valid',
+            fields: {
+                name: {
+                    message: '名称不能为空',
+                    validators: {
+                        notEmpty: {
+                            message: '名称不能为空'
+                        }
+                    }
+                },
+                slug: {
+                    message: '别名必须为数字或字母',
+                    validators: {
+                        regexp: {
+                            regexp: /^[a-zA-Z0-9_]+$/,
+                            message: '别名必须为数字或字母'
+                        }
+                    }
+                }
+            }
+        }).on('success.form.bv', function(e) {
             $.ajax({
                 type: "POST",
-                url: "ajaxEditCat.json",
+                url: "ajaxEdit.json",
                 data: $('#actionForm').serialize(),
                 dataType: "json",
                 success: function(data){
                     if(data.status===true){
-                        window.location.href = 'cat_list.html';
+                        window.location.href = 'list.html';
                     }else{
                         alert("error");
                     }

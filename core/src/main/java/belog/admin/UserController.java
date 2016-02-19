@@ -77,8 +77,8 @@ public class UserController extends AdminBaseController {
         Msg msg = new Msg();
 
         if (user != null) {
-            user.setNickName(user.getLogin());
-            user.setDisplayName(user.getLogin());
+//            user.setNickName(user.getLogin());
+            user.setDisplayName(user.getNickName());
             userService.saveOrUpdate(user);
             msg.setErrCode(0);
             msg.setStatus(true);

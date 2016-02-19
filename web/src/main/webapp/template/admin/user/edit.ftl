@@ -15,13 +15,13 @@
                     <div class="form-group">
                         <label for="inputEmail3" class="col-sm-1 control-label">登陆名</label>
                         <div class="col-sm-4">
-                            <input type="text" name="login" value="${(user.login)!}" disabled="disabled" class="form-control" id="inputEmail3" placeholder="登陆名">
+                            <input type="text" name="login" value="${(user.login)!}" <#if user?exists>disabled="disabled"</#if>  class="form-control" id="inputEmail3" placeholder="登陆名">
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="inputEmail3" class="col-sm-1 control-label">用户名</label>
                         <div class="col-sm-4">
-                            <input type="text" name="login" value="${(user.nickName)!}" class="form-control" id="inputEmail3" placeholder="用户名">
+                            <input type="text" name="nickName" value="${(user.nickName)!}" class="form-control" id="inputEmail3" placeholder="用户名">
                         </div>
                     </div>
                     <div class="form-group">
@@ -35,7 +35,7 @@
                         <label for="inputEmail3" class="col-sm-1 control-label">密码</label>
 
                         <div class="col-sm-4">
-                            <input type="password" name="pass" value="" class="form-control" id="inputEmail3" placeholder="您的密码">
+                            <input type="text" name="pass" value="" class="form-control" id="inputEmail3" placeholder="您的密码">
                         </div>
                     </div>
 
@@ -53,7 +53,48 @@
 
 <script type="text/javascript">
     $(document).ready(function(){
-        $("#js-save").click(function(){
+        $('#actionForm').bootstrapValidator({
+            message: 'This value is not valid',
+            fields: {
+                login:{
+                    message: '登陆名不能为空',
+                    validators: {
+                        notEmpty: {
+                            message: '登陆名不能为空'
+                        }
+                    }
+                },
+                nickName: {
+                    message: '用户名不能为空',
+                    validators: {
+                        notEmpty: {
+                            message: '用户名不能为空'
+                        }
+                    }
+                },
+                email: {
+                    message: '请填写正确的邮箱地址',
+                    validators: {
+                        notEmpty: {
+                            message: '邮箱地址不能为空'
+                        },
+                        regexp: {
+                            regexp: /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/,
+                            message: '请填写正确的邮箱地址'
+                        }
+                    }
+                },
+                pass:{
+                    message: '请填写正确的邮箱地址',
+                    validators: {
+                        stringLength: {
+                            min: 6,
+                            message: '密码长度必须大于0'
+                        }
+                    }
+                }
+            }
+        }).on('success.form.bv', function(e) {
             $.ajax({
                 type: "POST",
                 url: "ajaxEdit.json",

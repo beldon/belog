@@ -54,7 +54,7 @@
                         <label for="title" class="col-sm-1 control-label">排序</label>
 
                         <div class="col-sm-11">
-                            <input type="number" value="${(link.sort)!}" name="sort" class="form-control"
+                            <input type="number" value="${(link.sort)?default(0)!}" name="sort" class="form-control"
                                    id="title" placeholder="此处输入链接排序">
                         </div>
                     </div>
@@ -182,7 +182,47 @@
 
         });
 
-        $("#js-publish").click(function () {
+//        $("#js-publish").click(function () {
+//            var catForm = $('#catForm').serialize();
+//            var actionForm = $('#actionForm').serialize();
+//            $.ajax({
+//                type: "POST",
+//                url: "ajaxEdit.json",
+//                data: actionForm + "&" + catForm,
+//                dataType: "json",
+//                success: function (data) {
+//                    if (data.status === true) {
+//                        //window.location.reload();
+//                        window.location.href = "list.html";
+//                    } else {
+//                        alert("error");
+//                    }
+//                }
+//            });
+//        });
+
+        $('#actionForm').bootstrapValidator({
+            message: 'This value is not valid',
+            fields: {
+                name: {
+                    message: '名称不能为空',
+                    validators: {
+                        notEmpty: {
+                            message: '名称不能为空'
+                        }
+                    }
+                },
+                url: {
+                    message: '请输入合法的网址',
+                    validators: {
+                        regexp: {
+                            regexp: /(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?/,
+                            message: '请输入合法的网址'
+                        }
+                    }
+                }
+            }
+        }).on('success.form.bv', function(e) {
             var catForm = $('#catForm').serialize();
             var actionForm = $('#actionForm').serialize();
             $.ajax({

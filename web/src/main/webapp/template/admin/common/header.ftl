@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="${BASE_PATH}/static/admin/css/fonts/linecons/css/linecons.css">
     <link rel="stylesheet" href="${BASE_PATH}/static/admin/css/fonts/fontawesome/css/font-awesome.min.css">
     <link rel="stylesheet" href="${BASE_PATH}/static/admin/css/bootstrap.min.css">
+    <link rel="stylesheet" href="${BASE_PATH}/static/admin/js/bootstrap-validator/css/bootstrapValidator.min.css">
     <link rel="stylesheet" href="${BASE_PATH}/static/admin/css/xenon-core.css">
     <link rel="stylesheet" href="${BASE_PATH}/static/admin/css/xenon-forms.css">
     <link rel="stylesheet" href="${BASE_PATH}/static/admin/css/xenon-components.css">

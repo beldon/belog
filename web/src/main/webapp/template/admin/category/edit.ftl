@@ -59,7 +59,28 @@
 
 <script type="text/javascript">
     $(document).ready(function(){
-        $("#saveCat").click(function(){
+        $('#actionForm').bootstrapValidator({
+            message: 'This value is not valid',
+            fields: {
+                name: {
+                    message: '名称不能为空',
+                    validators: {
+                        notEmpty: {
+                            message: '名称不能为空'
+                        }
+                    }
+                },
+                slug: {
+                    message: '别名必须为数字或字母',
+                    validators: {
+                        regexp: {
+                            regexp: /^[a-zA-Z0-9_]+$/,
+                            message: '别名必须为数字或字母'
+                        }
+                    }
+                }
+            }
+        }).on('success.form.bv', function(e) {
             $.ajax({
                 type: "POST",
                 url: "ajaxEdit.json",
@@ -74,6 +95,7 @@
                 }
             });
         });
+
     });
 </script>
 </@html>

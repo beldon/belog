@@ -32,7 +32,7 @@
                     <div class="form-group">
                         <label for="content" class="col-sm-1 control-label">内容</label>
                         <div class="col-sm-11">
-                            <textarea name="content" class="form-control ckeditor" rows="10">${(article.content)!}</textarea>
+                            <textarea name="content" id="content" class="form-control ckeditor" rows="10">${(article.content)!}</textarea>
                         </div>
                     </div>
 
@@ -139,6 +139,7 @@
 <script src="${BASE_PATH}/static/admin/js/dropzone/dropzone.min.js"></script>
 
 
+
 <script type="text/javascript">
     jQuery(document).ready(function($)
     {
@@ -212,7 +213,23 @@
 
         });
 
-        $("#js-publish").click(function () {
+        $('#actionForm').bootstrapValidator({
+            message: 'This value is not valid',
+            fields: {
+                title: {
+                    message: '标题不能为空',
+                    validators: {
+                        notEmpty: {
+                            message: '标题不能为空'
+                        },
+                        stringLength: {
+                            min: 2,
+                            message: '标题必须为两个字以上'
+                        }
+                    }
+                }
+            }
+        }).on('success.form.bv', function(e) {
             var catForm = $('#catForm').serialize();
             var actionForm = $('#actionForm').serialize();
             $.ajax({
