@@ -57,4 +57,16 @@ public interface UserService {
      * @return
      */
     UserVo findUserByLoginName(String loginName);
+
+    /**
+     * 获取当前登录的用户名
+     * @return
+     */
+    String getCurrentUserName();
+
+    /**
+     * 获取当前用户信息
+     * @return
+     */
+    UserVo getCurrentUser();
 }

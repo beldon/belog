@@ -1,4 +1,7 @@
 <#macro content_nav>
+    <@user_tag type='username'>
+        <#assign username=username>
+    </@user_tag>
 <!-- User Info, Notifications and Menu Bar -->
 <nav class="navbar user-info-navbar" role="navigation">
 
@@ -32,7 +35,7 @@
                 <img src="${BASE_PATH}/static/admin//images/user-4.png" alt="user-image"
                      class="img-circle img-inline userpic-32" width="28"/>
 							<span>
-								超级管理员
+								${(username)?default("超级管理员")!}
 								<i class="fa-angle-down"></i>
 							</span>
             </a>

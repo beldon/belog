@@ -74,7 +74,7 @@ public class UserServiceImpl extends BaseService implements UserService {
     public PageModel findByPage(PageModel pageModel) {
         Users u = new Users();
         u.setStatus(0);
-        PageModel pm = this.usersDao.findPageByExample(u,pageModel);
+        PageModel pm = this.usersDao.findPageByExample(u, pageModel);
 
         List<UserVo> userVos = new ArrayList<UserVo>();
         List<Users> usersList = pm.getList();
@@ -124,12 +124,29 @@ public class UserServiceImpl extends BaseService implements UserService {
     public UserVo findUserByLoginName(String loginName) {
         Users users = usersDao.findByLoginName(loginName);
         if (users == null) {
-            return null;
-        }else{
+            return new UserVo();
+        } else {
             UserVo userVo = new UserVo();
             BeanUtils.copyProperties(users, userVo);
             return userVo;
         }
+    }
+
+    public String getCurrentUserName() {
+        String loginName = "";
+        Subject subject = SecurityUtils.getSubject();
+        if (subject.isRemembered() || subject.isAuthenticated()) {
+            loginName = subject.getPrincipal().toString();
+        }
+        return loginName;
+    }
+
+    public UserVo getCurrentUser() {
+        String currentUserName = getCurrentUserName();
+        if (org.springframework.util.StringUtils.hasText(currentUserName)) {
+            return findUserByLoginName(getCurrentUserName());
+        }
+        return new UserVo();
     }
 
 }
