@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="belog.dao.CommentsMapper" >
+  <resultMap id="BaseResultMap" type="belog.pojo.po.Comments" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="agent" property="agent" jdbcType="VARCHAR" />
+    <result column="approved" property="approved" jdbcType="VARCHAR" />
+    <result column="author" property="author" jdbcType="VARCHAR" />
+    <result column="author_email" property="authorEmail" jdbcType="VARCHAR" />
+    <result column="author_ip" property="authorIp" jdbcType="VARCHAR" />
+    <result column="author_url" property="authorUrl" jdbcType="VARCHAR" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="date" property="date" jdbcType="TIMESTAMP" />
+    <result column="karma" property="karma" jdbcType="INTEGER" />
+    <result column="parent" property="parent" jdbcType="BIGINT" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="post_id" property="postId" jdbcType="BIGINT" />
+    <result column="user_id" property="userId" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, agent, approved, author, author_email, author_ip, author_url, content, date, 
+    karma, parent, type, post_id, user_id
+  </sql>
+  <insert id="insertSelective" parameterType="belog.pojo.po.Comments" >
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_comments
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="agent != null" >
+        agent,
+      </if>
+      <if test="approved != null" >
+        approved,
+      </if>
+      <if test="author != null" >
+        author,
+      </if>
+      <if test="authorEmail != null" >
+        author_email,
+      </if>
+      <if test="authorIp != null" >
+        author_ip,
+      </if>
+      <if test="authorUrl != null" >
+        author_url,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+      <if test="date != null" >
+        date,
+      </if>
+      <if test="karma != null" >
+        karma,
+      </if>
+      <if test="parent != null" >
+        parent,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="postId != null" >
+        post_id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="agent != null" >
+        #{agent,jdbcType=VARCHAR},
+      </if>
+      <if test="approved != null" >
+        #{approved,jdbcType=VARCHAR},
+      </if>
+      <if test="author != null" >
+        #{author,jdbcType=VARCHAR},
+      </if>
+      <if test="authorEmail != null" >
+        #{authorEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="authorIp != null" >
+        #{authorIp,jdbcType=VARCHAR},
+      </if>
+      <if test="authorUrl != null" >
+        #{authorUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="date != null" >
+        #{date,jdbcType=TIMESTAMP},
+      </if>
+      <if test="karma != null" >
+        #{karma,jdbcType=INTEGER},
+      </if>
+      <if test="parent != null" >
+        #{parent,jdbcType=BIGINT},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="postId != null" >
+        #{postId,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="belog.pojo.po.Comments" >
+    update t_comments
+    <set >
+      <if test="agent != null" >
+        agent = #{agent,jdbcType=VARCHAR},
+      </if>
+      <if test="approved != null" >
+        approved = #{approved,jdbcType=VARCHAR},
+      </if>
+      <if test="author != null" >
+        author = #{author,jdbcType=VARCHAR},
+      </if>
+      <if test="authorEmail != null" >
+        author_email = #{authorEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="authorIp != null" >
+        author_ip = #{authorIp,jdbcType=VARCHAR},
+      </if>
+      <if test="authorUrl != null" >
+        author_url = #{authorUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="date != null" >
+        date = #{date,jdbcType=TIMESTAMP},
+      </if>
+      <if test="karma != null" >
+        karma = #{karma,jdbcType=INTEGER},
+      </if>
+      <if test="parent != null" >
+        parent = #{parent,jdbcType=BIGINT},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="postId != null" >
+        post_id = #{postId,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

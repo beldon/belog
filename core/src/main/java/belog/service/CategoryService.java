@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Created by beldon.
  */
-public interface CategoryService extends TermTaxonomyService {
+public interface CategoryService extends TaxonomyService {
 
     /**
      * 保存或修改
@@ -26,13 +26,6 @@ public interface CategoryService extends TermTaxonomyService {
      */
     List<CategoryVo> findAll();
 
-    /**
-     * 根据类型查找分类
-     *
-     * @param type 类型
-     * @return
-     */
-    List<CategoryVo> findAll(String type);
 
     /**
      * 按等级获取信息，默认类型是category
@@ -41,13 +34,6 @@ public interface CategoryService extends TermTaxonomyService {
      */
     List<Categorys> findCat();
 
-    /**
-     * 按等级获取信息
-     *
-     * @param type 类型
-     * @return
-     */
-    List<Categorys> findCat(String type);
 
     /**
      * 根据PID 查找分类，默认类型是category
@@ -57,14 +43,6 @@ public interface CategoryService extends TermTaxonomyService {
      */
     List<CategoryVo> findCatByPid(long pid);
 
-    /**
-     * 根据PID和类型 查找分类
-     *
-     * @param pid
-     * @param type
-     * @return
-     */
-    List<CategoryVo> findCatByPid(long pid, String type);
 
     /**
      * 根据ID去查询

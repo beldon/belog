@@ -10,7 +10,7 @@ import java.util.List;
  * 标签管理Service
  * Created by Beldon
  */
-public interface TagService extends CategoryService {
+public interface TagService extends TaxonomyService {
 
     /**
      * 添加标签
@@ -42,12 +42,5 @@ public interface TagService extends CategoryService {
      */
     TagVo getOrAddTagByName(String tagName);
 
-    /**
-     * 分页查找标签
-     *
-     * @param pageModel
-     * @return
-     */
-    PageModel findPage(PageModel pageModel);
 
 }

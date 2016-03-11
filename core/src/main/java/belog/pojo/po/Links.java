@@ -1,85 +1,33 @@
 package belog.pojo.po;
 
-import javax.persistence.*;
 import java.util.Date;
-import java.util.Set;
 
-/**
- * 存储友情链接（Blogroll）
- *
- * @author Beldon
- */
-@Entity(name = "t_links")
 public class Links {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    /**
-     * 链接URL
-     */
-    @Column(name = "link_url", length = 225)
-    private String url;
-    /**
-     * 链接标题
-     */
-    @Column(name = "link_name", length = 225)
-    private String name;
-    /**
-     * 链接图片
-     */
-    @Column(name = "link_image", length = 225)
-    private String image;
-    /**
-     * 链接打开方式
-     */
-    @Column(name = "link_target", length = 25)
-    private String target;
-    /**
-     * 链接描述
-     */
-    @Column(name = "link_description", length = 225)
     private String description;
-    /**
-     * 是否可见（Y/N）
-     */
-    @Column(name = "link_visible", length = 20)
-    private String visible;
 
-    /**
-     * 排序
-     */
-    @Column(name = "link_sort")
-    private Integer sort;
+    private String image;
 
-    @Column(name = "link_updated")
-    private Date updated;
-    /**
-     * XFN关系
-     */
-    @Column(name = "link_rel", length = 225)
-    private String rel;
-    /**
-     * XFN注释
-     */
-    @Column(name = "link_notes")
+    private String name;
+
     private String notes;
-    /**
-     * 链接RSS地址
-     */
-    @Column(name = "link_rss", length = 225)
+
+    private String rel;
+
     private String rss;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "link_owner", nullable = false)
-    private Users users;
+    private Integer sort;
 
-    /**
-     * 文章对应的分类
-     */
-    @OneToMany(mappedBy = "links", fetch = FetchType.LAZY)
-    private Set<TermRelationships> termRelationships;
+    private String target;
+
+    private Date updated;
+
+    private String url;
+
+    private String visible;
+
+    private Long owner;
 
     public Long getId() {
         return id;
@@ -89,20 +37,12 @@ public class Links {
         this.id = id;
     }
 
-    public String getUrl() {
-        return url;
+    public String getDescription() {
+        return description;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    public void setDescription(String description) {
+        this.description = description == null ? null : description.trim();
     }
 
     public String getImage() {
@@ -110,31 +50,39 @@ public class Links {
     }
 
     public void setImage(String image) {
-        this.image = image;
+        this.image = image == null ? null : image.trim();
     }
 
-    public String getTarget() {
-        return target;
+    public String getName() {
+        return name;
     }
 
-    public void setTarget(String target) {
-        this.target = target;
+    public void setName(String name) {
+        this.name = name == null ? null : name.trim();
     }
 
-    public String getDescription() {
-        return description;
+    public String getNotes() {
+        return notes;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setNotes(String notes) {
+        this.notes = notes == null ? null : notes.trim();
     }
 
-    public String getVisible() {
-        return visible;
+    public String getRel() {
+        return rel;
     }
 
-    public void setVisible(String visible) {
-        this.visible = visible;
+    public void setRel(String rel) {
+        this.rel = rel == null ? null : rel.trim();
+    }
+
+    public String getRss() {
+        return rss;
+    }
+
+    public void setRss(String rss) {
+        this.rss = rss == null ? null : rss.trim();
     }
 
     public Integer getSort() {
@@ -145,6 +93,14 @@ public class Links {
         this.sort = sort;
     }
 
+    public String getTarget() {
+        return target;
+    }
+
+    public void setTarget(String target) {
+        this.target = target == null ? null : target.trim();
+    }
+
     public Date getUpdated() {
         return updated;
     }
@@ -153,43 +109,27 @@ public class Links {
         this.updated = updated;
     }
 
-    public String getRel() {
-        return rel;
+    public String getUrl() {
+        return url;
     }
 
-    public void setRel(String rel) {
-        this.rel = rel;
+    public void setUrl(String url) {
+        this.url = url == null ? null : url.trim();
     }
 
-    public String getNotes() {
-        return notes;
+    public String getVisible() {
+        return visible;
     }
 
-    public void setNotes(String notes) {
-        this.notes = notes;
+    public void setVisible(String visible) {
+        this.visible = visible == null ? null : visible.trim();
     }
 
-    public String getRss() {
-        return rss;
+    public Long getOwner() {
+        return owner;
     }
 
-    public void setRss(String rss) {
-        this.rss = rss;
-    }
-
-    public Users getUsers() {
-        return users;
-    }
-
-    public void setUsers(Users users) {
-        this.users = users;
-    }
-
-    public Set<TermRelationships> getTermRelationships() {
-        return termRelationships;
-    }
-
-    public void setTermRelationships(Set<TermRelationships> termRelationships) {
-        this.termRelationships = termRelationships;
+    public void setOwner(Long owner) {
+        this.owner = owner;
     }
 }

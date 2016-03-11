@@ -1,11 +1,10 @@
 package belog.service.impl;
 
 
-import belog.dao.OptionsDao;
+import belog.dao.OptionsMapper;
 import belog.pojo.po.Options;
 import belog.pojo.vo.ConfigVo;
 import belog.service.ConfigService;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
@@ -21,34 +20,41 @@ import java.util.*;
 public class ConfigServiceImpl extends BaseService implements ConfigService {
 
     @Autowired
-    private OptionsDao optionsDao;
+    private OptionsMapper optionsMapper;
 
     @CacheEvict(value = "config", allEntries = true)
     public void saveOrUpdate(ConfigVo configVo) {
-        saveOrUp(configVo);
+        Options options = new Options();
+        BeanUtils.copyProperties(configVo, options);
+        options.setType(CONFIG);
+        if (configVo.getId() == null || configVo.getId() == 0) {//添加
+            optionsMapper.insertSelective(options);
+        } else {//更新
+            optionsMapper.updateByPrimaryKeySelective(options);
+        }
     }
 
     @CacheEvict(value = "config", allEntries = true)
     public void saveOrUpdate(Collection<ConfigVo> configVos) {
         for (ConfigVo configVo : configVos) {
-            saveOrUp(configVo);
+            saveOrUpdate(configVo);
         }
     }
 
     @CacheEvict(value = "config", allEntries = true)
     public void delete(ConfigVo configVo) {
-        optionsDao.delete(configVo.getId());
+        optionsMapper.deleteByPrimaryKey(configVo.getId());
     }
 
     @CacheEvict(value = "config", allEntries = true)
     public void delete(long id) {
-        optionsDao.delete(id);
+        optionsMapper.deleteByPrimaryKey(id);
     }
 
     @Cacheable(value = "config", key = "'config_' + #id")
     public ConfigVo findById(long id) {
         ConfigVo configVo = new ConfigVo();
-        Options options = optionsDao.findById(id);
+        Options options = optionsMapper.selectByPrimaryKey(id);
         if (options != null) {
             BeanUtils.copyProperties(options, configVo);
         }
@@ -58,7 +64,7 @@ public class ConfigServiceImpl extends BaseService implements ConfigService {
     @Cacheable(value = "config", key = "'config_' + #name")
     public ConfigVo findByName(String name) {
         ConfigVo configVo = new ConfigVo();
-        Options options = optionsDao.findByName(name);
+        Options options = optionsMapper.selectByName(name);
         if (options != null) {
             BeanUtils.copyProperties(options, configVo);
         }
@@ -68,9 +74,7 @@ public class ConfigServiceImpl extends BaseService implements ConfigService {
     @Cacheable(value = "config")
     public List<ConfigVo> findAll() {
         List<ConfigVo> configVoList = new ArrayList<ConfigVo>();
-        Options options = new Options();
-        options.setType("config");
-        List<Options> list = optionsDao.findByExample(options);
+        List<Options> list = optionsMapper.selectByType(CONFIG);
         for (Options o : list) {
             ConfigVo configVo = new ConfigVo();
             BeanUtils.copyProperties(o, configVo);
@@ -99,29 +103,9 @@ public class ConfigServiceImpl extends BaseService implements ConfigService {
         BeanUtils.copyProperties(configVo, options);
         if (org.springframework.util.StringUtils.hasText(options.getType())) {
             options.setType(options.getType());
-        }else{
+        } else {
             options.setType("config");
         }
     }
 
-    private void saveOrUp(ConfigVo configVo) {
-        Options options = optionsDao.findByName(configVo.getName());
-        if (options != null) {
-            options.setValue(configVo.getValue());
-            if (!StringUtils.isEmpty(configVo.getAutoLoad())) {
-                options.setAutoLoad(configVo.getAutoLoad());
-            }
-            optionsDao.updateEntity(options);
-        } else {
-            options = new Options();
-            copyProperties(configVo, options);
-            if (!StringUtils.isEmpty(configVo.getAutoLoad())) {
-                options.setAutoLoad(configVo.getAutoLoad());
-            }else{
-                options.setAutoLoad("yes");
-            }
-            optionsDao.saveEntity(options);
-        }
-
-    }
 }

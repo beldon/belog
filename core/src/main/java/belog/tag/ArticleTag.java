@@ -2,6 +2,7 @@ package belog.tag;
 
 
 import belog.plugin.TagPlugin;
+import belog.pojo.Page;
 import belog.pojo.PageModel;
 import belog.pojo.vo.ArticleVo;
 import belog.service.ArticleService;
@@ -48,17 +49,17 @@ public class ArticleTag extends TagPlugin {
             if (pageSizeO != null) {
                 pageSize = Integer.parseInt(pageSizeO.toString());
             }
-            PageModel pageModel = new PageModel();
-            pageModel.setCurrentPage(currentPage);
-            pageModel.setPageSize(pageSize);
+            Page<ArticleVo> page = new Page<ArticleVo>();
+            page.setPageNo(currentPage);
+            page.setPageSize(pageSize);
 
             if ("list".equals(typeO)) { //普通列表
-                pageModel = articleService.findPage(pageModel);
-                env.setVariable("pm", beansWrapper.wrap(pageModel));
+                page = articleService.findPage(page);
+                env.setVariable("pm", beansWrapper.wrap(page));
             } else if ("cat".equals(typeO)) { //分类列表
                 long catId = SSUtils.nullToLong(params.get("catId"), 1l);
-                pageModel = articleService.findPageByCatId(catId, pageModel, "new");
-                env.setVariable("pm", beansWrapper.wrap(pageModel));
+                page = articleService.findPageByCatId(catId, page, "new");
+                env.setVariable("pm", beansWrapper.wrap(page));
             }
         }
 

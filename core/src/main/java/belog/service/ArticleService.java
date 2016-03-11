@@ -2,6 +2,7 @@ package belog.service;
 
 
 import belog.pojo.Msg;
+import belog.pojo.Page;
 import belog.pojo.PageModel;
 import belog.pojo.vo.ArticleVo;
 
@@ -9,6 +10,9 @@ import belog.pojo.vo.ArticleVo;
  * Created by Beldon
  */
 public interface ArticleService {
+    String COVER = "cover";
+
+
     /**
      * 添加或删除文章
      *
@@ -34,20 +38,20 @@ public interface ArticleService {
     /**
      * 查找文章分页
      *
-     * @param pageModel
+     * @param page
      * @return
      */
-    PageModel findPage(PageModel pageModel);
+    Page<ArticleVo> findPage(Page<ArticleVo> page);
 
     /**
      * 根据分类ID查找分类
      *
      * @param catId     分类ID
-     * @param pageModel
+     * @param page
      * @param type      类似-hot or new , hot:最热的文章，new，最新的文章， default new
      * @return
      */
-    PageModel findPageByCatId(long catId, PageModel pageModel, String type);
+    Page<ArticleVo> findPageByCatId(long catId, Page<ArticleVo> page, String type);
 
     /**
      * 删除文章封面

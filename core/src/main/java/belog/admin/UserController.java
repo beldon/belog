@@ -2,6 +2,7 @@ package belog.admin;
 
 
 import belog.pojo.Msg;
+import belog.pojo.Page;
 import belog.pojo.PageModel;
 import belog.pojo.vo.RoleVo;
 import belog.pojo.vo.UserVo;
@@ -36,13 +37,13 @@ public class UserController extends AdminBaseController {
     @RequestMapping("/list")
     public String list(Model model, @RequestParam(defaultValue = "1") int currentPage, @RequestParam(defaultValue = "8") int pageSize) {
 
-        PageModel pageModel = new PageModel();
-        pageModel.setCurrentPage(currentPage);
-        pageModel.setPageSize(pageSize);
+        Page page = new Page();
+        page.setPageNo(currentPage);
+        page.setPageSize(pageSize);
 
-        pageModel = userService.findByPage(pageModel);
+        page = userService.findByPage(page);
 
-        model.addAttribute("pm", pageModel);
+        model.addAttribute("pm", page);
 
         return getTemplatePath("user/list");
     }
@@ -78,7 +79,7 @@ public class UserController extends AdminBaseController {
 
         if (user != null) {
 //            user.setNickName(user.getLogin());
-            user.setDisplayName(user.getNickName());
+            user.setDisplayName(user.getNickname());
             userService.saveOrUpdate(user);
             msg.setErrCode(0);
             msg.setStatus(true);

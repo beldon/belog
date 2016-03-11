@@ -2,6 +2,7 @@ package belog.admin;
 
 
 import belog.pojo.Msg;
+import belog.pojo.Page;
 import belog.pojo.PageModel;
 import belog.pojo.vo.ArticleVo;
 import belog.pojo.vo.CategoryVo;
@@ -38,9 +39,9 @@ public class ArticleController extends AdminBaseController {
     private CategoryService categoryService;
 
     @RequestMapping("/list")
-    public String list(@ModelAttribute("pageModel") PageModel pageModel, Model model) {
-        PageModel pm = articleService.findPage(pageModel);
-        model.addAttribute("pm", pm);
+    public String list(@ModelAttribute("page") Page page, Model model) {
+        Page p = articleService.findPage(page);
+        model.addAttribute("pm", p);
         return getTemplatePath("article/list");
     }
 

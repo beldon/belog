@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="belog.dao.TaxonomyRelationshipsMapper" >
+  <resultMap id="BaseResultMap" type="belog.pojo.po.TaxonomyRelationships" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="term_order" property="termOrder" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="object_id" property="objectId" jdbcType="BIGINT" />
+    <result column="taxonomy_id" property="taxonomyId" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, term_order, type, object_id, taxonomy_id
+  </sql>
+  <insert id="insertSelective" parameterType="belog.pojo.po.TaxonomyRelationships" >
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_taxonomy_relationships
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="termOrder != null" >
+        term_order,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="objectId != null" >
+        object_id,
+      </if>
+      <if test="taxonomyId != null" >
+        taxonomy_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="termOrder != null" >
+        #{termOrder,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="objectId != null" >
+        #{objectId,jdbcType=BIGINT},
+      </if>
+      <if test="taxonomyId != null" >
+        #{taxonomyId,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="belog.pojo.po.TaxonomyRelationships" >
+    update t_taxonomy_relationships
+    <set >
+      <if test="termOrder != null" >
+        term_order = #{termOrder,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="objectId != null" >
+        object_id = #{objectId,jdbcType=BIGINT},
+      </if>
+      <if test="taxonomyId != null" >
+        taxonomy_id = #{taxonomyId,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

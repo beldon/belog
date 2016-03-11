@@ -1,6 +1,7 @@
 package belog.admin;
 
 import belog.pojo.Msg;
+import belog.pojo.Page;
 import belog.pojo.PageModel;
 import belog.pojo.vo.*;
 import belog.service.CategoryService;
@@ -34,8 +35,8 @@ public class LinkController extends AdminBaseController {
     private CategoryService categoryService;
 
     @RequestMapping("/list")
-    public String list(@ModelAttribute("pageModel") PageModel pageModel, Model model) {
-        PageModel pm = linksService.findPage(pageModel);
+    public String list(@ModelAttribute("page") Page page, Model model) {
+        Page pm = linksService.findPage(page);
         model.addAttribute("pm", pm);
         return getTemplatePath("link/list");
     }
@@ -46,8 +47,8 @@ public class LinkController extends AdminBaseController {
             LinksVo linksVo = linksService.findById(id);
             model.addAttribute("link", linksVo);
         }
-        List<Categorys> cats = categoryService.findCat(CategoryService.LINK_CATEGORY);
-        model.addAttribute("cats", cats);
+//        List<Categorys> cats = categoryService.findCat(CategoryService.LINK_CATEGORY);
+//        model.addAttribute("cats", cats);
         return getTemplatePath("link/edit");
     }
 
@@ -82,17 +83,17 @@ public class LinkController extends AdminBaseController {
 
     @RequestMapping("/cat_list")
     public String catList(Model model) {
-        List<Categorys> categorysList = categoryService.findCat(CategoryService.LINK_CATEGORY);
-        model.addAttribute("cats", categorysList);
+//        List<Categorys> categorysList = categoryService.findCat(CategoryService.LINK_CATEGORY);
+//        model.addAttribute("cats", categorysList);
         return getTemplatePath("link/cat_list");
     }
 
     @RequestMapping("/cat_edit")
     public String catEdit(long id, Model model) {
-        CategoryVo cat = categoryService.findById(id);
-        List<Categorys> categorysList = categoryService.findCat(CategoryService.LINK_CATEGORY);
-        model.addAttribute("cats", categorysList);
-        model.addAttribute("cat", cat);
+//        CategoryVo cat = categoryService.findById(id);
+//        List<Categorys> categorysList = categoryService.findCat(CategoryService.LINK_CATEGORY);
+//        model.addAttribute("cats", categorysList);
+//        model.addAttribute("cat", cat);
         return getTemplatePath("link/cat_edit");
     }
 

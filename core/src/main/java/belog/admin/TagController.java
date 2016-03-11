@@ -24,8 +24,8 @@ public class TagController extends AdminBaseController {
 
     @RequestMapping("/list")
     public String list(@ModelAttribute("pageModel") PageModel pageModel, Model model) {
-        PageModel pm = tagService.findPage(pageModel);
-        model.addAttribute("pm", pm);
+//        PageModel pm = tagService.findPage(pageModel);
+//        model.addAttribute("pm", pm);
         return getTemplatePath("tag/list");
     }
 

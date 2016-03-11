@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="belog.dao.PostsMapper" >
+  <resultMap id="BaseResultMap" type="belog.pojo.po.Posts" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="comment_count" property="commentCount" jdbcType="BIGINT" />
+    <result column="comment_status" property="commentStatus" jdbcType="VARCHAR" />
+    <result column="content_filtered" property="contentFiltered" jdbcType="VARCHAR" />
+    <result column="cre_date" property="creDate" jdbcType="TIMESTAMP" />
+    <result column="excerpt" property="excerpt" jdbcType="VARCHAR" />
+    <result column="menu_order" property="menuOrder" jdbcType="INTEGER" />
+    <result column="mime_type" property="mimeType" jdbcType="VARCHAR" />
+    <result column="modified" property="modified" jdbcType="TIMESTAMP" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="parent" property="parent" jdbcType="BIGINT" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="ping_status" property="pingStatus" jdbcType="VARCHAR" />
+    <result column="pinged" property="pinged" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="to_ping" property="toPing" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="BIGINT" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="belog.pojo.po.Posts" extends="BaseResultMap" >
+    <result column="content" property="content" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, comment_count, comment_status, content_filtered, cre_date, excerpt, menu_order, 
+    mime_type, modified, name, parent, password, ping_status, pinged, status, title, 
+    to_ping, type, user_id
+  </sql>
+  <sql id="Blob_Column_List" >
+    content
+  </sql>
+  <insert id="insertSelective" parameterType="belog.pojo.po.Posts" >
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_posts
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="commentCount != null" >
+        comment_count,
+      </if>
+      <if test="commentStatus != null" >
+        comment_status,
+      </if>
+      <if test="contentFiltered != null" >
+        content_filtered,
+      </if>
+      <if test="creDate != null" >
+        cre_date,
+      </if>
+      <if test="excerpt != null" >
+        excerpt,
+      </if>
+      <if test="menuOrder != null" >
+        menu_order,
+      </if>
+      <if test="mimeType != null" >
+        mime_type,
+      </if>
+      <if test="modified != null" >
+        modified,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="parent != null" >
+        parent,
+      </if>
+      <if test="password != null" >
+        password,
+      </if>
+      <if test="pingStatus != null" >
+        ping_status,
+      </if>
+      <if test="pinged != null" >
+        pinged,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="toPing != null" >
+        to_ping,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="commentCount != null" >
+        #{commentCount,jdbcType=BIGINT},
+      </if>
+      <if test="commentStatus != null" >
+        #{commentStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="contentFiltered != null" >
+        #{contentFiltered,jdbcType=VARCHAR},
+      </if>
+      <if test="creDate != null" >
+        #{creDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="excerpt != null" >
+        #{excerpt,jdbcType=VARCHAR},
+      </if>
+      <if test="menuOrder != null" >
+        #{menuOrder,jdbcType=INTEGER},
+      </if>
+      <if test="mimeType != null" >
+        #{mimeType,jdbcType=VARCHAR},
+      </if>
+      <if test="modified != null" >
+        #{modified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="parent != null" >
+        #{parent,jdbcType=BIGINT},
+      </if>
+      <if test="password != null" >
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="pingStatus != null" >
+        #{pingStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="pinged != null" >
+        #{pinged,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="toPing != null" >
+        #{toPing,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="belog.pojo.po.Posts" >
+    update t_posts
+    <set >
+      <if test="commentCount != null" >
+        comment_count = #{commentCount,jdbcType=BIGINT},
+      </if>
+      <if test="commentStatus != null" >
+        comment_status = #{commentStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="contentFiltered != null" >
+        content_filtered = #{contentFiltered,jdbcType=VARCHAR},
+      </if>
+      <if test="creDate != null" >
+        cre_date = #{creDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="excerpt != null" >
+        excerpt = #{excerpt,jdbcType=VARCHAR},
+      </if>
+      <if test="menuOrder != null" >
+        menu_order = #{menuOrder,jdbcType=INTEGER},
+      </if>
+      <if test="mimeType != null" >
+        mime_type = #{mimeType,jdbcType=VARCHAR},
+      </if>
+      <if test="modified != null" >
+        modified = #{modified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="parent != null" >
+        parent = #{parent,jdbcType=BIGINT},
+      </if>
+      <if test="password != null" >
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="pingStatus != null" >
+        ping_status = #{pingStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="pinged != null" >
+        pinged = #{pinged,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null" >
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="toPing != null" >
+        to_ping = #{toPing,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

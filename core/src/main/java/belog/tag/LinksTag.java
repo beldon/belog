@@ -1,6 +1,7 @@
 package belog.tag;
 
 import belog.plugin.TagPlugin;
+import belog.pojo.Page;
 import belog.pojo.PageModel;
 import belog.pojo.vo.LinksVo;
 import belog.service.LinksService;
@@ -45,17 +46,17 @@ public class LinksTag extends TagPlugin {
             if (pageSizeO != null) {
                 pageSize = Integer.parseInt(pageSizeO.toString());
             }
-            PageModel pageModel = new PageModel();
-            pageModel.setCurrentPage(currentPage);
-            pageModel.setPageSize(pageSize);
+            Page page = new Page();
+            page.setPageNo(currentPage);
+            page.setPageSize(pageSize);
 
             if ("list".equals(typeO)) { //普通列表
-                pageModel = linksService.findPage(pageModel);
-                env.setVariable("pm", beansWrapper.wrap(pageModel));
+                page = linksService.findPage(page);
+                env.setVariable("pm", beansWrapper.wrap(page));
             } else if ("cat".equals(typeO)) { //分类列表
                 long catId = SSUtils.nullToLong(params.get("catId"), 1l);
-                pageModel = linksService.findPageByCatId(catId, pageModel);
-                env.setVariable("pm", beansWrapper.wrap(pageModel));
+                page = linksService.findPageByCatId(catId, page);
+                env.setVariable("pm", beansWrapper.wrap(page));
             }
         }
 

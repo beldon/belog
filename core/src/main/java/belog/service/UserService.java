@@ -2,6 +2,7 @@ package belog.service;
 
 
 import belog.pojo.Msg;
+import belog.pojo.Page;
 import belog.pojo.PageModel;
 import belog.pojo.vo.UserVo;
 
@@ -27,10 +28,10 @@ public interface UserService {
     /**
      * 分页查询
      *
-     * @param pageModel
+     * @param page
      * @return
      */
-    PageModel findByPage(PageModel pageModel);
+    Page<UserVo> findByPage(Page<UserVo> page);
 
 
     /**

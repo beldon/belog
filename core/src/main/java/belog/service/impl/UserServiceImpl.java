@@ -1,11 +1,9 @@
 package belog.service.impl;
 
 
-import belog.dao.RoleDao;
-import belog.dao.UsersDao;
+import belog.dao.UsersMapper;
 import belog.pojo.Msg;
-import belog.pojo.PageModel;
-import belog.pojo.po.Role;
+import belog.pojo.Page;
 import belog.pojo.po.Users;
 import belog.pojo.vo.UserVo;
 import belog.security.token.Token;
@@ -29,72 +27,55 @@ import java.util.*;
 public class UserServiceImpl extends BaseService implements UserService {
 
     @Autowired
-    private UsersDao usersDao;
-
-    @Autowired
-    private RoleDao roleDao;
+    private UsersMapper usersMapper;
 
     public void saveOrUpdate(UserVo user) {
         Users users = new Users();
         BeanUtils.copyProperties(user, users);
 
-        Role role = roleDao.findById(user.getRoleId());
-        if (role != null) {
-            Set<Role> set = new HashSet<Role>();
-            set.add(role);
-            users.setRoles(set);
-        }
-        if (user.getId() == 0) {
-            usersDao.saveEntity(users);
-        } else {
+        if (user.getId() == 0) {//添加用户
             users.setRegistered(new Date());
-            Users u = usersDao.findById(user.getId());
-            u.setEmail(users.getEmail());
+            usersMapper.updateByPrimaryKeySelective(users);
+        } else {//更新
+            users.setRegistered(new Date());
             if (!StringUtils.isEmpty(user.getPass())) {
                 String sha1Pass = new Sha256Hash(users.getPass(), Token.PASSWORD_TOKEN).toString();
-                u.setPass(sha1Pass);
+                users.setPass(sha1Pass);
             }
-            if (users.getRoles() == null) {
-                u.setRoles(new HashSet<Role>());
-            } else {
-                u.setRoles(users.getRoles());
-            }
-            usersDao.saveEntity(u);
+            usersMapper.updateByPrimaryKeySelective(users);
         }
     }
 
     public void delete(long id) {
-        Users u = usersDao.findById(id);
-        if (u != null) {
-            u.setStatus(1);
-            usersDao.updateEntity(u);
-        }
+        Users users = new Users();
+        users.setId(id);
+        users.setStatus(1);
+        usersMapper.updateByPrimaryKeySelective(users);
     }
 
-    public PageModel findByPage(PageModel pageModel) {
-        Users u = new Users();
-        u.setStatus(0);
-        PageModel pm = this.usersDao.findPageByExample(u, pageModel);
+    public Page<UserVo> findByPage(Page<UserVo> page) {
+        Page<Users> usersPage = new Page<Users>();
+        usersPage.setPageNo(page.getPageNo());
+        usersPage.setPageSize(page.getPageSize());
+        List<Users> usersList = usersMapper.findByPage(usersPage);
 
         List<UserVo> userVos = new ArrayList<UserVo>();
-        List<Users> usersList = pm.getList();
-        if (usersList.size() > 0) {
-            for (Users users : usersList) {
-                UserVo userVo = new UserVo();
-                BeanUtils.copyProperties(users, userVo);
-                userVo.setPostCount(users.getPostses().size());
-                userVos.add(userVo);
-            }
+        for (Users users : usersList) {
+            UserVo userVo = new UserVo();
+            BeanUtils.copyProperties(users, userVo);
+            userVos.add(userVo);
         }
 
-        pm.setList(userVos);
+        page.setTotalPage(usersPage.getTotalPage());
+        page.setTotalRecord(usersPage.getTotalRecord());
+        page.setResults(userVos);
 
-        return pm;
+        return page;
     }
 
     public UserVo findById(long id) {
         UserVo userVo = new UserVo();
-        Users users = usersDao.findById(id);
+        Users users = usersMapper.selectByPrimaryKey(id);
         BeanUtils.copyProperties(users, userVo);
         return userVo;
     }
@@ -122,7 +103,7 @@ public class UserServiceImpl extends BaseService implements UserService {
     }
 
     public UserVo findUserByLoginName(String loginName) {
-        Users users = usersDao.findByLoginName(loginName);
+        Users users = usersMapper.findByLoginName(loginName);
         if (users == null) {
             return new UserVo();
         } else {

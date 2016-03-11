@@ -9,8 +9,7 @@
 
     <bean class="belog.utils.SpringContextUtil"/>
     <bean class="belog.context.AppContext"/>
-    <context:component-scan base-package="
-    belog.plugin,belog.dao.impl,belog.service.impl,belog.hook"/>
+    <context:component-scan base-package="belog.plugin,belog.dao,belog.service.impl,belog.hook"/>
 
 
     <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
@@ -48,54 +47,47 @@
         </constructor-arg>
     </bean>
 
-    <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+    <!-- spring和MyBatis完美整合，不需要mybatis的配置映射文件 -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="hikaricpDataSource"/>
-        <property name="hibernateProperties">
-            <props>
-                <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
-                <prop key="hibernate.hbm2ddl.auto">update</prop>
-                <prop key="hibernate.show_sql">true</prop>
-                <prop key="hibernate.format_sql">true</prop>
-                <prop key="hibernate.current_session_context_class">
-                    org.springframework.orm.hibernate4.SpringSessionContext
-                </prop>
-            </props>
-        </property>
-        <!-- 自动扫描实体对象-->
-        <property name="packagesToScan">
-            <list>
-                <!-- 可以加多个包-->
-                <value>belog.pojo.po</value>
-            </list>
+        <!-- 自动扫描mapping.xml文件 -->
+        <property name="mapperLocations" value="classpath:mapping/*.xml"></property>
+        <property name="plugins">
+            <array>
+                <bean class="belog.interceptor.MybatisSpringPageInterceptor"/>
+            </array>
         </property>
     </bean>
-    <bean id="hibernateTemplate" class="org.springframework.orm.hibernate4.HibernateTemplate">
-        <property name="sessionFactory" ref="sessionFactory"/>
+
+    <!-- DAO接口所在包名，Spring会自动查找其下的类 -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="belog.dao"/>
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
     </bean>
 
 
     <!-- 配置事务管理器,统一管理sessionFactory事务 -->
     <bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
-        <property name="sessionFactory" ref="sessionFactory"/>
+        <!--<property name="sessionFactory" ref="sqlSessionFactory"/>-->
+        <property name="dataSource" ref="hikaricpDataSource"/>
     </bean>
     <!-- 开启事务注解 -->
     <bean id="transactionInterceptor" class="org.springframework.transaction.interceptor.TransactionInterceptor">
         <property name="transactionManager" ref="transactionManager"/>
         <property name="transactionAttributes">
             <props>
+                <prop key="save*">PROPAGATION_REQUIRED</prop>
+                <prop key="add*">PROPAGATION_REQUIRED</prop>
+                <prop key="execute*">PROPAGATION_REQUIRED</prop>
+                <prop key="*Login">PROPAGATION_REQUIRED</prop>
+                <prop key="update*">PROPAGATION_REQUIRED</prop>
+                <prop key="edit*">PROPAGATION_REQUIRED</prop>
+                <prop key="delete*">PROPAGATION_REQUIRED</prop>
+                <prop key="set*">PROPAGATION_REQUIRED</prop>
+                <prop key="*Add*">PROPAGATION_REQUIRED</prop>
+                <prop key="count*">PROPAGATION_REQUIRED</prop>
+                <prop key="*">PROPAGATION_REQUIRED, readOnly</prop>
                 <!--<prop key="*">PROPAGATION_REQUIRED</prop>-->
-                <!--<prop key="save*">PROPAGATION_REQUIRED</prop>-->
-                <!--<prop key="add*">PROPAGATION_REQUIRED</prop>-->
-                <!--<prop key="execute*">PROPAGATION_REQUIRED</prop>-->
-                <!--<prop key="*Login">PROPAGATION_REQUIRED</prop>-->
-                <!--<prop key="update*">PROPAGATION_REQUIRED</prop>-->
-                <!--<prop key="edit*">PROPAGATION_REQUIRED</prop>-->
-                <!--<prop key="delete*">PROPAGATION_REQUIRED</prop>-->
-                <!--<prop key="set*">PROPAGATION_REQUIRED</prop>-->
-                <!--<prop key="*Add*">PROPAGATION_REQUIRED</prop>-->
-                <!--<prop key="count*">PROPAGATION_REQUIRED</prop>-->
-                <!--<prop key="*">PROPAGATION_REQUIRED, readOnly</prop>-->
-                <prop key="*">PROPAGATION_REQUIRED</prop>
             </props>
         </property>
     </bean>

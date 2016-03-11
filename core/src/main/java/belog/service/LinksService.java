@@ -1,6 +1,7 @@
 package belog.service;
 
 
+import belog.pojo.Page;
 import belog.pojo.PageModel;
 import belog.pojo.vo.LinksVo;
 
@@ -12,12 +13,14 @@ import java.util.List;
 public interface LinksService {
     /**
      * 添加或修改
+     *
      * @param links 链接
      */
     void saveOrUpdate(LinksVo links);
 
     /**
      * 删除
+     *
      * @param id
      */
     void delete(long id);
@@ -27,22 +30,23 @@ public interface LinksService {
     /**
      * 查找文章分页
      *
-     * @param pageModel
+     * @param page
      * @return
      */
-    PageModel findPage(PageModel pageModel);
+    Page<LinksVo> findPage(Page<LinksVo> page);
 
     /**
      * 根据分类ID查找分类
      *
      * @param catId     分类ID
-     * @param pageModel
+     * @param page
      * @return
      */
-    PageModel findPageByCatId(long catId, PageModel pageModel);
+    Page<LinksVo> findPageByCatId(long catId, Page<LinksVo> page);
 
     /**
      * 查找所有链接
+     *
      * @return
      */
     List<LinksVo> findAll();

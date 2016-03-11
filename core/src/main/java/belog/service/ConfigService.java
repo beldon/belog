@@ -11,6 +11,10 @@ import java.util.Map;
  * Created by Beldon
  */
 public interface ConfigService {
+
+    String CONFIG = "config";
+
+
     void saveOrUpdate(ConfigVo configVo);
 
     void saveOrUpdate(Collection<ConfigVo> configVos);

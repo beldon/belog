@@ -1,28 +1,13 @@
 package belog.pojo.po;
 
-
-import javax.persistence.*;
-
-/**
- * 存储用户的元数据
- *
- * @author Beldon
- */
-@Entity(name = "t_usermeta")
 public class UserMeta {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "umeta_id", length = 20)
     private Long id;
-    @Column(name = "umeta_key", length = 225)
-    private String metaKey;
 
-    @Column(name = "umeta_value")
-    private String metaValue;
+    private String key;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
-    private Users users;
+    private String value;
+
+    private Long userId;
 
     public Long getId() {
         return id;
@@ -32,27 +17,27 @@ public class UserMeta {
         this.id = id;
     }
 
-    public String getMetaKey() {
-        return metaKey;
+    public String getKey() {
+        return key;
     }
 
-    public void setMetaKey(String metaKey) {
-        this.metaKey = metaKey;
+    public void setKey(String key) {
+        this.key = key == null ? null : key.trim();
     }
 
-    public String getMetaValue() {
-        return metaValue;
+    public String getValue() {
+        return value;
     }
 
-    public void setMetaValue(String metaValue) {
-        this.metaValue = metaValue;
+    public void setValue(String value) {
+        this.value = value == null ? null : value.trim();
     }
 
-    public Users getUsers() {
-        return users;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setUsers(Users users) {
-        this.users = users;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 }
