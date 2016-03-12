@@ -83,12 +83,12 @@
         }).on('success.form.bv', function(e) {
             $.ajax({
                 type: "POST",
-                url: "ajaxEdit.json",
+                url: "ajaxEditCat.json",
                 data: $('#actionForm').serialize(),
                 dataType: "json",
                 success: function(data){
                     if(data.status===true){
-                        window.location.href = 'list.html';
+                        window.location.href = 'cat_list.html';
                     }else{
                         alert("error");
                     }

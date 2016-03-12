@@ -1,13 +1,13 @@
 <#include "../common/_layout.ftl"/>
-<#if pm.currentPage==1 >
+<#if pm.pageNo==1 >
     <#assign frontPage=1>
 <#else >
-    <#assign frontPage=pm.currentPage-1>
+    <#assign frontPage=pm.pageNo-1>
 </#if>
-<#if pm.currentPage==pm.totalPage >
+<#if pm.pageNo==pm.totalPage >
     <#assign nextPage=pm.totalPage>
 <#else >
-    <#assign nextPage=pm.currentPage+1>
+    <#assign nextPage=pm.pageNo+1>
 </#if>
 <@html title="链接列表">
 <div class="panel panel-default">
@@ -32,7 +32,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                    <#list pm.list as link>
+                    <#list pm.results as link>
                     <tr>
                         <th> <input type="checkbox"> </th>
                         <th>${(link.name)!}</th>
@@ -59,7 +59,7 @@
             <nav>
                 <ul class="pagination pull-right">
                     <li><a href="${(BASE_PATH)}/admin/link/list.html?currentPage=${(frontPage)!}">上一页</a></li>
-                    <li><a href="#">${(pm.currentPage)!}/${(pm.totalPage)!}</a></li>
+                    <li><a href="#">${(pm.pageNo)!}/${(pm.totalPage)!}</a></li>
                     <li><a href="${(BASE_PATH)}/admin/link/list.html?currentPage=${(nextPage)!}">下一页</a></li>
                 </ul>
             </nav>

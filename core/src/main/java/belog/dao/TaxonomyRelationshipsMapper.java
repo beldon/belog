@@ -52,7 +52,7 @@ public interface TaxonomyRelationshipsMapper {
 
     @Delete({
             "delete from t_taxonomy_relationships",
-            "where objectId = #{objectId} and type = #{type}"
+            "where object_id = #{objectId} and type = #{type}"
     })
     int deleteByTypeAndObjectId(@Param("type") String type, @Param("objectId")Long objectId);
 }

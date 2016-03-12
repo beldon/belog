@@ -17,6 +17,7 @@ import org.apache.shiro.subject.Subject;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -29,13 +30,17 @@ public class UserServiceImpl extends BaseService implements UserService {
     @Autowired
     private UsersMapper usersMapper;
 
+    @Transactional
     public void saveOrUpdate(UserVo user) {
         Users users = new Users();
         BeanUtils.copyProperties(user, users);
 
-        if (user.getId() == 0) {//添加用户
+        if (user.getId() == null || user.getId() == 0) {//添加用户
             users.setRegistered(new Date());
-            usersMapper.updateByPrimaryKeySelective(users);
+            String sha1Pass = new Sha256Hash(users.getPass(), Token.PASSWORD_TOKEN).toString();
+            users.setPass(sha1Pass);
+            users.setStatus(0);
+            usersMapper.insertSelective(users);
         } else {//更新
             users.setRegistered(new Date());
             if (!StringUtils.isEmpty(user.getPass())) {

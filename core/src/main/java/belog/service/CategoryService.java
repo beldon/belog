@@ -34,6 +34,13 @@ public interface CategoryService extends TaxonomyService {
      */
     List<Categorys> findCat();
 
+    /**
+     * 按等级和分类获取信息
+     *
+     * @return
+     */
+    List<Categorys> findCat(String type);
+
 
     /**
      * 根据PID 查找分类，默认类型是category
@@ -43,6 +50,14 @@ public interface CategoryService extends TaxonomyService {
      */
     List<CategoryVo> findCatByPid(long pid);
 
+    /**
+     * 根据PID和类型 查找分类
+     *
+     * @param pid
+     * @return
+     */
+    List<CategoryVo> findCatByPid(long pid, String type);
+
 
     /**
      * 根据ID去查询
@@ -51,5 +66,7 @@ public interface CategoryService extends TaxonomyService {
      * @return
      */
     CategoryVo findById(long id);
+
+    List<CategoryVo> findByObjectId(Long objectId, String type);
 
 }

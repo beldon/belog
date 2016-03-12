@@ -87,10 +87,10 @@
 
         </javaClientGenerator>
 
-        <table tableName="t_users" domainObjectName="Users"  schema="belog_test" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"
-               enableSelectByExample="false" selectByExampleQueryId="false" >
-            <generatedKey column="id" sqlStatement="MySql" identity="true" type="post"/>
-        </table>
+        <!--<table tableName="t_users" domainObjectName="Users"  schema="belog_test" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"-->
+               <!--enableSelectByExample="false" selectByExampleQueryId="false" >-->
+            <!--<generatedKey column="id" sqlStatement="MySql" identity="true" type="post"/>-->
+        <!--</table>-->
 
         <!--<table tableName="t_user_meta" domainObjectName="UserMeta"  schema="belog_test" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"-->
                <!--enableSelectByExample="false" selectByExampleQueryId="false" >-->
@@ -120,10 +120,10 @@
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true" type="post"/>-->
         <!--</table>-->
 
-        <!--<table tableName="t_post_meta" domainObjectName="PostsMeta"  schema="belog_test" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"-->
-               <!--enableSelectByExample="false" selectByExampleQueryId="false" >-->
-            <!--<generatedKey column="id" sqlStatement="MySql" identity="true" type="post"/>-->
-        <!--</table>-->
+        <table tableName="t_post_meta" domainObjectName="PostsMeta"  schema="belog_test" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"
+               enableSelectByExample="false" selectByExampleQueryId="false" >
+            <generatedKey column="id" sqlStatement="MySql" identity="true" type="post"/>
+        </table>
 
         <!--<table tableName="t_permission" domainObjectName="Permission"  schema="belog_test" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"-->
                <!--enableSelectByExample="false" selectByExampleQueryId="false" >-->

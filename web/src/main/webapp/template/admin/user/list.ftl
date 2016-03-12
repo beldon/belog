@@ -26,11 +26,11 @@
                 </tr>
                 </thead>
                 <tbody>
-                    <#list pm.list as user>
+                    <#list pm.results as user>
                     <tr>
                         <th> <input type="checkbox"> </th>
                         <th>${(user.login)!}</th>
-                        <td>${(user.nickName)!}</td>
+                        <td>${(user.nickname)!}</td>
                         <td>${(user.email)!}</td>
                         <td>${(user.roleName?default("默认"))!}</td>
                         <td>${(user.postCount?default("0"))!}</td>

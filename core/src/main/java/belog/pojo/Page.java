@@ -4,7 +4,7 @@ import java.util.List;
 
 public class Page<T> {
 
-	public static final int DEFAULT_PAGE_SIZE = 20;
+	public static final int DEFAULT_PAGE_SIZE = 10;
 
 	protected int pageNo = 1; // 当前页, 默认为第1页
 	protected int pageSize = DEFAULT_PAGE_SIZE; // 每页记录数

@@ -3,9 +3,9 @@ package belog.pojo.po;
 public class PostsMeta {
     private Long id;
 
-    private String value;
+    private String metaValue;
 
-    private String key;
+    private String metaKey;
 
     private Long postId;
 
@@ -17,20 +17,20 @@ public class PostsMeta {
         this.id = id;
     }
 
-    public String getValue() {
-        return value;
+    public String getMetaValue() {
+        return metaValue;
     }
 
-    public void setValue(String value) {
-        this.value = value == null ? null : value.trim();
+    public void setMetaValue(String metaValue) {
+        this.metaValue = metaValue == null ? null : metaValue.trim();
     }
 
-    public String getKey() {
-        return key;
+    public String getMetaKey() {
+        return metaKey;
     }
 
-    public void setKey(String key) {
-        this.key = key == null ? null : key.trim();
+    public void setMetaKey(String metaKey) {
+        this.metaKey = metaKey == null ? null : metaKey.trim();
     }
 
     public Long getPostId() {

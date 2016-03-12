@@ -1,5 +1,6 @@
 package belog.service;
 
+import belog.pojo.Page;
 import belog.pojo.po.Taxonomy;
 
 import java.util.List;
@@ -75,4 +76,7 @@ public interface TaxonomyService {
 
     Taxonomy findOneByName(String name);
 
+    List<Taxonomy> findByObjectIdAndType(Long objectId, String type);
+
+    List<Taxonomy> findByPage(String type, Page<Taxonomy> page);
 }

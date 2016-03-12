@@ -21,7 +21,7 @@
                     <div class="form-group">
                         <label for="inputEmail3" class="col-sm-1 control-label">用户名</label>
                         <div class="col-sm-4">
-                            <input type="text" name="login" value="${(user.nickName)!}" class="form-control" id="inputEmail3" placeholder="用户名">
+                            <input type="text" name="login" value="${(user.nickname)!}" class="form-control" id="inputEmail3" placeholder="用户名">
                         </div>
                     </div>
                     <div class="form-group">

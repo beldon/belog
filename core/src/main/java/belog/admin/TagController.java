@@ -1,6 +1,7 @@
 package belog.admin;
 
 import belog.pojo.Msg;
+import belog.pojo.Page;
 import belog.pojo.PageModel;
 import belog.service.TagService;
 import belog.utils.MsgUtils;
@@ -23,15 +24,15 @@ public class TagController extends AdminBaseController {
     private TagService tagService;
 
     @RequestMapping("/list")
-    public String list(@ModelAttribute("pageModel") PageModel pageModel, Model model) {
-//        PageModel pm = tagService.findPage(pageModel);
-//        model.addAttribute("pm", pm);
+    public String list(@ModelAttribute("page") Page page, Model model) {
+        Page pm = tagService.findPage(page);
+        model.addAttribute("pm", pm);
         return getTemplatePath("tag/list");
     }
 
     @RequestMapping("/delete.json")
     @ResponseBody
-    public Msg delete(long id) {
+    public Msg delete(int id) {
         if (0 == id) {
             return MsgUtils.error("请填入文章内容");
         }

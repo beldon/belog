@@ -65,7 +65,8 @@ public interface UsersMapper {
             "select",
             "id, activation_key, display_name, email, login, nickname, pass, registered, ",
             "status, url",
-            "from t_users"
+            "from t_users",
+            "where status = 0"
     })
     @ResultMap("BaseResultMap")
     List<Users> findByPage(Page<Users> page);

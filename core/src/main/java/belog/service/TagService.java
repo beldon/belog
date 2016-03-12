@@ -1,5 +1,6 @@
 package belog.service;
 
+import belog.pojo.Page;
 import belog.pojo.PageModel;
 import belog.pojo.vo.CategoryVo;
 import belog.pojo.vo.TagVo;
@@ -42,5 +43,7 @@ public interface TagService extends TaxonomyService {
      */
     TagVo getOrAddTagByName(String tagName);
 
+    List<TagVo> findByObjectId(Long objectId, String type);
 
+    Page<TagVo> findPage(Page<TagVo> page);
 }

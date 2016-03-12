@@ -28,7 +28,7 @@ public class ArticleVo extends Posts {
     /**
      * 文章对应的用户
      */
-    private Users user;
+    private UserVo user;
 
     public List<CategoryVo> getCats() {
         return cats;
@@ -46,11 +46,11 @@ public class ArticleVo extends Posts {
         this.tagVos = tagVos;
     }
 
-    public Users getUser() {
+    public UserVo getUser() {
         return user;
     }
 
-    public void setUser(Users user) {
+    public void setUser(UserVo user) {
         this.user = user;
     }
 

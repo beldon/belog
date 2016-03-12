@@ -13,9 +13,9 @@ public interface PostsMetaMapper {
     int deleteByPrimaryKey(Long id);
 
     @Insert({
-        "insert into t_post_meta (value, key, ",
+        "insert into t_post_meta (meta_value, meta_key, ",
         "post_id)",
-        "values (#{value,jdbcType=VARCHAR}, #{key,jdbcType=VARCHAR}, ",
+        "values (#{metaValue,jdbcType=VARCHAR}, #{metaKey,jdbcType=VARCHAR}, ",
         "#{postId,jdbcType=BIGINT})"
     })
     @SelectKey(statement="SELECT LAST_INSERT_ID()", keyProperty="id", before=false, resultType=Long.class)
@@ -25,7 +25,7 @@ public interface PostsMetaMapper {
 
     @Select({
         "select",
-        "id, value, key, post_id",
+        "id, meta_value, meta_key, post_id",
         "from t_post_meta",
         "where id = #{id,jdbcType=BIGINT}"
     })
@@ -36,18 +36,20 @@ public interface PostsMetaMapper {
 
     @Update({
         "update t_post_meta",
-        "set value = #{value,jdbcType=VARCHAR},",
-          "key = #{key,jdbcType=VARCHAR},",
+        "set meta_value = #{metaValue,jdbcType=VARCHAR},",
+          "meta_key = #{metaKey,jdbcType=VARCHAR},",
           "post_id = #{postId,jdbcType=BIGINT}",
         "where id = #{id,jdbcType=BIGINT}"
     })
     int updateByPrimaryKey(PostsMeta record);
 
+
+
     @Select({
             "select",
-            "id, value, key, post_id",
+            "id, meta_value, meta_key, post_id",
             "from t_post_meta",
-            "where post_id = #{postId} and key = #{key} LIMIT 1"
+            "where post_id = #{postId,jdbcType=BIGINT} and meta_key = #{key}"
     })
     @ResultMap("BaseResultMap")
     PostsMeta findOneByKey(@Param("postId") Long postId, @Param("key") String key);
@@ -60,7 +62,7 @@ public interface PostsMetaMapper {
 
     @Delete({
             "delete from t_post_meta",
-            "where post_id = #{postId,jdbcType=BIGINT} and key = #{key}"
+            "where post_id = #{postId,jdbcType=BIGINT} and meta_key = #{key}"
     })
     int deleteByPostIdAndKey(@Param("postId") Long postId, @Param("key") String key);
 }

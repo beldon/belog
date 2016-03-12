@@ -6,10 +6,12 @@ import belog.pojo.Page;
 import belog.pojo.event.Event;
 import belog.pojo.event.LinkEvent;
 import belog.pojo.po.Links;
+import belog.pojo.po.TaxonomyRelationships;
 import belog.pojo.vo.CategoryVo;
 import belog.pojo.vo.LinksVo;
 import belog.service.CategoryService;
 import belog.service.LinksService;
+import belog.service.TaxonomyService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -36,7 +38,7 @@ public class LinksServiceImpl extends BaseService implements LinksService {
     private CategoryService categoryService;
 
     public void saveOrUpdate(LinksVo linksVo) {
-        if (linksVo.getId() == 0) {//添加链接
+        if (linksVo.getId() == null || linksVo.getId() == 0) {//添加链接
             appContext.getContexts().publishEvent(new LinkEvent(linksVo, Event.Action.ADD));
             Links links = new Links();
             BeanUtils.copyProperties(linksVo, links);
@@ -66,18 +68,28 @@ public class LinksServiceImpl extends BaseService implements LinksService {
     public void delete(long id) {
         linksMapper.deleteByPrimaryKey(id);
 
-        //TODO 删除分类
+        //删除分类
+        taxonomyRelationshipsMapper.deleteByTypeAndObjectId(TaxonomyService.LINK_CATEGORY, id);
     }
 
     public LinksVo findById(long id) {
         Links links = linksMapper.selectByPrimaryKey(id);
         LinksVo linksVo = new LinksVo();
-        BeanUtils.copyProperties(links, linksVo);
+        copy(links, linksVo);
         return linksVo;
     }
 
     public Page<LinksVo> findPage(Page<LinksVo> page) {
-        return null;
+        Page<Links> linksPage = new Page<Links>();
+        linksPage.setPageNo(page.getPageNo());
+        linksPage.setPageSize(page.getPageSize());
+        List<Links> list = linksMapper.findPage(linksPage);
+        List<LinksVo> linksVos = new ArrayList<LinksVo>();
+        copy(list, linksVos);
+        page.setTotalPage(linksPage.getTotalPage());
+        page.setTotalRecord(linksPage.getTotalRecord());
+        page.setResults(linksVos);
+        return page;
     }
 
     public Page<LinksVo> findPageByCatId(long catId, Page<LinksVo> page) {
@@ -88,11 +100,7 @@ public class LinksServiceImpl extends BaseService implements LinksService {
     public List<LinksVo> findAll() {
         List<LinksVo> linksVos = new ArrayList<LinksVo>();
         List<Links> linkses = linksMapper.findAll();
-        for (Links links : linkses) {
-            LinksVo linksVo = new LinksVo();
-            BeanUtils.copyProperties(links, linksVo);
-            linksVos.add(linksVo);
-        }
+        copy(linkses, linksVos);
         return linksVos;
     }
 
@@ -105,8 +113,26 @@ public class LinksServiceImpl extends BaseService implements LinksService {
      */
     private void addCat(Long linksId, List<CategoryVo> cats) {
         for (CategoryVo categoryVo : cats) {
-
+            TaxonomyRelationships taxonomyRelationships = new TaxonomyRelationships();
+            taxonomyRelationships.setType(TaxonomyService.LINK_CATEGORY);
+            taxonomyRelationships.setObjectId(linksId);
+            taxonomyRelationships.setTaxonomyId(categoryVo.getId());
+            taxonomyRelationshipsMapper.insertSelective(taxonomyRelationships);
         }
+    }
+
+    private void copy(List<Links> source, List<LinksVo> target) {
+        for (Links links : source) {
+            LinksVo linksVo = new LinksVo();
+            copy(links, linksVo);
+            target.add(linksVo);
+        }
+    }
+
+    private void copy(Links source, LinksVo target) {
+        BeanUtils.copyProperties(source, target);
+        List<CategoryVo> categoryVoList = categoryService.findByObjectId(source.getId(), TaxonomyService.LINK_CATEGORY);
+        target.setCats(categoryVoList);
     }
 
 

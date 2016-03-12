@@ -25,6 +25,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -52,14 +53,16 @@ public class ArticleServiceImpl extends BaseService implements ArticleService {
     private CategoryService categoryService;
 
     @Autowired
+    @Qualifier("TagService")
     private TagService tagService;
 
 
     /**
      * @param articleVo
      */
+    @Transactional
     public void addOrUpdate(ArticleVo articleVo) {
-        if (articleVo.getId() == 0) { //新增文章
+        if (articleVo.getId() == null || articleVo.getId() == 0) { //新增文章
             appContext.getContexts().publishEvent(new ArticleEvent(articleVo, Event.Action.ADD));
             Posts posts = new Posts();
             BeanUtils.copyProperties(articleVo, posts);
@@ -71,6 +74,7 @@ public class ArticleServiceImpl extends BaseService implements ArticleService {
 
             Subject subject = SecurityUtils.getSubject();
             String loginName = subject.getPrincipal().toString();
+//            String loginName = "beldon";
             Users users = usersMapper.findByLoginName(loginName);
             posts.setUserId(users.getId());
 
@@ -79,9 +83,9 @@ public class ArticleServiceImpl extends BaseService implements ArticleService {
             if (!StringUtils.isEmpty(articleVo.getCover())) {
                 PostsMeta postsMeta = new PostsMeta();
                 postsMeta.setPostId(posts.getId());
-                postsMeta.setKey("cover");
-                postsMeta.setValue(articleVo.getCover());
-                postsMetaMapper.insertSelective(postsMeta);
+                postsMeta.setMetaKey("cover");
+                postsMeta.setMetaValue(articleVo.getCover());
+                postsMetaMapper.insert(postsMeta);
             }
 
             //处理分类
@@ -104,21 +108,20 @@ public class ArticleServiceImpl extends BaseService implements ArticleService {
 
             if (!StringUtils.isEmpty(articleVo.getCover())) {//更改或添加
                 if (postsMeta != null) {//更改
-                    postsMeta.setValue(articleVo.getCover());
+                    postsMeta.setMetaValue(articleVo.getCover());
+                    postsMetaMapper.updateByPrimaryKeySelective(postsMeta);
                 } else {//添加
                     postsMeta = new PostsMeta();
                     postsMeta.setPostId(posts.getId());
-                    postsMeta.setKey("cover");
-                    postsMeta.setValue(articleVo.getCover());
+                    postsMeta.setMetaKey("cover");
+                    postsMeta.setMetaValue(articleVo.getCover());
+                    postsMetaMapper.insertSelective(postsMeta);
                 }
             } else {//删除
                 if (postsMeta != null) {
-                    postsMeta.setValue("");
+                    postsMeta.setMetaValue("");
+                    postsMetaMapper.updateByPrimaryKeySelective(postsMeta);
                 }
-            }
-
-            if (postsMeta != null) {
-                postsMetaMapper.updateByPrimaryKeySelective(postsMeta);
             }
 
             //添加分类
@@ -165,7 +168,9 @@ public class ArticleServiceImpl extends BaseService implements ArticleService {
         List<ArticleVo> articleVoList = new ArrayList<ArticleVo>();
 
         for (Posts posts : list) {
-            //@TODO 复制属性
+            ArticleVo articleVo = new ArticleVo();
+            copy(posts, articleVo);
+            articleVoList.add(articleVo);
         }
         page.setResults(articleVoList);
         page.setTotalRecord(postPage.getTotalRecord());
@@ -182,7 +187,9 @@ public class ArticleServiceImpl extends BaseService implements ArticleService {
         List<ArticleVo> articleVoList = new ArrayList<ArticleVo>();
 
         for (Posts posts : list) {
-            //@TODO 复制属性
+            ArticleVo articleVo = new ArticleVo();
+            copy(posts, articleVo);
+            articleVoList.add(articleVo);
         }
 
         page.setResults(articleVoList);
@@ -209,14 +216,15 @@ public class ArticleServiceImpl extends BaseService implements ArticleService {
         //文章封面
         PostsMeta postsMeta = postsMetaMapper.findOneByKey(posts.getId(), "cover");
         if (postsMeta != null) {
-            articleVo.setCover(postsMeta.getValue());
+            articleVo.setCover(postsMeta.getMetaValue());
         }
 
         //文章标签
-
-
+        List<TagVo> tagVos = tagService.findByObjectId(posts.getId(), "post_tag");
+        articleVo.setTagVos(tagVos);
         //文章分类
-
+        List<CategoryVo> categoryVoList = categoryService.findByObjectId(posts.getId(), "post_cat");
+        articleVo.setCats(categoryVoList);
     }
 
     /**

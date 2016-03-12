@@ -1,4 +1,14 @@
 <#include "../common/_layout.ftl"/>
+<#if pm.pageNo==1 >
+    <#assign frontPage=1>
+<#else >
+    <#assign frontPage=pm.pageNo-1>
+</#if>
+<#if pm.pageNo==pm.totalPage >
+    <#assign nextPage=pm.totalPage>
+<#else >
+    <#assign nextPage=pm.pageNo+1>
+</#if>
 <@html title="文章列表">
 <div class="panel panel-default">
     <div class="panel-heading">
@@ -23,11 +33,11 @@
                 </tr>
                 </thead>
                 <tbody>
-                    <#list pm.list as article>
+                    <#list pm.results as article>
                     <tr>
                         <th> <input type="checkbox"> </th>
                         <th>${(article.title)!}</th>
-                        <td>${(article.userVo.nickName)!}</td>
+                        <td>${(article.user.nickname)!}</td>
                         <td>
                             <#list (article.cats)! as cat>
                                 <#if cat_index == 0>
@@ -39,7 +49,7 @@
                             </#list>
                         </td>
                         <td>${(article.commentCount?default(0))!}</td>
-                        <td>${(article.date)!}</td>
+                        <td>${(article.creDate?date)!}</td>
                         <td>
                             <a href="edit.html?id=${(article.id)!}" class="btn btn-secondary btn-sm btn-icon icon-left">编辑</a>
                             <a href="#" aid="${(article.id)!}" class="btn btn-danger btn-sm btn-icon icon-left delete">删除</a>
@@ -51,7 +61,7 @@
             <nav>
                 <ul class="pagination pull-right">
                     <li><a href="${(BASE_PATH)}/admin/article/list.html?currentPage=${(frontPage)!}">上一页</a></li>
-                    <li><a href="#">${(pm.currentPage)!}/${(pm.totalPage)!}</a></li>
+                    <li><a href="#">${(pm.pageNo)!}/${(pm.totalPage)!}</a></li>
                     <li><a href="${(BASE_PATH)}/admin/article/list.html?currentPage=${(nextPage)!}">下一页</a></li>
                 </ul>
             </nav>

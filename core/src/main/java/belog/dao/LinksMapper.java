@@ -1,6 +1,8 @@
 package belog.dao;
 
+import belog.pojo.Page;
 import belog.pojo.po.Links;
+import belog.pojo.vo.LinksVo;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.ResultMap;
@@ -74,4 +76,13 @@ public interface LinksMapper {
     })
     @ResultMap("BaseResultMap")
     List<Links> findAll();
+
+    @Select({
+            "select",
+            "id, description, image, name, notes, rel, rss, sort, target, updated, url, visible, ",
+            "owner",
+            "from t_links"
+    })
+    @ResultMap("BaseResultMap")
+    List<Links> findPage(Page<Links> page);
 }

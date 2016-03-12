@@ -3,12 +3,12 @@
 <mapper namespace="belog.dao.PostsMetaMapper" >
   <resultMap id="BaseResultMap" type="belog.pojo.po.PostsMeta" >
     <id column="id" property="id" jdbcType="BIGINT" />
-    <result column="value" property="value" jdbcType="VARCHAR" />
-    <result column="key" property="key" jdbcType="VARCHAR" />
+    <result column="meta_value" property="metaValue" jdbcType="VARCHAR" />
+    <result column="meta_key" property="metaKey" jdbcType="VARCHAR" />
     <result column="post_id" property="postId" jdbcType="BIGINT" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, value, key, post_id
+    id, meta_value, meta_key, post_id
   </sql>
   <insert id="insertSelective" parameterType="belog.pojo.po.PostsMeta" >
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
@@ -16,22 +16,22 @@
     </selectKey>
     insert into t_post_meta
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="value != null" >
-        value,
+      <if test="metaValue != null" >
+        meta_value,
       </if>
-      <if test="key != null" >
-        key,
+      <if test="metaKey != null" >
+        meta_key,
       </if>
       <if test="postId != null" >
         post_id,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="value != null" >
-        #{value,jdbcType=VARCHAR},
+      <if test="metaValue != null" >
+        #{metaValue,jdbcType=VARCHAR},
       </if>
-      <if test="key != null" >
-        #{key,jdbcType=VARCHAR},
+      <if test="metaKey != null" >
+        #{metaKey,jdbcType=VARCHAR},
       </if>
       <if test="postId != null" >
         #{postId,jdbcType=BIGINT},
@@ -41,11 +41,11 @@
   <update id="updateByPrimaryKeySelective" parameterType="belog.pojo.po.PostsMeta" >
     update t_post_meta
     <set >
-      <if test="value != null" >
-        value = #{value,jdbcType=VARCHAR},
+      <if test="metaValue != null" >
+        meta_value = #{metaValue,jdbcType=VARCHAR},
       </if>
-      <if test="key != null" >
-        key = #{key,jdbcType=VARCHAR},
+      <if test="metaKey != null" >
+        meta_key = #{metaKey,jdbcType=VARCHAR},
       </if>
       <if test="postId != null" >
         post_id = #{postId,jdbcType=BIGINT},

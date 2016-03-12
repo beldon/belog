@@ -47,6 +47,7 @@ public class CategoryController extends AdminBaseController {
     @RequestMapping("/ajaxEdit.json")
     @ResponseBody
     public Msg ajaxEdit(@ModelAttribute CategoryVo categoryVo) {
+        categoryVo.setTaxonomy("category");
         categoryService.saveOrUpdate(categoryVo);
         return MsgUtils.success();
     }

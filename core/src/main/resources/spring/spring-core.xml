@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
         http://www.springframework.org/schema/context
-        http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+        http://www.springframework.org/schema/context/spring-context-3.0.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
 
     <bean class="belog.utils.SpringContextUtil"/>
     <bean class="belog.context.AppContext"/>
@@ -16,7 +16,7 @@
         <property name="locations">
             <list>
                 <value>classpath:jdbc.properties</value>
-                <value>classpath:db.properties</value>
+                <!--<value>classpath:db.properties</value>-->
             </list>
         </property>
         <property name="ignoreResourceNotFound" value="true"/>
@@ -65,50 +65,14 @@
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
     </bean>
 
-
-    <!-- 配置事务管理器,统一管理sessionFactory事务 -->
-    <bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
-        <!--<property name="sessionFactory" ref="sqlSessionFactory"/>-->
-        <property name="dataSource" ref="hikaricpDataSource"/>
-    </bean>
-    <!-- 开启事务注解 -->
-    <bean id="transactionInterceptor" class="org.springframework.transaction.interceptor.TransactionInterceptor">
-        <property name="transactionManager" ref="transactionManager"/>
-        <property name="transactionAttributes">
-            <props>
-                <prop key="save*">PROPAGATION_REQUIRED</prop>
-                <prop key="add*">PROPAGATION_REQUIRED</prop>
-                <prop key="execute*">PROPAGATION_REQUIRED</prop>
-                <prop key="*Login">PROPAGATION_REQUIRED</prop>
-                <prop key="update*">PROPAGATION_REQUIRED</prop>
-                <prop key="edit*">PROPAGATION_REQUIRED</prop>
-                <prop key="delete*">PROPAGATION_REQUIRED</prop>
-                <prop key="set*">PROPAGATION_REQUIRED</prop>
-                <prop key="*Add*">PROPAGATION_REQUIRED</prop>
-                <prop key="count*">PROPAGATION_REQUIRED</prop>
-                <prop key="*">PROPAGATION_REQUIRED, readOnly</prop>
-                <!--<prop key="*">PROPAGATION_REQUIRED</prop>-->
-            </props>
-        </property>
+    <!-- 事务管理器 -->
+    <bean id="txManager"
+          class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="hikaricpDataSource" />
     </bean>
 
-    <bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
-        <!-- 如果proxyTargetClass 为 false(默认为false)则用标准的JDK 基于接口的代理，若为true那么基于类的代理将起作用（这时需要cglib库） -->
-        <property name="proxyTargetClass" value="true"/>
-        <property name="beanNames">
-            <list>
-                <value>*Dao</value>
-                <value>*ServiceImpl</value>
-                <value>*Service</value>
-                <value>*Test</value>
-            </list>
-        </property>
-        <property name="interceptorNames">
-            <list>
-                <value>transactionInterceptor</value>
-            </list>
-        </property>
-    </bean>
+    <!-- 事务注解驱动，标注@Transactional的类和方法将具有事务性 -->
+    <tx:annotation-driven transaction-manager="txManager" />
 
     <!-- ehcache配置-->
     <bean id="ehcacheCacheManagerFactory" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
