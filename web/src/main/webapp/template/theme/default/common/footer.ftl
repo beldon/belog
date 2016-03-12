@@ -10,7 +10,7 @@
                 <h4>友情链接</h4>
                 <ul class="list-inline">
                     <li><a target="_blank" href="http://beldon.me">Beldon</a></li>
-                <#list pm.list as link>
+                <#list pm.results as link>
                     <li><a target="${(link.target)!}" href="${(link.url)!}">${(link.name)!}</a></li>
                 </#list>
                 </ul>

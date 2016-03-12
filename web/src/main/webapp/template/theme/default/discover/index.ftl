@@ -2,15 +2,15 @@
 <@article_tag type='list' currentPage=currentPage pageSize='12'>
     <#assign pm=pm>
 </@article_tag>
-<#if pm.currentPage==1 >
+<#if pm.pageNo==1 >
     <#assign frontPage=1>
 <#else >
-    <#assign frontPage=pm.currentPage-1>
+    <#assign frontPage=pm.pageNo-1>
 </#if>
-<#if pm.currentPage==pm.totalPage >
+<#if pm.pageNo==pm.totalPage >
     <#assign nextPage=pm.totalPage>
 <#else >
-    <#assign nextPage=pm.currentPage+1>
+    <#assign nextPage=pm.pageNo+1>
 </#if>
 <@html title="发现-">
 
@@ -31,7 +31,7 @@
     <div class="container">
         <div id="work-mixitup" class="work-content">
             <div class="row">
-                <#list pm.list as article>
+                <#list pm.results as article>
                     <!-- Begin work item -->
                     <div class="col-sm-4 col-md-3 col-xs-6 mix printing">
                         <div class="work-item">
@@ -66,7 +66,7 @@
         <div class="clear"></div>
         <ul class="pagination info block-color separated pull-right">
             <li><a href="${BASE_PATH}/discover/index_${frontPage}.html">&laquo;</a></li>
-            <li><a href="#">${(pm.currentPage)!}/${(pm.totalPage)!}</a></li>
+            <li><a href="#">${(pm.pageNo)!}/${(pm.totalPage)!}</a></li>
             <li><a href="${BASE_PATH}/discover/index_${nextPage}.html">&raquo;</a></li>
         </ul>
 

@@ -54,7 +54,7 @@
                             <#else>
                                 <a href="#">默认分类</a>
                             </#if> By: <a
-                                    href="#">${(pageArticle.userVo.nickName)!}</a> <i class="fa fa-comment"></i>: 0</div>
+                                    href="#">${(pageArticle.user.nickname)!}</a> <i class="fa fa-comment"></i>: 0</div>
                             <button class="btn btn-default btn-xs pull-right"><span><i class="fa fa-heart"></i></span> 0</button>
                         </div>
                     </div>

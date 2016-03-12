@@ -132,7 +132,7 @@
         </div><!-- /.section-heading -->
         <div id="work-mixitup" class="work-content">
             <div class="row">
-                <#list pagePm.list as article>
+                <#list pagePm.results as article>
                     <!-- Begin work item -->
                     <div class="col-sm-4 col-md-3 col-xs-6 mix printing">
                         <div class="work-item">

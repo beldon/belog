@@ -2,15 +2,15 @@
 <@article_tag type='list' currentPage=currentPage pageSize='12'>
     <#assign pm=pm>
 </@article_tag>
-<#if pm.currentPage==1 >
+<#if pm.pageNo==1 >
     <#assign frontPage=1>
 <#else >
-    <#assign frontPage=pm.currentPage-1>
+    <#assign frontPage=pm.pageNo-1>
 </#if>
-<#if pm.currentPage==pm.totalPage >
+<#if pm.pageNo==pm.totalPage >
     <#assign nextPage=pm.totalPage>
 <#else >
-    <#assign nextPage=pm.currentPage+1>
+    <#assign nextPage=pm.pageNo+1>
 </#if>
 <div class="smooth-overflow frontend">
 
@@ -48,7 +48,7 @@
             </div>
             <div class="col-md-12">
                 <div id="portfolio-filtering">
-                <#list pm.list as article>
+                <#list pm.results as article>
                     <!--Portfolio Item-->
                     <div class="col-md-3 col-sm-6 col-xs-12 cat1">
                         <div class="portfolio-item cs-style-5">

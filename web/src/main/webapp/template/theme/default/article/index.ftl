@@ -1,19 +1,19 @@
 <#include "../common/_layout.ftl"/>
-<@category_tag type='list' currentPage=currentPage>
+<@category_tag type='list'>
     <#assign cats=cats>
 </@category_tag>
-<@article_tag type='list' currentPage=currentPage>
+<@article_tag type='list' currentPage=pageNo>
     <#assign pm=pm>
 </@article_tag>
-<#if pm.currentPage==1 >
+<#if pm.pageNo==1 >
     <#assign frontPage=1>
 <#else >
-    <#assign frontPage=pm.currentPage-1>
+    <#assign frontPage=pm.pageNo-1>
 </#if>
-<#if pm.currentPage==pm.totalPage >
+<#if pm.pageNo==pm.totalPage >
     <#assign nextPage=pm.totalPage>
 <#else >
-    <#assign nextPage=pm.currentPage+1>
+    <#assign nextPage=pm.pageNo+1>
 </#if>
 
 
@@ -39,7 +39,7 @@
             <div class="section">
                 <ul class="media-list blog-list">
 
-                    <#list pm.list as article>
+                    <#list pm.results as article>
                         <li class="media">
                             <a class="pull-left" href="#fakelink">
                                 <#if article?exists && article.cover?exists && article.cover != ''>

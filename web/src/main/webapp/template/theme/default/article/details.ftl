@@ -1,5 +1,5 @@
 <#include "../common/_layout.ftl"/>
-<@category_tag type='list' currentPage=currentPage>
+<@category_tag type='list'>
     <#assign cats=cats>
 </@category_tag>
 <@article_tag articleId=id>
@@ -69,7 +69,7 @@
                         </li>
                         <li class="list-group-item">
                             <i class="fa fa-flask icons"></i>
-                            作者: <a href="#fakelink">${(pageArticle.userVo.nickName)!}</a>
+                            作者: <a href="#fakelink">${(pageArticle.user.nickname)!}</a>
                         </li>
                     </ul>
                 </div><!-- /.panel panel-default -->

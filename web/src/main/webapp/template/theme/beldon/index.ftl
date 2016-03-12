@@ -119,7 +119,7 @@
             <div class="main-page-blog-posts block">
                 <h2>最新发布</h2>
 
-                <#list pagePm.list as article>
+                <#list pagePm.results as article>
                     <!--Blog Post-->
                     <div class="col-md-3 col-sm-6">
                         <div class="blog-post-short">

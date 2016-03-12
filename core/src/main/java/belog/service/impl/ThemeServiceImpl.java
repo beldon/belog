@@ -38,7 +38,10 @@ public class ThemeServiceImpl extends BaseService implements ThemeService {
     }
 
     public void setTheme(String themeName) {
-        ConfigVo configVo = new ConfigVo();
+        ConfigVo configVo = configService.findByName(THEME_KEY);
+        if (configVo == null) {
+            configVo = new ConfigVo();
+        }
         configVo.setName(THEME_KEY);
         configVo.setValue(themeName);
         configVo.setAutoLoad("no");

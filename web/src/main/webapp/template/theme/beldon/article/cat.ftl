@@ -2,7 +2,7 @@
 <#if !page?exists>
     <#assign page=1>
 </#if>
-<@category_tag type='list' currentPage=currentPage>
+<@category_tag type='list'>
     <#assign cats=cats>
 </@category_tag>
 <@category_tag catId = id>
@@ -11,15 +11,15 @@
 <@article_tag type='cat'catId=id currentPage = page>
     <#assign pm=pm>
 </@article_tag>
-<#if pm.currentPage==1 >
+<#if pm.pageNo==1 >
     <#assign frontPage=1>
 <#else >
-    <#assign frontPage=pm.currentPage-1>
+    <#assign frontPage=pm.pageNo-1>
 </#if>
-<#if pm.currentPage==pm.totalPage >
+<#if pm.pageNo==pm.totalPage >
     <#assign nextPage=pm.totalPage>
 <#else >
-    <#assign nextPage=pm.currentPage+1>
+    <#assign nextPage=pm.pageNo+1>
 </#if>
 <div class="smooth-overflow frontend">
 
@@ -53,7 +53,7 @@
     <div class="container frontend">
         <div class="row">
             <div class="col-md-9">
-                    <#list pm.list as article>
+                    <#list pm.results as article>
                         <!-- Blog Post Starts -->
                         <div class="blog-post">
                             <div class="blog-header">
@@ -95,7 +95,7 @@
                 <ul class="pagination pull-right">
                     <#--<li><a href="${BASE_PATH}/article/index.html?page=${frontPage}">&laquo;</a></li>-->
                     <li><a href="${BASE_PATH}/article/cat/${frontPage}/${id}.html">&laquo;</a></li>
-                    <li><a href="#">${(pm.currentPage)!}/${(pm.totalPage)!}</a></li>
+                    <li><a href="#">${(pm.pageNo)!}/${(pm.totalPage)!}</a></li>
                     <li><a href="${BASE_PATH}/article/cat/${nextPage}/${id}.html">&raquo;</a></li>
                     <#--<li><a href="${BASE_PATH}/article/index.html?page=${nextPage}">&raquo;</a></li>-->
                 </ul>
