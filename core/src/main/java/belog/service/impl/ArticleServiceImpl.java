@@ -9,7 +9,10 @@ import belog.pojo.Msg;
 import belog.pojo.Page;
 import belog.pojo.event.ArticleEvent;
 import belog.pojo.event.Event;
-import belog.pojo.po.*;
+import belog.pojo.po.Posts;
+import belog.pojo.po.PostsMeta;
+import belog.pojo.po.TaxonomyRelationships;
+import belog.pojo.po.Users;
 import belog.pojo.vo.ArticleVo;
 import belog.pojo.vo.CategoryVo;
 import belog.pojo.vo.TagVo;
@@ -17,6 +20,7 @@ import belog.pojo.vo.UserVo;
 import belog.service.ArticleService;
 import belog.service.CategoryService;
 import belog.service.TagService;
+import belog.service.TaxonomyService;
 import belog.utils.MsgUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
@@ -27,7 +31,9 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Beldon
@@ -93,7 +99,7 @@ public class ArticleServiceImpl extends BaseService implements ArticleService {
             addCat(posts.getId(), cats);
 
             //处理标签
-            List<TagVo> tagVos = articleVo.getTagVos();
+            List<TagVo> tagVos = articleVo.getTags();
             addTags(posts.getId(), tagVos);
 
         } else { //更新文章
@@ -128,7 +134,7 @@ public class ArticleServiceImpl extends BaseService implements ArticleService {
             addCat(posts.getId(), articleVo.getCats());
 
             //添加标签
-            addTags(posts.getId(), articleVo.getTagVos());
+            addTags(posts.getId(), articleVo.getTags());
         }
     }
 
@@ -144,8 +150,8 @@ public class ArticleServiceImpl extends BaseService implements ArticleService {
             //删除 postMeta
             postsMetaMapper.deleteByPostId(id);
             //删除分类及标签
-            taxonomyRelationshipsMapper.deleteByTypeAndObjectId("post_cat", id);
-            taxonomyRelationshipsMapper.deleteByTypeAndObjectId("post_tag", id);
+            taxonomyRelationshipsMapper.deleteByTypeAndObjectId(TaxonomyService.POST_TAG, id);
+            taxonomyRelationshipsMapper.deleteByTypeAndObjectId(TaxonomyService.POST_CATEGORY, id);
             //删除文章
             postsMapper.deleteByPrimaryKey(id);
         }
@@ -178,22 +184,14 @@ public class ArticleServiceImpl extends BaseService implements ArticleService {
     }
 
     public Page<ArticleVo> findPageByCatId(long catId, Page<ArticleVo> page, String type) {
-        Page<Posts> postPage = new Page<Posts>();
-        postPage.setPageNo(page.getPageNo());
-        postPage.setPageSize(page.getPageSize());
-        postPage.setTotalRecord(page.getTotalRecord());
+        return findPageByTypeAndTaxId(catId, TaxonomyService.POST_CATEGORY, page);
+    }
 
-        List<Posts> list = postsMapper.findPageCat(catId, postPage);
-        List<ArticleVo> articleVoList = new ArrayList<ArticleVo>();
-
-        for (Posts posts : list) {
-            ArticleVo articleVo = new ArticleVo();
-            copy(posts, articleVo);
-            articleVoList.add(articleVo);
+    public Page<ArticleVo> findPageByTag(String tagName, Page<ArticleVo> page, String type) {
+        TagVo tagVo = tagService.getTagByName(tagName);
+        if (tagVo != null) {
+            return findPageByTypeAndTaxId(tagVo.getId(), TaxonomyService.POST_TAG, page);
         }
-
-        page.setResults(articleVoList);
-        page.setTotalRecord(postPage.getTotalRecord());
         return page;
     }
 
@@ -220,10 +218,10 @@ public class ArticleServiceImpl extends BaseService implements ArticleService {
         }
 
         //文章标签
-        List<TagVo> tagVos = tagService.findByObjectId(posts.getId(), "post_tag");
-        articleVo.setTagVos(tagVos);
+        List<TagVo> tagVos = tagService.findByObjectId(posts.getId(), TaxonomyService.POST_TAG);
+        articleVo.setTags(tagVos);
         //文章分类
-        List<CategoryVo> categoryVoList = categoryService.findByObjectId(posts.getId(), "post_cat");
+        List<CategoryVo> categoryVoList = categoryService.findByObjectId(posts.getId(), TaxonomyService.POST_CATEGORY);
         articleVo.setCats(categoryVoList);
     }
 
@@ -246,13 +244,13 @@ public class ArticleServiceImpl extends BaseService implements ArticleService {
      */
     private void addCat(long postsId, List<CategoryVo> cats) {
         //删除所有分类
-        taxonomyRelationshipsMapper.deleteByTypeAndObjectId("post_cat", postsId);
+        taxonomyRelationshipsMapper.deleteByTypeAndObjectId(TaxonomyService.POST_CATEGORY, postsId);
 
         //添加分类
         if (cats != null && cats.size() > 0) {
             for (CategoryVo categoryVo : cats) {
                 TaxonomyRelationships taxonomyRelationships = new TaxonomyRelationships();
-                taxonomyRelationships.setType("post_cat");
+                taxonomyRelationships.setType(TaxonomyService.POST_CATEGORY);
                 taxonomyRelationships.setObjectId(postsId);
                 taxonomyRelationships.setTaxonomyId(categoryVo.getId());
                 taxonomyRelationshipsMapper.insertSelective(taxonomyRelationships);
@@ -274,7 +272,7 @@ public class ArticleServiceImpl extends BaseService implements ArticleService {
             for (TagVo tagVo : tagVos) {
                 TagVo tag = tagService.getOrAddTagByName(tagVo.getName());
                 TaxonomyRelationships taxonomyRelationships = new TaxonomyRelationships();
-                taxonomyRelationships.setType("post_tag");
+                taxonomyRelationships.setType(TaxonomyService.POST_TAG);
                 taxonomyRelationships.setObjectId(postsId);
                 taxonomyRelationships.setTaxonomyId(tag.getId());
                 taxonomyRelationshipsMapper.insertSelective(taxonomyRelationships);
@@ -282,5 +280,22 @@ public class ArticleServiceImpl extends BaseService implements ArticleService {
         }
 
         //TODO 统计标签文章数量
+    }
+
+    private Page<ArticleVo> findPageByTypeAndTaxId(Long id, String type, Page<ArticleVo> page) {
+        Page<Posts> postPage = new Page<Posts>();
+        postPage.setPageNo(page.getPageNo());
+        postPage.setPageSize(page.getPageSize());
+        postPage.setTotalRecord(page.getTotalRecord());
+        List<Posts> list = postsMapper.findPageByTypeAndTaxId(id, type, postPage);
+        List<ArticleVo> articleVoList = new ArrayList<ArticleVo>();
+        for (Posts posts : list) {
+            ArticleVo articleVo = new ArticleVo();
+            copy(posts, articleVo);
+            articleVoList.add(articleVo);
+        }
+        page.setResults(articleVoList);
+        page.setTotalRecord(postPage.getTotalRecord());
+        return page;
     }
 }

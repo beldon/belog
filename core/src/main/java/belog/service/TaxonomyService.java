@@ -26,6 +26,16 @@ public interface TaxonomyService {
     String LINK_CATEGORY = "link_category";
 
     /**
+     * post标签标识
+     */
+    String POST_TAG = "post_tag";
+
+    /**
+     * post分类标识
+     */
+    String POST_CATEGORY = "post_cat";
+
+    /**
      * 增加分类或标签 文章数统计
      *
      * @param id  id
@@ -75,6 +85,8 @@ public interface TaxonomyService {
     List<Taxonomy> findByPid(long pid, String type);
 
     Taxonomy findOneByName(String name);
+
+    Taxonomy findOneByNameAndType(String name, String type);
 
     List<Taxonomy> findByObjectIdAndType(Long objectId, String type);
 

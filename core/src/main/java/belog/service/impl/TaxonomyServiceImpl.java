@@ -53,6 +53,10 @@ public class TaxonomyServiceImpl extends BaseService implements TaxonomyService 
         return taxonomyMapper.selectOneByName(name);
     }
 
+    public Taxonomy findOneByNameAndType(String name, String type) {
+        return taxonomyMapper.selectOneByNameAndType(name, type);
+    }
+
     public List<Taxonomy> findByObjectIdAndType(Long objectId, String type) {
         return taxonomyMapper.findByObjectIdAndType(objectId, type);
     }

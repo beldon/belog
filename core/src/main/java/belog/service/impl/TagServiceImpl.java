@@ -39,7 +39,7 @@ public class TagServiceImpl extends TaxonomyServiceImpl implements TagService {
 
     public TagVo getOrAddTagByName(String tagName) {
         TagVo tagVo = new TagVo();
-        Taxonomy taxonomy = findOneByName(tagName);
+        Taxonomy taxonomy = findOneByNameAndType(tagName,"post_tag");
         if (taxonomy != null) {
             BeanUtils.copyProperties(taxonomy, tagVo);
         } else {
@@ -47,6 +47,16 @@ public class TagServiceImpl extends TaxonomyServiceImpl implements TagService {
             addTag(tagVo);
         }
         return tagVo;
+    }
+
+    public TagVo getTagByName(String tagName) {
+        Taxonomy taxonomy = findOneByNameAndType(tagName,POST_TAG);
+        if (taxonomy != null) {
+            TagVo tagVo = new TagVo();
+            BeanUtils.copyProperties(taxonomy, tagVo);
+            return tagVo;
+        }
+        return null;
     }
 
     public List<TagVo> findByObjectId(Long objectId, String type) {

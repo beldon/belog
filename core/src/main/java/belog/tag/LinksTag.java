@@ -38,7 +38,7 @@ public class LinksTag extends TagPlugin {
         }else{//批量获取文章内容
             int currentPage = 1;
             int pageSize = 8;
-            Object currentPageO = params.get("currentPage");
+            Object currentPageO = params.get("pageNo");
             Object pageSizeO = params.get("pageSize");
             if (currentPageO != null) {
                 currentPage = Integer.parseInt(currentPageO.toString());
@@ -52,11 +52,11 @@ public class LinksTag extends TagPlugin {
 
             if ("list".equals(typeO)) { //普通列表
                 page = linksService.findPage(page);
-                env.setVariable("pm", beansWrapper.wrap(page));
+                env.setVariable("linksPage", beansWrapper.wrap(page));
             } else if ("cat".equals(typeO)) { //分类列表
                 long catId = SSUtils.nullToLong(params.get("catId"), 1l);
                 page = linksService.findPageByCatId(catId, page);
-                env.setVariable("pm", beansWrapper.wrap(page));
+                env.setVariable("linksPage", beansWrapper.wrap(page));
             }
         }
 

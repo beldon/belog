@@ -90,6 +90,15 @@ public interface TaxonomyMapper {
 
     @Select({
             "select",
+            "id, count, description, parent, taxonomy, name, slug, term_group",
+            "from t_taxonomy",
+            "where name = #{name} and taxonomy = #{type} LIMIT 1"
+    })
+    @ResultMap("BaseResultMap")
+    Taxonomy selectOneByNameAndType(@Param("name") String name, @Param("type") String type);
+
+    @Select({
+            "select",
             "tax.id, tax.count, tax.description, tax.parent, tax.taxonomy, tax.name, tax.slug, tax.term_group",
             "from t_taxonomy tax,t_taxonomy_relationships relation",
             "where relation.taxonomy_id = tax.id and relation.type = #{type} and relation.object_id = #{objectId}"

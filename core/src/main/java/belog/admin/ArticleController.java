@@ -58,7 +58,7 @@ public class ArticleController extends AdminBaseController {
 
     @RequestMapping("/ajaxEdit.json")
     @ResponseBody
-    public Msg ajaxEdit(@ModelAttribute("article") ArticleVo articleVo, @RequestParam(required = false) String tags, @RequestParam(required = false) long[] catId) {
+    public Msg ajaxEdit(@ModelAttribute("article") ArticleVo articleVo, @RequestParam(required = false) String articleTags, @RequestParam(required = false) long[] catId) {
         List<CategoryVo> cats = new ArrayList<CategoryVo>();
         List<TagVo> tagVos = new ArrayList<TagVo>();
 
@@ -71,8 +71,8 @@ public class ArticleController extends AdminBaseController {
             }
         }
         //标签
-        if (StringUtils.hasText(tags)) {
-            String[] ts = tags.split(",");
+        if (StringUtils.hasText(articleTags)) {
+            String[] ts = articleTags.split(",");
             for (String tag : ts) {
                 if (StringUtils.hasText(tag)) {
                     TagVo tagVo = new TagVo();
@@ -82,7 +82,7 @@ public class ArticleController extends AdminBaseController {
             }
         }
         articleVo.setCats(cats);
-        articleVo.setTagVos(tagVos);
+        articleVo.setTags(tagVos);
         articleService.addOrUpdate(articleVo);
         return MsgUtils.success();
     }

@@ -46,15 +46,26 @@ public interface ArticleService {
     /**
      * 根据分类ID查找分类
      *
-     * @param catId     分类ID
+     * @param catId 分类ID
      * @param page
-     * @param type      类似-hot or new , hot:最热的文章，new，最新的文章， default new
+     * @param type  类似-hot or new , hot:最热的文章，new，最新的文章， default new
      * @return
      */
     Page<ArticleVo> findPageByCatId(long catId, Page<ArticleVo> page, String type);
 
     /**
+     * 根据类型获取文章
+     *
+     * @param tagName 标签名称
+     * @param page    page
+     * @param type    类似-hot or new , hot:最热的文章，new，最新的文章， default new
+     * @return
+     */
+    Page<ArticleVo> findPageByTag(String tagName, Page<ArticleVo> page, String type);
+
+    /**
      * 删除文章封面
+     *
      * @param id 文章id
      * @return
      */

@@ -55,7 +55,7 @@
                                     </a>
                                 </h4>
                                 <p class="small">
-                                    Posted on <a href="#fakelink">${(article.date?string("yyyy-MM-dd"))!}</a> by <a href="#fakelink">${(article.userVo.nickName)!}</a>
+                                    Posted on <a href="#fakelink">${(article.creDate?date("yyyy-MM-dd"))!}</a> by <a href="#fakelink">${(article.userVo.nickName)!}</a>
                                 </p>
                                 <p>
                                     <#assign content=article.content?replace("<.*?>","","r")>

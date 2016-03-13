@@ -23,7 +23,7 @@ public class ArticleVo extends Posts {
     /**
      * 标签
      */
-    private List<TagVo> tagVos;
+    private List<TagVo> tags;
 
     /**
      * 文章对应的用户
@@ -38,12 +38,12 @@ public class ArticleVo extends Posts {
         this.cats = cats;
     }
 
-    public List<TagVo> getTagVos() {
-        return tagVos;
+    public List<TagVo> getTags() {
+        return tags;
     }
 
-    public void setTagVos(List<TagVo> tagVos) {
-        this.tagVos = tagVos;
+    public void setTags(List<TagVo> tags) {
+        this.tags = tags;
     }
 
     public UserVo getUser() {

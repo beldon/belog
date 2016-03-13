@@ -43,6 +43,14 @@ public interface TagService extends TaxonomyService {
      */
     TagVo getOrAddTagByName(String tagName);
 
+    /**
+     * 根据标签名称回去标签
+     *
+     * @param tagName
+     * @return
+     */
+    TagVo getTagByName(String tagName);
+
     List<TagVo> findByObjectId(Long objectId, String type);
 
     Page<TagVo> findPage(Page<TagVo> page);

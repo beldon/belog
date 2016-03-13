@@ -5,6 +5,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.io.File;
+
 /**
  * Created by Beldon
  */
@@ -23,7 +25,7 @@ public class IndexController extends FrontBaseController {
 
     @RequestMapping({"/index_{page}.html"})
     public String index(Model model, @PathVariable int page) {
-        model.addAttribute("currentPage", page);
+        model.addAttribute("pageNo", page);
         return themeService.getTemplatePath("index");
     }
 
@@ -32,25 +34,30 @@ public class IndexController extends FrontBaseController {
         return themeService.getTemplatePath(file);
     }
 
-    @RequestMapping({"/{folder}/","/{folder}/index.html"})
+    @RequestMapping({"/{folder}/", "/{folder}/index.html"})
     public String folder(@PathVariable("folder") String folder) {
-        return themeService.getTemplatePath(folder+"/index");
+        return themeService.getTemplatePath(folder + "/index");
     }
 
     @RequestMapping({"/{folder}/index_{page}.html"})
     public String folder(@PathVariable("folder") String folder, @PathVariable int page, Model model) {
-        model.addAttribute("currentPage", page);
-        return themeService.getTemplatePath(folder+"/index");
+        model.addAttribute("pageNo", page);
+        return themeService.getTemplatePath(folder + "/index");
     }
 
     @RequestMapping({"/{folder}/{file}.html"})
-    public String folder(@PathVariable("folder") String folder, @PathVariable String file) {
+    public String folder(@PathVariable("folder") String folder, @PathVariable String file, Model model) {
+        String template = folder + "/" + file;
+        if (!isExist(template)) {
+            model.addAttribute("key", file);
+            return themeService.getTemplatePath(folder + "/" + "index");
+        }
         return themeService.getTemplatePath(folder + "/" + file);
     }
 
-    @RequestMapping({"/{folder}/{file}/{id}.html"})
-    public String folder(@PathVariable("folder") String folder, @PathVariable String file, @PathVariable int id, Model model) {
-        model.addAttribute("id", id);
+    @RequestMapping({"/{folder}/{file}/{key}.html"})
+    public String folder(@PathVariable("folder") String folder, @PathVariable("file") String file, @PathVariable("key") Object key, Model model) {
+        model.addAttribute("key", key);
         return themeService.getTemplatePath(folder + "/" + file);
     }
 

@@ -40,9 +40,9 @@
                         <label for="content" class="col-sm-1 control-label">标签</label>
 
                         <div class="col-sm-11">
-                            <input type="text" name="tags" class="form-control" id="tags-input"
-                                   value="<#if article?exists && article.tagVos?exists>
-                                            <#list article.tagVos as tag>
+                            <input type="text" name="articleTags" class="form-control" id="tags-input"
+                                   value="<#if article?exists && article.tags?exists>
+                                            <#list article.tags as tag>
                                                 ${(tag.name)!},
                                             </#list>
                                             </#if>"
