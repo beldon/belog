@@ -115,38 +115,21 @@
                             </nav>
                             <nav class="header-nav">
                                 <ul class="social">
-
                                     <a class="fl mail" target="_blank" href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=PAkNDgsKBQ4MCnxNTRJfU1E" title="mail">mail</a>
-
                                     <a class="fl github" target="_blank" href="https://github.com/luuman" title="github">github</a>
-
                                     <a class="fl zhihu" target="_blank" href="https://www.zhihu.com/people/luuman" title="zhihu">zhihu</a>
-
-                                    <a class="fl weibo" target="_blank" href="http://weibo.com/lishangmou" title="weibo">weibo</a>
-
-                                    <a class="fl google" target="_blank" href="http://i.youku.com/shangmou" title="google">google</a>
-
-                                    <a class="fl twitter" target="_blank" href="http://twitter.com/luuman" title="twitter">twitter</a>
-
-                                    <a class="fl facebook" target="_blank" href="#" title="facebook">facebook</a>
-
+                                    <a class="fl weibo" target="_blank" href="http://weibo.com/beldon1" title="weibo">weibo</a>
                                     <a class="fl rss" target="_blank" href="/atom.xml" title="rss">rss</a>
-
                                 </ul>
                             </nav>
                         </section>
-
-
                         <section class="switch-part switch-part2">
                             <div class="widget tagcloud" id="js-tagcloud">
                                 <#list tags as tag>
-                                    <a href="/tags/HTML-标签/" style="font-size: 20px;">${(tag.name)!}</a>
+                                    <a href="${BASE_PATH}/tag/${(tag.name)!}.html" style="font-size: 20px;">${(tag.name)!}</a>
                                 </#list>
                             </div>
                         </section>
-
-
-
                         <section class="switch-part switch-part3">
                             <div id="js-friends">
                                 <a target="_blank" class="main-nav-link switch-friends-link" href="http://beldon.me">Beldon</a>

@@ -1,5 +1,5 @@
 <#include "common/_layout.ftl"/>
-<@article_tag type='list' pageNo=pageNo pageSize = 2>
+<@article_tag type='list' pageNo=pageNo pageSize = 8>
     <#assign articlePage=articlePage>
 </@article_tag>
 <#if articlePage.pageNo==1 >
@@ -39,7 +39,7 @@
             <div class="article-info article-info-index">
             <div class="article-category tagcloud">
                 <#list article.cats as cat>
-                    <a class="article-category-link" href="/categories/HTML-书籍/">${(cat.name)!}</a>
+                    <a class="article-category-link" href="${BASE_PATH}/cat/${(cat.id)!}.html">${(cat.name)!}</a>
                 </#list>
             </div>
                 <div class="article-tag tagcloud">

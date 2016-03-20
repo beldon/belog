@@ -5,7 +5,9 @@ import belog.plugin.TagPlugin;
 import belog.pojo.Page;
 import belog.pojo.PageModel;
 import belog.pojo.vo.ArticleVo;
+import belog.pojo.vo.CategoryVo;
 import belog.service.ArticleService;
+import belog.service.CategoryService;
 import belog.utils.SSUtils;
 import freemarker.core.Environment;
 import freemarker.template.TemplateDirectiveBody;
@@ -27,6 +29,9 @@ public class ArticleTag extends TagPlugin {
 
     @Autowired
     private ArticleService articleService;
+
+    @Autowired
+    private CategoryService categoryService;
 
     public void execute(Environment env, Map params, TemplateModel[] loopVars, TemplateDirectiveBody body) throws TemplateException, IOException {
         String aId = SSUtils.nullToString(params.get("articleId"), "");
@@ -59,7 +64,9 @@ public class ArticleTag extends TagPlugin {
             } else if ("cat".equals(typeO)) { //分类列表
                 long catId = SSUtils.nullToLong(params.get("catId"), 1l);
                 page = articleService.findPageByCatId(catId, page, "new");
+                CategoryVo categoryVo = categoryService.findById(catId);
                 env.setVariable("articlePage", beansWrapper.wrap(page));
+                env.setVariable("category", beansWrapper.wrap(categoryVo));
             } else if ("tag".equals(typeO)) {
                 String tag = SSUtils.nullToString(params.get("tag"), "tag");
                 page = articleService.findPageByTag(tag, page, "new");
