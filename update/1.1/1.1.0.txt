@@ -1,0 +1,3 @@
+1、修改持久层，把Hibernate改为MyBatis
+2、添加模板设置、模板菜单设置
+3、添加spfk主题（hexo一个开源主题，https://github.com/luuman/hexo-theme-spfk）
