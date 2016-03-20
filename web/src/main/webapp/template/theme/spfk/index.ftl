@@ -1,5 +1,5 @@
 <#include "common/_layout.ftl"/>
-<@article_tag type='list' pageNo=pageNo pageSize = 8>
+<@article_tag type='list' pageNo=pageNo?default(1)! pageSize = 8>
     <#assign articlePage=articlePage>
 </@article_tag>
 <#if articlePage.pageNo==1 >
@@ -13,7 +13,7 @@
     <#assign nextPage=articlePage.pageNo+1>
 </#if>
 
-<@html title="">
+<@html title="首页-">
 
     <#list articlePage.results as article>
     <article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">

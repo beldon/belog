@@ -21,7 +21,7 @@
     });
 </script>
 </#assign>
-<@html title="多点">
+<@html title= key+"-标签-">
 <section class="archives-wrap">
     <div class="archive-year-wrap">
         <a href="/archives/2016" class="archive-year">${key!}</a>
