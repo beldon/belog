@@ -3,7 +3,11 @@ package belog.admin;
 
 import belog.context.AppContext;
 import belog.pojo.Msg;
+import belog.pojo.PluginConfig;
+import belog.pojo.ThemeConfig;
+import belog.pojo.vo.ConfigVo;
 import belog.pojo.vo.ThemeVo;
+import belog.service.ConfigService;
 import belog.service.ThemeService;
 import belog.utils.MsgUtils;
 import org.apache.commons.io.FileUtils;
@@ -16,10 +20,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 /**
  * 主题管理
@@ -126,7 +130,7 @@ public class ThemeController extends AdminBaseController {
                                 && !name.endsWith(".xml")
                                 && !name.endsWith(".png")
                                 && !name.endsWith(".ico")
-                                && !name.endsWith(".jpg") ;
+                                && !name.endsWith(".jpg");
                     }
                 });
                 Arrays.sort(files, String.CASE_INSENSITIVE_ORDER);
@@ -195,7 +199,7 @@ public class ThemeController extends AdminBaseController {
         File targetFile = new File(templateDir);
         if (targetFile.exists()) {
             try {
-                FileUtils.write(targetFile, content,"UTF-8");
+                FileUtils.write(targetFile, content, "UTF-8");
                 msg.setErrCode(0);
                 msg.setErrMsg("success");
                 msg.setStatus(true);
@@ -205,12 +209,47 @@ public class ThemeController extends AdminBaseController {
                 msg.setErrCode(-1);
                 msg.setErrMsg(e.getMessage());
             }
-        }else{
+        } else {
             msg.setStatus(false);
             msg.setErrCode(-1);
             msg.setErrMsg("未找到相应文件");
         }
 //        FileUtils.
         return msg;
+    }
+
+    @RequestMapping("/config")
+    public String config(Model model) {
+        ThemeVo theme = themeService.getCurrentTheme();
+        ThemeConfig config = theme.getConfig();
+        if (config != null) {
+            List<PluginConfig.Element> elements = config.getElements();
+            if (elements != null && elements.size() > 0) {
+                for (PluginConfig.Element element : elements) {
+                    element.setValue(themeService.getConfigValue(element.getKey()));
+                }
+            }
+        }
+        model.addAttribute("theme", theme);
+        return getTemplatePath("theme/config");
+    }
+
+    @RequestMapping("/ajaxEdit.json")
+    @ResponseBody
+    public Msg ajaxEdit(HttpServletRequest request) {
+        Map<String, String[]> map = request.getParameterMap();
+        List<ConfigVo> configVoList = new ArrayList<ConfigVo>();
+        Iterator<Map.Entry<String, String[]>> it = map.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry<String, String[]> con = it.next();
+            ConfigVo configVo = new ConfigVo();
+            configVo.setName(con.getKey());
+            configVo.setValue(con.getValue()[0]);
+            configVo.setAutoLoad("no");
+            configVo.setType(themeService.getConfigType());
+            configVoList.add(configVo);
+        }
+        themeService.saveOrUpdate(configVoList);
+        return MsgUtils.success();
     }
 }

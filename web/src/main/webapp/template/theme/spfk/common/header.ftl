@@ -115,11 +115,12 @@
                             </nav>
                             <nav class="header-nav">
                                 <ul class="social">
-                                    <a class="fl mail" target="_blank" href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=PAkNDgsKBQ4MCnxNTRJfU1E" title="mail">mail</a>
-                                    <a class="fl github" target="_blank" href="https://github.com/luuman" title="github">github</a>
-                                    <a class="fl zhihu" target="_blank" href="https://www.zhihu.com/people/luuman" title="zhihu">zhihu</a>
-                                    <a class="fl weibo" target="_blank" href="http://weibo.com/beldon1" title="weibo">weibo</a>
-                                    <a class="fl rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+                                    <a class="fl mail" target="_blank" href="${spfk_email}" title="mail">mail</a>
+                                    <a class="fl github" target="_blank" href="${spfk_github}" title="github">github</a>
+                                    <a class="fl zhihu" target="_blank" href="${spfk_zhihu}" title="zhihu">zhihu</a>
+                                    <a class="fl weibo" target="_blank" href="${spfk_weibo}" title="weibo">weibo</a>
+                                    <#--<a class="fl weibo" target="_blank" href="http://weibo.com/beldon1" title="weibo">weibo</a>-->
+                                    <#--<a class="fl rss" target="_blank" href="/atom.xml" title="rss">rss</a>-->
                                 </ul>
                             </nav>
                         </section>

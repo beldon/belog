@@ -1,5 +1,6 @@
 package belog.service;
 
+import belog.pojo.vo.ConfigVo;
 import belog.pojo.vo.ThemeVo;
 
 import java.util.List;
@@ -52,8 +53,37 @@ public interface ThemeService {
 
     /**
      * 通过模板目录获取模板信息
+     *
      * @param directory
      * @return
      */
     ThemeVo getThemeByDir(String directory);
+
+    /**
+     * 获取当前模板信息
+     *
+     * @return
+     */
+    ThemeVo getCurrentTheme();
+
+    /**
+     * @param key 获取配置值
+     * @return
+     */
+    String getConfigValue(String key);
+
+    /**
+     * 新增或更新
+     *
+     * @param configVos
+     */
+    void saveOrUpdate(List<ConfigVo> configVos);
+
+    /**
+     * 获取主题配置类型
+     *
+     * @return
+     */
+    String getConfigType();
+
 }

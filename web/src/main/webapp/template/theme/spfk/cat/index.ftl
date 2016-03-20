@@ -1,4 +1,4 @@
-<@article_tag type='cat' pageNo=page pageSize = 8 tag=key>
+<@article_tag type='cat' pageNo=intVal pageSize = 8 tag=key>
     <#assign articlePage=articlePage>
     <#assign category=category>
 </@article_tag>

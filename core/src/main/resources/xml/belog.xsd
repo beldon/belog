@@ -29,6 +29,27 @@
         </xsd:complexType>
     </xsd:element>
 
+    <xsd:element name="theme">
+        <xsd:annotation>
+            <xsd:documentation>theme信息</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element ref="name"/>
+                <xsd:element ref="author"/>
+                <xsd:element ref="email"/>
+                <xsd:element ref="url"/>
+                <xsd:element ref="logo"/>
+                <xsd:element ref="version"/>
+                <xsd:choice minOccurs="0" maxOccurs="unbounded">
+                    <xsd:element ref="description"/>
+                    <xsd:element ref="config" maxOccurs="1"/>
+                </xsd:choice>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+
+
     <xsd:element name="config">
         <xsd:annotation>
             <xsd:documentation>插件配置信息,用于后台生成配置信息</xsd:documentation>
@@ -176,4 +197,23 @@
             </xsd:choice>
         </xsd:sequence>
     </xsd:group>
+
+    <xsd:element name="logo" default="">
+        <xsd:annotation>
+            <xsd:documentation>名称</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:string"/>
+        </xsd:simpleType>
+    </xsd:element>
+
+    <xsd:element name="description">
+        <xsd:annotation>
+            <xsd:documentation>描述</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:string"/>
+        </xsd:simpleType>
+    </xsd:element>
+
 </xsd:schema>

@@ -1,4 +1,4 @@
-<@article_tag type='tag' pageNo=page pageSize = 8 tag=key>
+<@article_tag type='tag' pageNo=intVal pageSize = 8 tag=key>
     <#assign articlePage=articlePage>
 </@article_tag>
 <#if articlePage.pageNo==1 >

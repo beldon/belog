@@ -73,10 +73,10 @@ public class IndexController extends FrontBaseController {
         return themeService.getTemplatePath(folder + "/" + file);
     }
 
-    @RequestMapping({"/{folder}/{file}/{page}.html"})
-    public String folder(@PathVariable("folder") String folder, @PathVariable("file") String file, @PathVariable("page") int page, Model model) {
+    @RequestMapping({"/{folder}/{file}/{intVal}.html"})
+    public String folder(@PathVariable("folder") String folder, @PathVariable("file") String file, @PathVariable("intVal") int intVal, Model model) {
         String template = folder + "/" + file;
-        model.addAttribute("page", page);
+        model.addAttribute("intVal", intVal);
 
         if (!isFileExist(template)) {
             model.addAttribute("key", file);

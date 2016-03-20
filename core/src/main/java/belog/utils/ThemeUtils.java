@@ -1,8 +1,12 @@
 package belog.utils;
 
 import belog.context.PluginContext;
+import belog.plugin.Plugin;
+import belog.pojo.PluginConfig;
+import belog.pojo.ThemeConfig;
 import belog.pojo.vo.ThemeVo;
 import belog.service.ThemeService;
+import org.springframework.beans.BeanUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -60,6 +64,14 @@ public class ThemeUtils {
             String email = getElementValue(docElement, ThemeService.EMAIL);
             String version = getElementValue(docElement, ThemeService.VERSION);
             String description = getElementValue(docElement, ThemeService.DESCRIPTION);
+
+            PluginConfig config = PluginUtils.getConfigValue(docElement);
+            if (config != null) {
+                ThemeConfig themeConfig = new ThemeConfig();
+                BeanUtils.copyProperties(config, themeConfig);
+                themeVo.setConfig(themeConfig);
+            }
+
             themeVo.setName(name);
             themeVo.setAuthor(author);
             themeVo.setUrl(url);

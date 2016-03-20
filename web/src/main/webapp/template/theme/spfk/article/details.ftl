@@ -1,5 +1,5 @@
 <#include "../common/_layout.ftl"/>
-<@article_tag articleId=key>
+<@article_tag articleId=intVal>
     <#assign pageArticle=article>
 </@article_tag>
 <@html title= pageArticle.title+"-">

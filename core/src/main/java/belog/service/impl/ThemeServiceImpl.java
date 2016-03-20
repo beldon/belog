@@ -72,4 +72,21 @@ public class ThemeServiceImpl extends BaseService implements ThemeService {
         }
         return new ThemeVo();
     }
+
+    public ThemeVo getCurrentTheme() {
+        String theme = getThemeName();
+        return getThemeByDir(theme);
+    }
+
+    public String getConfigValue(String key) {
+        return configService.findByName(key).getValue();
+    }
+
+    public void saveOrUpdate(List<ConfigVo> configVos) {
+        configService.saveOrUpdate(configVos);
+    }
+
+    public String getConfigType() {
+        return "theme_" + getThemeName();
+    }
 }

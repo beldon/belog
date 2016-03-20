@@ -220,7 +220,7 @@ public class PluginUtils {
      * @param element
      * @return
      */
-    private static PluginConfig getConfigValue(Element element) {
+    public static PluginConfig getConfigValue(Element element) {
         PluginConfig config = null;
         NodeList nodeList = element.getElementsByTagName(PluginContext.CONFIG);
         if (nodeList.getLength() > 0) {

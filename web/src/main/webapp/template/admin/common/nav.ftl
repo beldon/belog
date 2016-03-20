@@ -104,6 +104,16 @@
                 </a>
             </li>
 
+        <@theme_menu_tag>
+            <#list themeMenus as menu>
+                <li>
+                    <a href="${BASE_PATH}/admin/theme/config.html">
+                        <span class="title">主题配置</span>
+                    </a>
+                </li>
+            </#list>
+        </@theme_menu_tag>
+
             <li>
                 <a href="${BASE_PATH}/admin/theme/edit.html">
                     <span class="title">主题编辑</span>

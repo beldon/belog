@@ -1,5 +1,7 @@
 package belog.pojo.vo;
 
+import belog.pojo.ThemeConfig;
+
 /**
  * 模板信息
  * Created by Beldon
@@ -40,6 +42,8 @@ public class ThemeVo {
      * 描述
      */
     private String description;
+
+    private ThemeConfig config;
 
     public String getDirectory() {
         return directory;
@@ -103,5 +107,13 @@ public class ThemeVo {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public ThemeConfig getConfig() {
+        return config;
+    }
+
+    public void setConfig(ThemeConfig config) {
+        this.config = config;
     }
 }
