@@ -1,9 +1,13 @@
 package belog.service.impl;
 
 
-import belog.pojo.vo.MenuVo;
+import belog.dao.MenuMapper;
+import belog.pojo.po.Menu;
 import belog.service.MenuService;
+import belog.service.ThemeService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.context.Theme;
 
 import java.util.List;
 
@@ -13,32 +17,38 @@ import java.util.List;
 @Service("MenuService")
 public class MenuServiceImpl extends BaseService implements MenuService {
 
+    @Autowired
+    private MenuMapper menuMapper;
 
-    public void addOrUpdate(MenuVo menuVo) {
+    @Autowired
+    private ThemeService themeService;
 
-    }
-
-    public void addOrUpdateFront(MenuVo menuVo) {
-
+    public void addOrUpdate(Menu menu) {
+        if (menu.getId() == null || menu.getId() == 0) {//新增
+            menuMapper.insertSelective(menu);
+        } else {//更新
+            menuMapper.updateByPrimaryKeySelective(menu);
+        }
     }
 
     public void deleteMenuById(Long id) {
-
+        menuMapper.deleteByPrimaryKey(id);
     }
 
-    public MenuVo findById(long id) {
-        return null;
+    public Menu findById(long id) {
+        return menuMapper.selectByPrimaryKey(id);
     }
 
-    public List<MenuVo> findAll() {
-        return null;
+    public List<Menu> findAll() {
+        return menuMapper.selectAll();
     }
 
-    public List<MenuVo> findFrontMenu() {
-        return null;
+    public List<Menu> findCurrentThemeMenu() {
+        return menuMapper.selectAllByType(getCurrentMenuType());
     }
 
-    public List<MenuVo> findAuthMenu() {
-        return null;
+
+    public String getCurrentMenuType() {
+        return themeService.getConfigType();
     }
 }

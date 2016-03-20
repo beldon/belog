@@ -2,7 +2,7 @@ package belog.admin;
 
 
 import belog.pojo.Msg;
-import belog.pojo.vo.MenuVo;
+import belog.pojo.po.Menu;
 import belog.service.MenuService;
 import belog.utils.MsgUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
+
+import static java.awt.SystemColor.menu;
 
 /**
  * Created by Beldon
@@ -27,24 +29,25 @@ public class MenuController extends AdminBaseController {
 
     @RequestMapping("/list")
     public String list(Model model) {
-        List<MenuVo> menuVoList = menuService.findFrontMenu();
-        model.addAttribute("menus", menuVoList);
+        List<Menu> menuList = menuService.findCurrentThemeMenu();
+        model.addAttribute("menuList", menuList);
         return getTemplatePath("menu/list");
     }
 
     @RequestMapping("/edit")
     public String edit(@RequestParam(defaultValue = "0", required = false) long id, Model model) {
         if (id != 0) {
-            MenuVo menuVo = menuService.findById(id);
-            model.addAttribute("menus", menuVo);
+            Menu menu = menuService.findById(id);
+            model.addAttribute("menu", menu);
         }
         return getTemplatePath("menu/edit");
     }
 
     @RequestMapping("/addOrUpdate.json")
     @ResponseBody
-    public Msg addOrUpdate(@ModelAttribute("menu") MenuVo menuVo) {
-        menuService.addOrUpdateFront(menuVo);
+    public Msg addOrUpdate(@ModelAttribute("menu") Menu menu) {
+        menu.setType(menuService.getCurrentMenuType());
+        menuService.addOrUpdate(menu);
         return MsgUtils.success();
     }
 

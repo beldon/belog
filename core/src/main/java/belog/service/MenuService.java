@@ -1,7 +1,7 @@
 package belog.service;
 
 
-import belog.pojo.vo.MenuVo;
+import belog.pojo.po.Menu;
 
 import java.util.List;
 
@@ -13,16 +13,9 @@ public interface MenuService {
     /**
      * 添加或更新菜单
      *
-     * @param menuVo
+     * @param menu
      */
-    void addOrUpdate(MenuVo menuVo);
-
-    /**
-     * 添加或更新前台菜单
-     *
-     * @param menuVo
-     */
-    void addOrUpdateFront(MenuVo menuVo);
+    void addOrUpdate(Menu menu);
 
 
     /**
@@ -32,26 +25,20 @@ public interface MenuService {
      */
     void deleteMenuById(Long id);
 
-    MenuVo findById(long id);
+    Menu findById(long id);
 
     /**
      * 查找所有菜单
      *
      * @return
      */
-    List<MenuVo> findAll();
+    List<Menu> findAll();
+
+    List<Menu> findCurrentThemeMenu();
 
     /**
-     * 查找前台菜单
-     *
+     * 获取当前菜单类型
      * @return
      */
-    List<MenuVo> findFrontMenu();
-
-    /**
-     * 查找后台菜单
-     *
-     * @return
-     */
-    List<MenuVo> findAuthMenu();
+    String getCurrentMenuType();
 }

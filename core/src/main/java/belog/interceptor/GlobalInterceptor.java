@@ -6,7 +6,9 @@
 
 package belog.interceptor;
 
+import belog.pojo.po.Menu;
 import belog.service.ConfigService;
+import belog.service.MenuService;
 import belog.service.ThemeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -15,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 import java.util.Map;
 
 
@@ -29,6 +32,9 @@ public class GlobalInterceptor implements HandlerInterceptor {
 
     @Autowired
     private ConfigService configService;
+
+    @Autowired
+    private MenuService menuService;
 
 
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -51,6 +57,9 @@ public class GlobalInterceptor implements HandlerInterceptor {
         modelAndView.addObject("THEME_PATH", themePath);
         Map<String,String> configs = configService.getConfigs();
         modelAndView.addAllObjects(configs);
+
+        List<Menu> currentMenus = menuService.findCurrentThemeMenu();
+        modelAndView.addObject("currentMenus", currentMenus);
     }
 
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {

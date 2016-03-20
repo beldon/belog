@@ -28,15 +28,15 @@
                             <input type="text" name="sort" class="form-control" id="sort" placeholder="菜单排序">
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label for="inputPassword3" class="col-sm-3 control-label">父菜单</label>
+                    <#--<div class="form-group">-->
+                        <#--<label for="inputPassword3" class="col-sm-3 control-label">父菜单</label>-->
 
-                        <div class="col-sm-12">
-                            <select class="form-control" name="parent">
-                                <option value="0">无</option>
-                            </select>
-                        </div>
-                    </div>
+                        <#--<div class="col-sm-12">-->
+                            <#--<select class="form-control" name="parent">-->
+                                <#--<option value="0">无</option>-->
+                            <#--</select>-->
+                        <#--</div>-->
+                    <#--</div>-->
                     <div class="form-group">
                         <div class="col-sm-offset-6 col-sm-10">
                             <button type="submit" id="saveMenu" class="btn btn-default">添加新菜单</button>
@@ -56,7 +56,11 @@
             </div>
             <div class="panel-body">
                 <div class="table-responsive">
-                    <table class="table table-bordered">
+                    <div class="alert alert-success alert-dismissible hide" role="alert" id="alert-success">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <strong>success!</strong> 删除成功！
+                    </div>
+                    <table class="table table-model-2 table-hover">
                         <thead>
                         <tr>
                             <th width="40px"><input type="checkbox"></th>
@@ -67,7 +71,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                            <#list menus as menu>
+                            <#list menuList as menu>
                             <tr>
                                 <th><input type="checkbox"></th>
                                 <th>${(menu.name)!}</th>
@@ -114,7 +118,10 @@
                 dataType: "json",
                 success: function(data){
                     if(data.status===true){
-                        window.location.reload();
+                        $("#alert-success").removeClass("hide");
+                        setInterval(function(){
+                            window.location.reload();
+                        },1000)
                     }else{
                         alert("error");
                     }

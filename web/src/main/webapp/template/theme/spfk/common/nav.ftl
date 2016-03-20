@@ -20,12 +20,9 @@
 
                     <li><a href="/Home">博客首页</a></li>
 
-                    <li><a href="/works">作品展示</a></li>
-
-                    <li><a href="/about">留言打卡</a></li>
-
-                    <li><a href="/FrontEndGuide">前端导航</a></li>
-
+                    <#--<#list currentMenus as menu>-->
+                        <#--<li><a href="${menu.url}">${menu.name}</a></li>-->
+                    <#--</#list>-->
                     <div class="clearfix"></div>
                 </ul>
             </nav>

@@ -5,48 +5,36 @@
         <!-- Default panel -->
         <div class="panel panel-default panel-border">
             <div class="panel-heading">
-                编辑分类目录
+                编辑菜单
             </div>
 
             <div class="panel-body">
                 <form class="form-horizontal" action="javascript:return false;" id="actionForm">
-                    <input type="hidden" name="id" value="${(cat.id)!}">
+                    <input type="hidden" name="id" value="${(menu.id)!}">
                     <div class="form-group">
-                        <label for="inputEmail3" class="col-sm-2 control-label">名称</label>
+                        <label for="inputEmail3" class=" control-label">菜单名称</label>
 
                         <div class="col-sm-12">
-                            <input type="text" name="name" value="${(cat.name)!}" class="form-control" id="inputEmail3" placeholder="分类名称">
+                            <input type="text" name="name" value="${(menu.name)!}" class="form-control" id="inputEmail3" placeholder="分类名称">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="inputEmail3" class="col-sm-2 control-label">别名</label>
+                        <label for="inputEmail3" class="control-label">URL</label>
 
                         <div class="col-sm-12">
-                            <input type="text" name="slug" value="${(cat.slug)!}" class="form-control" id="inputEmail3" placeholder="分类别名">
+                            <input type="text" name="url" value="${(menu.url)!}" class="form-control" id="inputEmail3" placeholder="分类别名">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="inputPassword3" class="col-sm-2 control-label">父节</label>
+                        <label for="inputEmail3" class="control-label">排序</label>
 
                         <div class="col-sm-12">
-                            <select class="form-control" name="parent">
-                                <option value="0">无</option>
-                                <#list cats as c>
-                                    <#if c.category.id !=cat.id>
-                                        <option <#if c.category.id = cat.parent>selected</#if> value="${(c.category.id)!}">${(c.category.name)!}</option>
-                                    </#if>
-                                    <#list c.subs as sub>
-                                        <#if sub.category.id !=cat.id>
-                                            <option <#if sub.category.id = cat.parent>selected</#if> value="${(sub.category.id)!}">${(sub.category.name)!}</option>
-                                        </#if>
-                                    </#list>
-                                </#list>
-                            </select>
+                            <input type="text" name="sort" value="${(menu.sort)!}" class="form-control" id="inputEmail3" placeholder="分类别名">
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="col-sm-offset-8 col-sm-10">
-                            <button type="submit" id="saveCat" class="btn btn-default">更新分类目录</button>
+                            <button type="submit" id="saveCat" class="btn btn-default">更新菜单</button>
                         </div>
                     </div>
                 </form>
@@ -62,7 +50,7 @@
         $("#saveCat").click(function(){
             $.ajax({
                 type: "POST",
-                url: "ajaxEdit.json",
+                url: "addOrUpdate.json",
                 data: $('#actionForm').serialize(),
                 dataType: "json",
                 success: function(data){

@@ -9,6 +9,8 @@ import org.apache.ibatis.annotations.SelectKey;
 import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface MenuMapper {
     @Delete({
@@ -38,6 +40,24 @@ public interface MenuMapper {
     })
     @ResultMap("BaseResultMap")
     Menu selectByPrimaryKey(Long id);
+
+
+    @Select({
+            "select",
+            "id, icon, name, pid, sort, type, url",
+            "from t_menu order by sort"
+    })
+    @ResultMap("BaseResultMap")
+    List<Menu> selectAll();
+
+    @Select({
+            "select",
+            "id, icon, name, pid, sort, type, url",
+            "from t_menu",
+            "where type = #{type} order by sort"
+    })
+    @ResultMap("BaseResultMap")
+    List<Menu> selectAllByType(String type);
 
     int updateByPrimaryKeySelective(Menu record);
 

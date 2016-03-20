@@ -100,7 +100,7 @@
         <ul>
             <li>
                 <a href="${BASE_PATH}/admin/theme/list.html">
-                    <span class="title">主题</span>
+                    <span class="title">主题列表</span>
                 </a>
             </li>
 
@@ -119,11 +119,11 @@
                     <span class="title">主题编辑</span>
                 </a>
             </li>
-            <#--<li>-->
-                <#--<a href="${BASE_PATH}/admin/menu/list.html">-->
-                    <#--<span class="title">菜单</span>-->
-                <#--</a>-->
-            <#--</li>-->
+            <li>
+                <a href="${BASE_PATH}/admin/menu/list.html">
+                    <span class="title">菜单</span>
+                </a>
+            </li>
         </ul>
     </li>
     <li>
