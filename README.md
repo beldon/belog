@@ -1,5 +1,14 @@
 #博客就应该有自己的个性
 
+###1.1.0更新日志
+>* 修改持久层，把Hibernate改为MyBatis
+>* 添加模板设置、模板菜单设置
+>* 添加spfk主题（hexo一个开源主题，https://github.com/luuman/hexo-theme-spfk）
+>* 暂时去掉安装引导(注：导入update\1.1\belog1.1.0.sql后修改jdbc.properties数据库配置方可使用)
+
+>由于本人最近比较慢，所以博客更新得比较慢
+
+
 ###博客目标:
 
 >* 更友好

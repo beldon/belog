@@ -1,3 +1,4 @@
 1、修改持久层，把Hibernate改为MyBatis
 2、添加模板设置、模板菜单设置
 3、添加spfk主题（hexo一个开源主题，https://github.com/luuman/hexo-theme-spfk）
+4、暂时去掉安装引导(注：导入update\1.1\belog1.1.0.sql后修改jdbc.properties数据库配置方可使用)
