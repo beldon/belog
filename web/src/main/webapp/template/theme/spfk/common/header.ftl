@@ -136,7 +136,8 @@
                             </div>
                         </section>
                         <section class="switch-part switch-part4">
-                            <div id="js-aboutme">90后，水瓶座普通男青年！爱折腾，爱运动，更爱游离于错综复杂的编码与逻辑中，无法自拔。</div>
+                            <#--<div id="js-aboutme">90后，水瓶座普通男青年！爱折腾，爱运动，更爱游离于错综复杂的编码与逻辑中，无法自拔。</div>-->
+                            <div id="js-aboutme">${spfk_aboutme!}</div>
                         </section>
                     </div>
                 </div>

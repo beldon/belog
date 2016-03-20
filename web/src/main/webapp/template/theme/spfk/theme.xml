@@ -17,5 +17,6 @@
         <element type="text" key="spfk_github" label="Github"/>
         <element type="text" key="spfk_weibo" label="微博"/>
         <element type="text" key="spfk_zhihu" label="知乎"/>
+        <element type="textarea" key="spfk_aboutme" label="关于我"/>
     </config>
 </theme>
