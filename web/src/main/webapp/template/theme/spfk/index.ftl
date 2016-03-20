@@ -33,7 +33,12 @@
             </header>
 
             <div class="article-entry" itemprop="articleBody">
-                dddd
+                <#assign content=article.content?replace("<.*?>","","r")>
+                <#if content?length gt 250 >
+                ${(content?substring(0,250))!}...
+                <#else >
+                ${(content)!}
+                </#if>
             </div>
 
             <div class="article-info article-info-index">

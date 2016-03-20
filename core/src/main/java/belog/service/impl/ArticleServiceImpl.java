@@ -108,6 +108,8 @@ public class ArticleServiceImpl extends BaseService implements ArticleService {
             posts.setModified(new Date());
             posts.setTitle(articleVo.getTitle());
             posts.setContent(articleVo.getContent());
+            postsMapper.updateByPrimaryKeySelective(posts);
+
 
             PostsMeta postsMeta = postsMetaMapper.findOneByKey(posts.getId(), "cover");
 
