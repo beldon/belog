@@ -270,6 +270,10 @@ public class ArticleServiceImpl extends BaseService implements ArticleService {
      * @param tagVos  标签
      */
     private void addTags(long postsId, List<TagVo> tagVos) {
+
+        //删除所有标签
+        taxonomyRelationshipsMapper.deleteByTypeAndObjectId(TaxonomyService.POST_TAG, postsId);
+
         if (tagVos != null && tagVos.size() > 0) {
             for (TagVo tagVo : tagVos) {
                 TagVo tag = tagService.getOrAddTagByName(tagVo.getName());
