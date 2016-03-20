@@ -3,33 +3,26 @@
     <div class="outer">
         <div id="footer-info">
             <div class="footer-left">
-                &copy; 2016 John Doe
+                &copy; 2016 Belog
             </div>
             <div class="footer-right">
-                <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/luuman/hexo-theme-spfk" target="_blank">spfk</a> by luuman
+                <a href="http://beldon.me/" target="_blank">Belog</a>  Theme <a href="https://github.com/luuman/hexo-theme-spfk" target="_blank">spfk</a> by luuman
             </div>
         </div>
 
         <div class="visit">
-
                     <span id="busuanzi_container_site_pv" style='display:none'>
-                        <span id="site-visit" >本站到访数:
+                        <span id="site-visit">本站到访数:
                             <span id="busuanzi_value_site_uv"></span>
                         </span>
                     </span>
-
-
             <span>, </span>
-
-
                     <span id="busuanzi_container_page_pv" style='display:none'>
                         <span id="page-visit">本页阅读量:
                             <span id="busuanzi_value_page_pv"></span>
                         </span>
                     </span>
-
         </div>
-
     </div>
 </footer>
 
@@ -62,7 +55,7 @@
     })
 </script>
 
-<script async src="${THEME_PATH}/js/busuanzi.pure.mini.js">
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 </script>
 
 <script language="javascript">

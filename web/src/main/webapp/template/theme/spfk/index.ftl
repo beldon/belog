@@ -20,7 +20,7 @@
 
         <div class="article-meta">
             <a href="${BASE_PATH}/article/details/${(article.id)!}.html" class="article-date">
-                <time datetime="2016-01-16T05:58:41.000Z" itemprop="datePublished">${(article.creDate?string("yyyy-MM-dd"))!}</time>
+                <time datetime="" itemprop="datePublished">${(article.creDate?string("yyyy-MM-dd"))!}</time>
             </a>
         </div>
 

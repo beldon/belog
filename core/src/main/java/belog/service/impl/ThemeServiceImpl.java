@@ -32,7 +32,7 @@ public class ThemeServiceImpl extends BaseService implements ThemeService {
     public String getThemeName() {
         ConfigVo themeConfig = configService.findByName(THEME_KEY);
         if (themeConfig == null || StringUtils.isEmpty(themeConfig.getValue())) {
-            return "default";
+            return "spfk";
         }
         return themeConfig.getValue();
     }

@@ -6,8 +6,8 @@
 <article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
 
     <div class="article-meta">
-        <a href="/2016/01/16/hello-world/" class="article-date">
-            <time datetime="2016-01-16T05:58:41.000Z" itemprop="datePublished">2016-01-16</time>
+        <a href="${BASE_PATH}/article/details/${(pageArticle.id)!}.html" class="article-date">
+            <time datetime="" itemprop="datePublished">${(article.creDate?string("yyyy-MM-dd"))!}</time>
         </a>
     </div>
 
@@ -21,15 +21,16 @@
 
         <div class="article-info article-info-post">
             <div class="article-category tagcloud">
-                <a class="article-category-link" href="/categories/HTML-书籍/">HTML 书籍</a>
+                <#list pageArticle.cats as cat>
+                    <a class="article-category-link" href="${BASE_PATH}/cat/${(cat.id)!}.html">${(cat.name)!}</a>
+                </#list>
             </div>
 
             <div class="article-tag tagcloud">
                 <ul class="article-tag-list">
-                    <li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/HTML-标签/">HTML 标签</a>
-                    </li>
-                    <li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hello/">hello</a>
-                    </li>
+                    <#list pageArticle.tags as tag>
+                        <li class="article-tag-list-item"><a class="article-tag-list-link" href="${BASE_PATH}/tag/${(tag.name)!}.html">${(tag.name)!}</a></li>
+                    </#list>
                 </ul>
             </div>
             <div class="clearfix"></div>
@@ -45,7 +46,7 @@
         <p><span>发布时间:</span>${(pageArticle.creDate?string("yyyy年MM月dd日 - HH时mm分"))!}</p>
         <p><span>最后更新:</span>${(pageArticle.creDate?string("yyyy年MM月dd日 - HH时mm分"))!}</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2016/01/16/hello-world/" title="前端知识体系">${BASE_PATH}/article/details/${(pageArticle.id)!}.html</a>
+            <span>原始链接:</span><a class="post-url" href="${BASE_PATH}/article/details/${(pageArticle.id)!}.html" title="${(pageArticle.title)!}">${BASE_PATH}/article/details/${(pageArticle.id)!}.html</a>
             <span class="copy-path" data-clipboard-text="标题: ${(pageArticle.title)!} 原文: ${BASE_PATH}/article/details/${(pageArticle.id)!}.html 作者: ${(pageArticle.user.nickname)!}"
                   title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
             <script src="${THEME_PATH}/js/clipboard.min.js"></script>
@@ -61,15 +62,15 @@
     </div>
 
 
-    <nav id="article-nav">
+    <#--<nav id="article-nav">-->
 
 
-        <a href="/2016/01/16/mytest/" id="article-nav-older" class="article-nav-link-wrap">
-            <div class="article-nav-title">前端知识体系</div>
-            <strong class="article-nav-caption">></strong>
-        </a>
+        <#--<a href="/2016/01/16/mytest/" id="article-nav-older" class="article-nav-link-wrap">-->
+            <#--<div class="article-nav-title">前端知识体系</div>-->
+            <#--<strong class="article-nav-caption">></strong>-->
+        <#--</a>-->
 
-    </nav>
+    <#--</nav>-->
 
 
 </article>
@@ -138,45 +139,28 @@
 };
 with (document)0[(getElementsByTagName('head')[0] || body).appendChild(createElement('script')).src = 'http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion=' + ~(-new Date() / 36e5)];</script>
 
-
-<div class="duoshuo" id="comments">
-    <!-- 多说评论框 start -->
-    <div class="ds-thread" data-thread-key="2016/01/16/hello-world/" data-title="前端知识体系"
-         data-url="http://yoursite.com/2016/01/16/hello-world/"></div>
-    <!-- 多说评论框 end -->
-    <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
-    <script type="text/javascript">
-        var duoshuoQuery = {short_name: "luums"};
-        (function () {
-            var ds = document.createElement('script');
-            ds.type = 'text/javascript';
-            ds.async = true;
-            ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-            ds.charset = 'UTF-8';
-            (document.getElementsByTagName('head')[0]
-            || document.getElementsByTagName('body')[0]).appendChild(ds);
-        })();
-    </script>
-    <!-- 多说公共JS代码 end -->
-</div>
+    <#if comment_tag?exists>
+        <@comment_tag>
+        ${(code)!}
+        </@comment_tag>
+    </#if>
 
 
 <div class="scroll" id="post-nav-button">
 
     <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
 
-    <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+    <#--<a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>-->
 
-    <a href="/2016/01/16/mytest/" title="下一篇: 前端知识体系">
-        <i class="fa fa-angle-right"></i>
-    </a>
+    <#--<a href="/2016/01/16/mytest/" title="下一篇: 前端知识体系">-->
+        <#--<i class="fa fa-angle-right"></i>-->
+    <#--</a>-->
 
 </div>
-<ul class="post-list">
-    <li class="post-list-item"><a class="post-list-link" href="/2016/01/16/hello-world/">前端知识体系</a></li>
-    <li class="post-list-item"><a class="post-list-link" href="/2016/01/16/mytest/">前端知识体系</a></li>
-</ul>
-<script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<#--<ul class="post-list">-->
+    <#--<li class="post-list-item"><a class="post-list-link" href="/2016/01/16/hello-world/">前端知识体系</a></li>-->
+    <#--<li class="post-list-item"><a class="post-list-link" href="/2016/01/16/mytest/">前端知识体系</a></li>-->
+<#--</ul>-->
 <script>
     $(".post-list").addClass("toc-article");
     $(".post-list-item a").attr("target", "_blank");
